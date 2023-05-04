@@ -1,0 +1,24 @@
+{
+  "name": "cadastro",
+  "version": "1.0.0",
+  "description": "Sistema de cadastro de clientes com nodeJS",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/joedio-borges/cadastro.git"
+  },
+  "author": "Joédio Borges Jr.",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/joedio-borges/cadastro/issues"
+  },
+  "homepage": "https://github.com/joedio-borges/cadastro#readme",
+  "dependencies": {
+    "body-parser": "^1.20.2",
+    "express": "^4.18.2",
+    "mysql": "^2.18.1"
+  }
+}
