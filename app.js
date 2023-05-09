@@ -21,13 +21,13 @@ app.get("/cadastro", (req, res) => {
 });
 
 app.post("/cadastro", (req, res) => {
-  const { nome, endereco } = req.body;
-  if (!nome || !endereco) {
+  const { nome, endereço } = req.body;
+  if (!nome || !endereço) {
     res.status(400).send("Nome e endereço são campos obrigatórios.");
     return;
   }
 
-  const cliente = { nome, endereco };
+  const cliente = { nome, endereço };
   connection.query("INSERT INTO clientes SET ?", cliente, (err, result) => {
     if (err) throw err;
     console.log(`Cliente ${nome} cadastrado com sucesso!`);
@@ -54,7 +54,7 @@ app.get('/listagem', (req, res) => {
           <table>
             <tr>
               <th>Nome</th>
-              <th>endereco</th>
+              <th>endereço</th>
             </tr>
     `;
     
@@ -62,7 +62,7 @@ app.get('/listagem', (req, res) => {
       html += `
         <tr>
           <td>${cliente.nome}</td>
-          <td>${cliente.endereco}</td>
+          <td>${cliente.endereço}</td>
         </tr>
       `;
     });
@@ -101,8 +101,8 @@ app.get('/consulta', (req, res) => {
 // Rota para processar a consulta
 app.post('/consulta', (req, res) => {
   //const nome = req.body.nome;
-  const { nome, endereco } = req.body;
-  //const endereco = req.body.endereco;
+  const { nome, endereço } = req.body;
+  //const endereço = req.body.endereço;
   
   // Consulta no banco de dados
   connection.query(`SELECT * FROM clientes WHERE nome LIKE '%${nome}%'`, (error, results, fields) => {
@@ -120,7 +120,7 @@ app.post('/consulta', (req, res) => {
           <table>
             <tr>
               <th>Nome</th>
-              <th>endereco</th>
+              <th>endereço</th>
             </tr>
     `;
     
@@ -128,7 +128,7 @@ app.post('/consulta', (req, res) => {
       html += `
         <tr>
           <td>${cliente.nome}</td>
-          <td>${cliente.endereco}</td>
+          <td>${cliente.endereço}</td>
         </tr>
       `;
     });

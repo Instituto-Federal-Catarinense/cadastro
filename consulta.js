@@ -30,8 +30,8 @@ app.get('/consulta', (req, res) => {
         <form method="POST" action="/clientes">
           <label for="nome">Nome:</label>
           <input type="text" id="nome" name="nome"><br><br>
-          <label for="endereco">Endereço:</label>
-          <input type="text" id="endereco" name="endereco"><br><br>
+          <label for="endereço">Endereço:</label>
+          <input type="text" id="endereço" name="endereço"><br><br>
           <button type="submit">Consultar</button>
         </form>
       </body>
@@ -42,8 +42,8 @@ app.get('/consulta', (req, res) => {
 // Rota para processar a consulta
 app.post('/clientes', (req, res) => {
   //const nome = req.body.nome;
-  const { nome, endereco } = req.body;
-  //const endereco = req.body.endereco;
+  const { nome, endereço } = req.body;
+  //const endereço = req.body.endereço;
   
   // Consulta no banco de dados
   connection.query(`SELECT * FROM clientes WHERE nome LIKE '%${nome}%'`, (error, results, fields) => {
@@ -61,7 +61,7 @@ app.post('/clientes', (req, res) => {
           <table>
             <tr>
               <th>Nome</th>
-              <th>endereco</th>
+              <th>endereço</th>
             </tr>
     `;
     
@@ -69,7 +69,7 @@ app.post('/clientes', (req, res) => {
       html += `
         <tr>
           <td>${cliente.nome}</td>
-          <td>${cliente.endereco}</td>
+          <td>${cliente.endereço}</td>
         </tr>
       `;
     });
