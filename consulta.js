@@ -10,7 +10,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 const connection = mysql.createConnection({
   host: '127.0.0.1',
   user: 'root',
-  password: 'A1b1c1d1',
+  password: '',
   database: 'meuBanco'
 });
 
@@ -32,6 +32,10 @@ app.get('/consulta', (req, res) => {
           <input type="text" id="nome" name="nome"><br><br>
           <label for="endereco">Endereço:</label>
           <input type="text" id="endereco" name="endereco"><br><br>
+          <label for="nome">Idade:</label>
+          <input type="text" id="idade" name="idade"><br><br>
+          <label for="nome">Gênero:</label>
+          <input type="text" id="genero" name="genero"><br><br>
           <button type="submit">Consultar</button>
         </form>
       </body>
@@ -42,7 +46,7 @@ app.get('/consulta', (req, res) => {
 // Rota para processar a consulta
 app.post('/clientes', (req, res) => {
   //const nome = req.body.nome;
-  const { nome, endereco } = req.body;
+  const { nome, endereco, idade, genero } = req.body;
   //const endereco = req.body.endereco;
   
   // Consulta no banco de dados
@@ -62,6 +66,8 @@ app.post('/clientes', (req, res) => {
             <tr>
               <th>Nome</th>
               <th>endereco</th>
+              <th>idade</th>
+              <th>Gênero</th>
             </tr>
     `;
     
@@ -70,6 +76,8 @@ app.post('/clientes', (req, res) => {
         <tr>
           <td>${cliente.nome}</td>
           <td>${cliente.endereco}</td>
+          <td>${cliente.idade}</td>
+          <td>${cliente.genero}</td>
         </tr>
       `;
     });
