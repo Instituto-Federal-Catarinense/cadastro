@@ -8,9 +8,9 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 // Configurações do banco de dados
 const connection = mysql.createConnection({
-  host: '127.0.0.1',
+  host: 'localhost',
   user: 'root',
-  password: 'A1b1c1d1',
+  password: '',
   database: 'meuBanco'
 });
 
@@ -44,11 +44,11 @@ app.post('/clientes', (req, res) => {
   //const nome = req.body.nome;
   const { nome, endereco } = req.body;
   //const endereco = req.body.endereco;
-  
+
   // Consulta no banco de dados
   connection.query(`SELECT * FROM clientes WHERE nome LIKE '%${nome}%'`, (error, results, fields) => {
     if (error) throw error;
-    
+
     // Exibição dos resultados
     let html = `
       <!DOCTYPE html>
@@ -62,24 +62,28 @@ app.post('/clientes', (req, res) => {
             <tr>
               <th>Nome</th>
               <th>endereco</th>
+              <th>idade</th>
+              <th>sexo</th>
             </tr>
     `;
-    
+
     results.forEach((cliente) => {
       html += `
         <tr>
           <td>${cliente.nome}</td>
           <td>${cliente.endereco}</td>
+          <td>${cliente.idade}</td>
+          <td>${cliente.sexo}</td>
         </tr>
       `;
     });
-    
+
     html += `
           </table>
         </body>
       </html>
     `;
-    
+
     res.send(html);
   });
 });

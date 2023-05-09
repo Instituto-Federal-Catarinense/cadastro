@@ -8,9 +8,9 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 // Configurações do banco de dados
 const connection = mysql.createConnection({
-  host: '127.0.0.1',
+  host: 'localhost',
   user: 'root',
-  password: 'A1b1c1d1',
+  password: '',
   database: 'meuBanco'
 });
 

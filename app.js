@@ -6,9 +6,9 @@ const app = express();
 app.use(bodyParser.urlencoded({ extended: true }));
 
 const connection = mysql.createConnection({
-  host: "127.0.0.1",
+  host: "localhost",
   user: "root",
-  password: "A1b1c1d1",
+  password: "",
   database: "meuBanco"
 });
 
@@ -21,13 +21,13 @@ app.get("/cadastro", (req, res) => {
 });
 
 app.post("/cadastro", (req, res) => {
-  const { nome, endereco } = req.body;
-  if (!nome || !endereco) {
+  const { nome, endereco, idade, sexo} = req.body;
+  if (!nome || !endereco || !idade || !sexo) {
     res.status(400).send("Nome e endereço são campos obrigatórios.");
     return;
   }
 
-  const cliente = { nome, endereco };
+  const cliente = { nome, endereco, sexo, idade};
   connection.query("INSERT INTO clientes SET ?", cliente, (err, result) => {
     if (err) throw err;
     console.log(`Cliente ${nome} cadastrado com sucesso!`);
@@ -41,7 +41,7 @@ app.get('/listagem', (req, res) => {
   // Consulta no banco de dados
   connection.query(`SELECT * FROM clientes`, (error, results, fields) => {
     if (error) throw error;
-    
+
     // Exibição dos resultados
     let html = `
       <!DOCTYPE html>
@@ -55,25 +55,29 @@ app.get('/listagem', (req, res) => {
             <tr>
               <th>Nome</th>
               <th>endereco</th>
+              <th>sexo</th>
+              <th>idade</th>
             </tr>
     `;
-    
+
     results.forEach((cliente) => {
       html += `
         <tr>
           <td>${cliente.nome}</td>
           <td>${cliente.endereco}</td>
+          <td>${cliente.idade}</td>
+          <td>${cliente.sexo}</td>
         </tr>
       `;
     });
-    
+
     html += `
           </table>
           <a href="/">Voltar</a>
         </body>
       </html>
     `;
-    
+
     res.send(html);
   });
 });
@@ -103,11 +107,11 @@ app.post('/consulta', (req, res) => {
   //const nome = req.body.nome;
   const { nome, endereco } = req.body;
   //const endereco = req.body.endereco;
-  
+
   // Consulta no banco de dados
   connection.query(`SELECT * FROM clientes WHERE nome LIKE '%${nome}%'`, (error, results, fields) => {
     if (error) throw error;
-    
+
     // Exibição dos resultados
     let html = `
       <!DOCTYPE html>
@@ -121,25 +125,29 @@ app.post('/consulta', (req, res) => {
             <tr>
               <th>Nome</th>
               <th>endereco</th>
+              <th>idade</th>
+              <th>sexo</th>
             </tr>
     `;
-    
+
     results.forEach((cliente) => {
       html += `
         <tr>
           <td>${cliente.nome}</td>
           <td>${cliente.endereco}</td>
+          <td>${cliente.idade}</td>
+          <td>${cliente.sexo}</td>
         </tr>
       `;
     });
-    
+
     html += `
           </table>
-          <a href="/">Voltar</a>
+          <button type="submit">voltar</button>
         </body>
       </html>
     `;
-    
+
     res.send(html);
   });
 });
