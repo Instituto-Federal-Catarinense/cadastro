@@ -5,7 +5,25 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Cadastro de Clientes</title>
   <style>
-  input[type=text], select {
+  input[type=text],select {
+    width: 100%;
+    padding: 12px 20px;
+    margin: 8px 0;
+    display: inline-block;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+  }
+  input[type=number],select {
+    width: 100%;
+    padding: 12px 20px;
+    margin: 8px 0;
+    display: inline-block;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+  }
+  input[type=email],select {
     width: 100%;
     padding: 12px 20px;
     margin: 8px 0;
@@ -33,11 +51,17 @@
 <body>
   <h1>Cadastro de Clientes</h1>
   <form action="/cadastro" method="POST">
-    <label for="nome">Nome:</label>
+    <label for="Nome">Nome:</label>
     <input type="text" id="nome" name="nome" required>
     <br>
-    <label for="endereco">Endereço:</label>
+    <label for="Endereco">Endereço:</label>
     <input type="text" id="endereco" name="endereco" required>
+    <br>
+    <label for="Idade">Idade</label>
+    <input type="number" id="idade" name="idade" required>
+    <br>
+    <label for="Endereco">Email:</label>
+    <input type="email" id="email" name="email" required>
     <br>
     <button type="submit">Cadastrar</button>
   </form>
