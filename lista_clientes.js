@@ -10,7 +10,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 const connection = mysql.createConnection({
   host: '127.0.0.1',
   user: 'root',
-  password: 'A1b1c1d1',
+  password: 'aluno01',
   database: 'meuBanco'
 });
 
@@ -37,6 +37,8 @@ app.post('/clientes', (req, res) => {
             <tr>
               <th>Nome</th>
               <th>endereco</th>
+              <th>Sexo</th>
+              <th>Idade</th>
             </tr>
     `;
     
@@ -45,6 +47,8 @@ app.post('/clientes', (req, res) => {
         <tr>
           <td>${cliente.nome}</td>
           <td>${cliente.endereco}</td>
+          <td>${cliente.sexo}</td>
+          <td>${cliente.idade}</td>
         </tr>
       `;
     });
