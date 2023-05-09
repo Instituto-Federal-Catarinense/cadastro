@@ -8,7 +8,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 const connection = mysql.createConnection({
   host: "127.0.0.1",
   user: "root",
-  password: "A1b1c1d1",
+  password: "aluno01",
   database: "meuBanco"
 });
 
@@ -21,16 +21,16 @@ app.get("/cadastro", (req, res) => {
 });
 
 app.post("/cadastro", (req, res) => {
-  const { nome, endereco } = req.body;
+  const { nome, endereco, sexo, idade } = req.body;
   if (!nome || !endereco) {
-    res.status(400).send("Nome e endereço são campos obrigatórios.");
+    res.status(400).send("Nome, endereço, sexo e idade são campos obrigatórios.");
     return;
   }
 
-  const cliente = { nome, endereco };
+  const cliente = { nome, endereco, sexo, idade};
   connection.query("INSERT INTO clientes SET ?", cliente, (err, result) => {
     if (err) throw err;
-    console.log(`Cliente ${nome} cadastrado com sucesso!`);
+    console.log(`Cliente ${nome} - ${sexo} cadastrado com sucesso!`);
     res.redirect("/");
   });
 });
@@ -55,6 +55,8 @@ app.get('/listagem', (req, res) => {
             <tr>
               <th>Nome</th>
               <th>endereco</th>
+              <th>sexo</th>
+              <th>idade</th>
             </tr>
     `;
     
@@ -63,6 +65,8 @@ app.get('/listagem', (req, res) => {
         <tr>
           <td>${cliente.nome}</td>
           <td>${cliente.endereco}</td>
+          <td>${cliente.sexo}</td>
+          <td>${cliente.idade}</td>
         </tr>
       `;
     });
@@ -121,6 +125,8 @@ app.post('/consulta', (req, res) => {
             <tr>
               <th>Nome</th>
               <th>endereco</th>
+              <th>sexo</th>
+              <th>idade</th>
             </tr>
     `;
     
@@ -129,6 +135,8 @@ app.post('/consulta', (req, res) => {
         <tr>
           <td>${cliente.nome}</td>
           <td>${cliente.endereco}</td>
+          <td>${cliente.sexo}</td>
+          <td>${cliente.idade}</td>
         </tr>
       `;
     });
