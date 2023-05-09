@@ -21,13 +21,13 @@ app.get("/cadastro", (req, res) => {
 });
 
 app.post("/cadastro", (req, res) => {
-  const { nome, endereço } = req.body;
-  if (!nome || !endereço) {
-    res.status(400).send("Nome e endereço são campos obrigatórios.");
+  const { nome, endereco, altura, idade } = req.body;
+  if (!nome || !endereco || !altura || !idade) {
+    res.status(400).send("Nome, endereço, altura e idade são campos obrigatórios.");
     return;
   }
 
-  const cliente = { nome, endereço };
+  const cliente = { nome, endereco, altura, idade  };
   connection.query("INSERT INTO clientes SET ?", cliente, (err, result) => {
     if (err) throw err;
     console.log(`Cliente ${nome} cadastrado com sucesso!`);
@@ -55,6 +55,8 @@ app.get('/listagem', (req, res) => {
             <tr>
               <th>Nome</th>
               <th>endereço</th>
+              <th>altura</th>
+              <th>idade</th>
             </tr>
     `;
     
@@ -62,7 +64,9 @@ app.get('/listagem', (req, res) => {
       html += `
         <tr>
           <td>${cliente.nome}</td>
-          <td>${cliente.endereço}</td>
+          <td>${cliente.endereco}</td>
+          <td>${cliente.altura}</td>
+          <td>${cliente.idade}</td>
         </tr>
       `;
     });
@@ -101,8 +105,10 @@ app.get('/consulta', (req, res) => {
 // Rota para processar a consulta
 app.post('/consulta', (req, res) => {
   //const nome = req.body.nome;
-  const { nome, endereço } = req.body;
-  //const endereço = req.body.endereço;
+  const { nome, endereco, altura, idade } = req.body;
+  //const endereco = req.body.endereco;
+  //const endereco = req.body.altura;
+  //const endereco = req.body.idade;
   
   // Consulta no banco de dados
   connection.query(`SELECT * FROM clientes WHERE nome LIKE '%${nome}%'`, (error, results, fields) => {
@@ -121,6 +127,8 @@ app.post('/consulta', (req, res) => {
             <tr>
               <th>Nome</th>
               <th>endereço</th>
+              <th>altura</th>
+              <th>idade</th>
             </tr>
     `;
     
@@ -128,7 +136,9 @@ app.post('/consulta', (req, res) => {
       html += `
         <tr>
           <td>${cliente.nome}</td>
-          <td>${cliente.endereço}</td>
+          <td>${cliente.endereco}</td>
+          <td>${cliente.altura}</td>
+          <td>${cliente.idade}</td>
         </tr>
       `;
     });

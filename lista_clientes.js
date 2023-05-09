@@ -44,7 +44,7 @@ app.post('/clientes', (req, res) => {
       html += `
         <tr>
           <td>${cliente.nome}</td>
-          <td>${cliente.endereço}</td>
+          <td>${cliente.endereco}</td>
         </tr>
       `;
     });
