@@ -45,6 +45,8 @@ app.post('/clientes', (req, res) => {
         <tr>
           <td>${cliente.nome}</td>
           <td>${cliente.endereco}</td>
+          <td>${cliente.altura}</td>
+          <td>${cliente.idade}</td>
         </tr>
       `;
     });

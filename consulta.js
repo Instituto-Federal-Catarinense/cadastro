@@ -30,7 +30,7 @@ app.get('/consulta', (req, res) => {
         <form method="POST" action="/clientes">
           <label for="nome">Nome:</label>
           <input type="text" id="nome" name="nome"><br><br>
-          <label for="endereço">Endereço:</label>
+          <label for="endereco">Endereço:</label>
           <input type="text" id="endereco" name="endereco"><br><br>
           <label for="altura">Altura:</label>
           <input type="text" id="altura:" name="altura"><br><br>
