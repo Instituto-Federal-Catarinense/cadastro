@@ -8,8 +8,8 @@ app.use(bodyParser.urlencoded({ extended: true }));
 const connection = mysql.createConnection({
   host: "127.0.0.1",
   user: "root",
-  password: "A1b1c1d1",
-  database: "meuBanco"
+  password: "",
+  database: "bancodoJojo"
 });
 
 app.get("/", (req, res) => {
