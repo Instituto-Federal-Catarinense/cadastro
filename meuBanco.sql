@@ -19,14 +19,21 @@
 -- Table structure for table `clientes`
 --
 
-DROP TABLE IF EXISTS `clientes`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
+
 CREATE TABLE `clientes` (
   `nome` varchar(255) DEFAULT NULL,
-  `endereco` varchar(255) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
+  `sobrenome` varchar(255) DEFAULT NULL,
+  `endereco` varchar(255) default null,
+  `idade` int(3) default null
+);
+
+CREATE TABLE `produtos` (
+  id int primary key auto_increment,
+  `nomedoproduto` varchar(255) DEFAULT NULL,
+  `valor` varchar(255) DEFAULT NULL,
+  `quantidade` varchar(255) DEFAULT null,
+  `validade` date DEFAULT null
+) ;
 
 --
 -- Dumping data for table `clientes`
@@ -48,3 +55,10 @@ UNLOCK TABLES;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
 -- Dump completed on 2023-05-04 11:48:48
+
+create database meuBanco;
+
+use meuBanco;
+
+drop table clientes;
+
