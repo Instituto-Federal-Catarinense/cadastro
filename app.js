@@ -20,9 +20,13 @@ app.get("/cadastro", (req, res) => {
   res.sendFile(__dirname + "/cadastro.html");
 });
 
+app.get("/produtos", (req, res) => {
+  res.sendFile(__dirname + "/produtos.html");
+});
+
 app.post("/cadastro", (req, res) => {
   const { nome, endereco, sexo, idade } = req.body;
-  if (!nome || !endereco) {
+  if (!nome || !endereco || !sexo || !idade) {
     res.status(400).send("Nome, endereço, sexo e idade são campos obrigatórios.");
     return;
   }
@@ -35,14 +39,29 @@ app.post("/cadastro", (req, res) => {
   });
 });
 
-// Rota para processar a listagem
-app.get('/listagem', (req, res) => {
+app.post("/cadProdutos", (req, res) => {
+  const {id, descricao, quantidade, valor} = req.body;
+  if (!id || !descricao || !quantidade || !valor) {
+    res.status(400).send("Id, descrição, quantidade e valor são campos obrigatórios.");
+    return;
+  }
 
-  // Consulta no banco de dados
+  const produto = {id, descricao, quantidade, valor};
+  connection.query("INSERT INTO produtos SET ?", produto, (err, result) => {
+    if (err) throw err;
+    console.log(`Produtos ${id} - ${descricao} cadastrado com sucesso!`);
+    res.redirect("/");
+  });
+});
+
+// Rota para processar a listagem
+app.get('/listagemClientes', (req, res) => {
+
+  // Consulta de clientesno banco de dados
   connection.query(`SELECT * FROM clientes`, (error, results, fields) => {
     if (error) throw error;
     
-    // Exibição dos resultados
+    // Exibição dos resultados clientes
     let html = `
       <!DOCTYPE html>
       <html>
@@ -70,16 +89,61 @@ app.get('/listagem', (req, res) => {
         </tr>
       `;
     });
-    
+
     html += `
-          </table>
-          <a href="/">Voltar</a>
-        </body>
-      </html>
+    </table>
+    <a href="/">Voltar</a>
+    </body>
+    </html>
     `;
-    
     res.send(html);
   });
+});
+
+// Rota para processar a listagem
+app.get('/listagemProdutos', (req, res) => {
+
+  // Consulta de produtos no banco de dados
+  connection.query(`SELECT * FROM produtos`, (error, results, fields) => {
+    if (error) throw error;
+  // Exibição dos resultados produtos
+  html = `
+    <!DOCTYPE html>
+    <html>
+      <head>
+        <title>Produtos</title>
+      </head>
+      <body>
+        <h1>Produtos encontrados</h1>
+        <table>
+          <tr>
+            <th>Id</th>
+            <th>Descrição</th>
+            <th>Quantidade</th>
+            <th>Valor</th>
+          </tr>
+  `;
+   
+  results.forEach((produto) => {
+    html += `
+      <tr>
+        <td>${produto.id}</td>
+        <td>${produto.descricao}</td>
+        <td>${produto.quantidade}</td>
+        <td>${produto.valor}</td>
+      </tr>
+    `;
+  });
+
+  html += `
+</table>
+<a href="/">Voltar</a>
+</body>
+</html>
+`;
+
+res.send(html);
+});
 });
 
 // Rota para exibir o formulário de consulta
