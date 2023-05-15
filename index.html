@@ -11,6 +11,28 @@
     height: 200px;
     background: #aaa;
   }
+  .dropdown {
+  display: inline-block;
+  position: relative;
+  color: azure;
+
+}
+.dropdown-options {
+  display: none;
+  position: absolute;
+  overflow: auto;
+  background-color: #212529;
+  width: 90px;
+}
+
+.link {
+  color: white;
+  text-decoration: none;
+}
+
+.dropdown:hover .dropdown-options {
+  display: block;
+}
   </style>
 </head>
 <body>
@@ -25,17 +47,23 @@
       <li class="nav-item">
         <a class="nav-link active" href="/">Home</a>
       </li>
-      <li class="nav-item">
-        <a class="nav-link" href="/cadastro">Cadastrar</a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" href="/listagem">Listagem</a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link " href="/consulta">Consultar</a>
-      </li>
-    </ul>
-  </div>
+      <div class="dropdown">
+        <li class="nav-item"><a class="nav-link" href="#">Cliente</a></li>
+        <div class="dropdown-options">
+          <li class="nav-item"><a class="link" href="/cadastro">Cadastro Cliente</li>
+          <li class="nav-item"><a class="link " href="/consulta">Consultar Cliente</a></li>
+          <li class="nav-item"><a class="link" href="/listagem">Listagem de Clientes</a></li>
+        </div>
+      </div>
+      <div class="dropdown">
+        <li class="nav-item"><a class="nav-link" href="#">Produto</a></li>
+        <div class="dropdown-options">
+          <li class="nav-item"><a class="link" href="/cadastroprod">Cadastro Produto</li>
+          <li class="nav-item"><a class="link " href="/consultaprod">Consultar Produto</a></li>
+          <li class="nav-item"><a class="link" href="/listagemprod">Listagem de Produto</a></li>
+        </div>
+      </div>
 </nav>
+
 </body>
 </html>
