@@ -22,6 +22,7 @@ app.get("/cadastro", (req, res) => {
 
 
 
+
 app.post("/cadastro", (req, res) => {
   const { nome, endereco, idade, profissao } = req.body;
   if (!nome || !endereco || !idade || !profissao) {
@@ -230,7 +231,7 @@ app.get('/consultaprod', (req, res) => {
       </head>
       <body>
         <h1>Consulta de produtos</h1>
-        <form method="POST" action="/consulta">
+        <form method="POST" action="/consultaprod">
           <label for="nome">Nome:</label>
           <input type="text" id="nome" name="nome"><br><br>
           <button type="submit">Consultar</button>
@@ -243,11 +244,11 @@ app.get('/consultaprod', (req, res) => {
 // Rota para processar a consulta
 app.post('/consultaprod', (req, res) => {
   //const nome = req.body.nome;
-  const { nome, preco, quantidade } = req.body;
+  const { nome } = req.body;
   //const endereco = req.body.endereco;
   
   // Consulta no banco de dados
-  connection.query(`SELECT * FROM clientes WHERE nome LIKE '%${nome}%'`, (error, results, fields) => {
+  connection.query(`SELECT * FROM produto WHERE nome LIKE '%${nome}%'`, (error, results, fields) => {
     if (error) throw error;
     
     // Exibição dos resultados
@@ -255,10 +256,10 @@ app.post('/consultaprod', (req, res) => {
       <!DOCTYPE html>
       <html>
         <head>
-          <title>Clientes</title>
+          <title>Produtos</title>
         </head>
         <body>
-          <h1>Clientes encontrados</h1>
+          <h1>Produtos</h1>
           <table>
             <tr>
               <th>Nome</th>
