@@ -16,6 +16,11 @@ app.get("/", (req, res) => {
   res.sendFile(__dirname + "/index.html");
 });
 
+//tratando a rota cadastro de produtos
+app.get("/cadProdutos", (req, res) => {
+  res.sendFile(__dirname + "/cadProdutos.html");
+});
+
 app.get("/cadastro", (req, res) => {
   res.sendFile(__dirname + "/cadastro.html");
 });
