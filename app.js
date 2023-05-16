@@ -21,6 +21,22 @@ app.get("/cadProdutos", (req, res) => {
   res.sendFile(__dirname + "/cadProdutos.html");
 });
 
+//cadastrando um novo produto
+app.post("/cadProdutos", (req, res) => {
+  const { descricao, quantidade,valor } = req.body;
+  if (!descricao || !quantidade || !valor) {
+    res.status(400).send("campos obrigatórios.");
+    return;
+  }
+
+  const produto = { descricao, quantidade,valor };
+  connection.query("INSERT INTO produtos SET ?", produto, (err, result) => {
+    if (err) throw err;
+    console.log(`produto ${descricao} cadastrado com sucesso!`);
+    res.redirect("/");
+  });
+});
+
 app.get("/cadastro", (req, res) => {
   res.sendFile(__dirname + "/cadastro.html");
 });
