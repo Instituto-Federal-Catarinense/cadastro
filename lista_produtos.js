@@ -18,10 +18,10 @@ const connection = mysql.createConnection({
 connection.connect();
 
 // Rota para processar a consulta
-app.post('/clientes', (req, res) => {
+app.post('/produtos', (req, res) => {
 
   // Consulta no banco de dados
-  connection.query(`SELECT * FROM clientes`, (error, results, fields) => {
+  connection.query(`SELECT * FROM produtos`, (error, results, fields) => {
     if (error) throw error;
     
     // Exibição dos resultados
@@ -29,40 +29,26 @@ app.post('/clientes', (req, res) => {
       <!DOCTYPE html>
       <html>
         <head>
-          <title>Clientes</title>
-          <style>
-          table {
-            border-collapse: collapse;
-          }
-          
-          tr {
-            border: 1px solid black;
-          }
-          
-          th, td {
-            border: 1px solid black;
-            padding: 8px; 
-          }
-          </style>
+          <title>Produtos</title>
         </head>
         <body>
-          <h1>Clientes encontrados</h1>
+          <h1>Produtos encontrados</h1>
           <table>
             <tr>
-              <th>Nome</th>
-              <th>endereco</th>
-              <th>idade</th>
-              <th>sexo</th>
+              <th>Id</th>
+              <th>Descrição</th>
+              <th>Quantidade</th>
+              <th>Valor</th>
             </tr>
     `;
     
-    results.forEach((cliente) => {
+    results.forEach((produtos) => {
       html += `
         <tr>
-          <td>${cliente.nome}</td>
-          <td>${cliente.endereco}</td>
-          <td>${cliente.idade}</td>
-          <td>${cliente.sexo}</td>
+          <td>${produto.id}</td>
+          <td>${produto.descricao}</td>
+          <td>${produto.quant}</td>
+          <td>${produto.valor}</td>
         </tr>
       `;
     });

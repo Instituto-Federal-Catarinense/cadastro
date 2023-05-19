@@ -21,13 +21,13 @@ app.get("/cadastro", (req, res) => {
 });
 
 app.post("/cadastro", (req, res) => {
-  const { nome, endereco, idade, genero } = req.body;
-  if (!nome || !endereco || !idade || !genero) {
-    res.status(400).send("Nome, endereço, idade e gênero são campos obrigatórios.");
+  const { nome, endereco, idade, sexo } = req.body;
+  if (!nome || !endereco || !idade || !sexo) {
+    res.status(400).send("Nome e endereço são campos obrigatórios.");
     return;
   }
 
-  const cliente = { nome, endereco, idade, genero };
+  const cliente = { nome, endereco, idade, sexo };
   connection.query("INSERT INTO clientes SET ?", cliente, (err, result) => {
     if (err) throw err;
     console.log(`Cliente ${nome} cadastrado com sucesso!`);
@@ -48,6 +48,20 @@ app.get('/listagem', (req, res) => {
       <html>
         <head>
           <title>Clientes</title>
+          <style>
+          table {
+            border-collapse: collapse;
+          }
+          
+          tr {
+            border: 1px solid black;
+          }
+          
+          th, td {
+            border: 1px solid black;
+            padding: 8px; 
+          }
+          </style>
         </head>
         <body>
           <h1>Clientes encontrados</h1>
@@ -56,8 +70,7 @@ app.get('/listagem', (req, res) => {
               <th>Nome</th>
               <th>endereco</th>
               <th>idade</th>
-              <th>Gênero</th>
-
+              <th>sexo</th>
             </tr>
     `;
     
@@ -67,7 +80,7 @@ app.get('/listagem', (req, res) => {
           <td>${cliente.nome}</td>
           <td>${cliente.endereco}</td>
           <td>${cliente.idade}</td>
-          <td>${cliente.genero}</td>
+          <td>${cliente.sexo}</td>
         </tr>
       `;
     });
@@ -90,6 +103,20 @@ app.get('/consulta', (req, res) => {
     <html>
       <head>
         <title>Consulta de clientes</title>
+        <style>
+        table {
+          border-collapse: collapse;
+        }
+        
+        tr {
+          border: 1px solid black;
+        }
+        
+        th, td {
+          border: 1px solid black;
+          padding: 8px; 
+        }
+        </style>
       </head>
       <body>
         <h1>Consulta de clientes</h1>
@@ -106,7 +133,7 @@ app.get('/consulta', (req, res) => {
 // Rota para processar a consulta
 app.post('/consulta', (req, res) => {
   //const nome = req.body.nome;
-  const { nome, endereco, idade, genero } = req.body;
+  const { nome, endereco } = req.body;
   //const endereco = req.body.endereco;
   
   // Consulta no banco de dados
@@ -119,6 +146,20 @@ app.post('/consulta', (req, res) => {
       <html>
         <head>
           <title>Clientes</title>
+          <style>
+          table {
+            border-collapse: collapse;
+          }
+          
+          tr {
+            border: 1px solid black;
+          }
+          
+          th, td {
+            border: 1px solid black;
+            padding: 8px; 
+          }
+          </style>
         </head>
         <body>
           <h1>Clientes encontrados</h1>
@@ -127,7 +168,7 @@ app.post('/consulta', (req, res) => {
               <th>Nome</th>
               <th>endereco</th>
               <th>idade</th>
-              <th>Gênero</th>
+              <th>sexo</th>
             </tr>
     `;
     
@@ -137,7 +178,7 @@ app.post('/consulta', (req, res) => {
           <td>${cliente.nome}</td>
           <td>${cliente.endereco}</td>
           <td>${cliente.idade}</td>
-          <td>${cliente.genero}</td>
+          <td>${cliente.sexo}</td>
         </tr>
       `;
     });
