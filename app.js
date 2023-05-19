@@ -40,18 +40,18 @@ app.post("/cadastroclientes", (req, res) => {
 });
 
 app.post("/cadastroprodutos", (req, res) => {
-  const { nome, descricao , quantidade, valor } = req.body;
-  if (!nome || !descricao || !quantidade || !valor) {
+  const {descricao , quantidade, valor } = req.body;
+  if (!descricao || !quantidade || !valor) {
     res.status(400).send("Nome e endereço são campos obrigatórios.");
     return;
   }
 
-  const produto = { nome, descricao , quantidade, valor };
+  const produto = { descricao, quantidade, valor };
   connection.query("INSERT INTO produtos SET ?", produto, (err, result) => {
     if (err) throw err;
-    console.log(`Produto ${nome} cadastrado com sucesso!`);
+    console.log(`Produto ${produto.descricao} cadastrado com sucesso!`);
     res.redirect("/");
-  });
+  });  
 });
 
 // Rota para processar a listagem de clientes
@@ -119,7 +119,7 @@ app.get('/listagemprodutos', (req, res) => {
           <h1>Produtos cadastrados</h1>
           <table>
             <tr>
-              <th>Nome</th>
+              <th>ID</th>
               <th>Descrição</th>
               <th>Quantidade</th>
               <th>Valor unitário</th>
@@ -129,7 +129,7 @@ app.get('/listagemprodutos', (req, res) => {
     results.forEach((produto) => {
       html += `
         <tr>
-          <td>${produto.nome}</td>
+          <td>${produto.ID}</td>
           <td>${produto.descricao}</td>
           <td>${produto.quantidade}</td>
           <td>${produto.valor}</td>
@@ -226,8 +226,8 @@ app.get('/consultaprodutos', (req, res) => {
       <body>
         <h1>Consulta de produtos</h1>
         <form method="POST" action="/consultaprodutos">
-          <label for="nome">Nome:</label>
-          <input type="text" id="nome" name="nome"><br><br>
+          <label for="descricao">Nome:</label>
+          <input type="text" id="descricao" name="descricao"><br><br>
           <button type="submit">Consultar</button>
         </form>
         <a href="/">Voltar</a>
@@ -239,11 +239,11 @@ app.get('/consultaprodutos', (req, res) => {
 // Rota para processar a consulta
 app.post('/consultaprodutos', (req, res) => {
   //const nome = req.body.nome;
-  const { nome } = req.body;
+  const { descricao } = req.body;
   //const endereco = req.body.endereco;
   
   // Consulta no banco de dados
-  connection.query(`SELECT * FROM produtos WHERE nome LIKE '%${nome}%'`, (error, results, fields) => {
+  connection.query(`SELECT * FROM produtos WHERE descricao LIKE '%${descricao}%'`, (error, results, fields) => {
     if (error) throw error;
     
     // Exibição dos resultados
@@ -251,22 +251,22 @@ app.post('/consultaprodutos', (req, res) => {
       <!DOCTYPE html>
       <html>
         <head>
-          <title>Clientes</title>
+          <title>Produtos</title>
         </head>
         <body>
-          <h1>Clientes encontrados</h1>
+          <h1>Produtos encontrados</h1>
           <table>
             <tr>
-              <th>Nome</th>
+              <th>ID</th>
               <th>Descrição</th>
             </tr>
     `;
     
-    results.forEach((cliente) => {
+    results.forEach((produto) => {
       html += `
         <tr>
-          <td>${cliente.nome}</td>
-          <td>${cliente.descricao}</td>
+          <td>${produto.ID}</td>
+          <td>${produto.descricao}</td>
         </tr>
       `;
     });
