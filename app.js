@@ -16,18 +16,22 @@ app.get("/", (req, res) => {
   res.sendFile(__dirname + "/index.html");
 });
 
-app.get("/cadastro", (req, res) => {
+app.get("/cadastroclientes", (req, res) => {
   res.sendFile(__dirname + "/cadastro.html");
 });
 
-app.post("/cadastro", (req, res) => {
-  const { nome, endereco } = req.body;
-  if (!nome || !endereco) {
+app.get("/cadastroprodutos", (req, res) => {
+  res.sendFile(__dirname + "/cadastroprodutos.html");
+});
+
+app.post("/cadastroclientes", (req, res) => {
+  const { nome, endereco , CPF, nascimento } = req.body;
+  if (!nome || !endereco || !CPF || !nascimento) {
     res.status(400).send("Nome e endereço são campos obrigatórios.");
     return;
   }
 
-  const cliente = { nome, endereco };
+  const cliente = { nome, endereco, CPF, nascimento };
   connection.query("INSERT INTO clientes SET ?", cliente, (err, result) => {
     if (err) throw err;
     console.log(`Cliente ${nome} cadastrado com sucesso!`);
@@ -35,11 +39,144 @@ app.post("/cadastro", (req, res) => {
   });
 });
 
-// Rota para processar a listagem
-app.get('/listagem', (req, res) => {
+app.post("/cadastroprodutos", (req, res) => {
+  const { nome, descricao , quantidade, valor } = req.body;
+  if (!nome || !descricao || !quantidade || !valor) {
+    res.status(400).send("Nome e endereço são campos obrigatórios.");
+    return;
+  }
+
+  const produto = { nome, descricao , quantidade, valor };
+  connection.query("INSERT INTO produtos SET ?", produto, (err, result) => {
+    if (err) throw err;
+    console.log(`Produto ${nome} cadastrado com sucesso!`);
+    res.redirect("/");
+  });
+});
+
+// Rota para processar a listagem de clientes
+app.get('/listagemclientes', (req, res) => {
 
   // Consulta no banco de dados
   connection.query(`SELECT * FROM clientes`, (error, results, fields) => {
+    if (error) throw error;
+    
+    // Exibição dos resultados
+    let html = `
+      <!DOCTYPE html>
+      <html>
+        <head>
+          <title>Clientes</title>
+        </head>
+        <body>
+          <h1>Clientes encontrados</h1>
+          <table>
+            <tr>
+              <th>Nome</th>
+              <th>endereco</th>
+              <th>CPF</th>
+              <th>nascimento</th>
+            </tr>
+    `;
+    
+    results.forEach((cliente) => {
+      html += `
+        <tr>
+          <td>${cliente.nome}</td>
+          <td>${cliente.endereco}</td>
+          <td>${cliente.CPF}</td>
+          <td>${cliente.nascimento}</td>
+        </tr>
+      `;
+    });
+    
+    html += `
+          </table>
+          <a href="/">Voltar</a>
+        </body>
+      </html>
+    `;
+    
+    res.send(html);
+  });
+});
+
+// Rota para processar a listagem de produtos
+app.get('/listagemprodutos', (req, res) => {
+
+  // Consulta no banco de dados
+  connection.query(`SELECT * FROM produtos`, (error, results, fields) => {
+    if (error) throw error;
+    
+    // Exibição dos resultados
+    let html = `
+      <!DOCTYPE html>
+      <html>
+        <head>
+          <title>Produtos</title>
+        </head>
+        <body>
+          <h1>Produtos cadastrados</h1>
+          <table>
+            <tr>
+              <th>Nome</th>
+              <th>Descrição</th>
+              <th>Quantidade</th>
+              <th>Valor unitário</th>
+            </tr>
+    `;
+    
+    results.forEach((produto) => {
+      html += `
+        <tr>
+          <td>${produto.nome}</td>
+          <td>${produto.descricao}</td>
+          <td>${produto.quantidade}</td>
+          <td>${produto.valor}</td>
+        </tr>
+      `;
+    });
+    
+    html += `
+          </table>
+          <a href="/">Voltar</a>
+        </body>
+      </html>
+    `;
+    
+    res.send(html);
+  });
+});
+
+// Rota para exibir o formulário de consulta
+app.get('/consultaclientes', (req, res) => {
+  res.send(`
+    <!DOCTYPE html>
+    <html>
+      <head>
+        <title>Consulta de clientes</title>
+      </head>
+      <body>
+        <h1>Consulta de clientes</h1>
+        <form method="POST" action="/consulta">
+          <label for="nome">Nome:</label>
+          <input type="text" id="nome" name="nome"><br><br>
+          <button type="submit">Consultar</button>
+        </form>
+        <a href="/">Voltar</a>
+      </body>
+    </html>
+  `);
+});
+
+// Rota para processar a consulta
+app.post('/consultaclientes', (req, res) => {
+  //const nome = req.body.nome;
+  const { nome, endereco } = req.body;
+  //const endereco = req.body.endereco;
+  
+  // Consulta no banco de dados
+  connection.query(`SELECT * FROM clientes WHERE nome LIKE '%${nome}%'`, (error, results, fields) => {
     if (error) throw error;
     
     // Exibição dos resultados
@@ -79,33 +216,34 @@ app.get('/listagem', (req, res) => {
 });
 
 // Rota para exibir o formulário de consulta
-app.get('/consulta', (req, res) => {
+app.get('/consultaprodutos', (req, res) => {
   res.send(`
     <!DOCTYPE html>
     <html>
       <head>
-        <title>Consulta de clientes</title>
+        <title>Consulta de produtos</title>
       </head>
       <body>
-        <h1>Consulta de clientes</h1>
-        <form method="POST" action="/consulta">
+        <h1>Consulta de produtos</h1>
+        <form method="POST" action="/consultaprodutos">
           <label for="nome">Nome:</label>
           <input type="text" id="nome" name="nome"><br><br>
           <button type="submit">Consultar</button>
         </form>
+        <a href="/">Voltar</a>
       </body>
     </html>
   `);
 });
 
 // Rota para processar a consulta
-app.post('/consulta', (req, res) => {
+app.post('/consultaprodutos', (req, res) => {
   //const nome = req.body.nome;
-  const { nome, endereco } = req.body;
+  const { nome } = req.body;
   //const endereco = req.body.endereco;
   
   // Consulta no banco de dados
-  connection.query(`SELECT * FROM clientes WHERE nome LIKE '%${nome}%'`, (error, results, fields) => {
+  connection.query(`SELECT * FROM produtos WHERE nome LIKE '%${nome}%'`, (error, results, fields) => {
     if (error) throw error;
     
     // Exibição dos resultados
@@ -120,7 +258,7 @@ app.post('/consulta', (req, res) => {
           <table>
             <tr>
               <th>Nome</th>
-              <th>endereco</th>
+              <th>Descrição</th>
             </tr>
     `;
     
@@ -128,7 +266,7 @@ app.post('/consulta', (req, res) => {
       html += `
         <tr>
           <td>${cliente.nome}</td>
-          <td>${cliente.endereco}</td>
+          <td>${cliente.descricao}</td>
         </tr>
       `;
     });
