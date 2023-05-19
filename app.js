@@ -40,7 +40,7 @@ app.post("/cadastro", (req, res) => {
 
 app.post("/produtos", (req, res) => {
   const { nomedoproduto, valor,quantidade,validade } = req.body;
-  if (!nomedoproduto || !valor || !quantidade || !validade) {
+  if (!nomedoproduto || !valor || !quantidade || !validade ) {
     res.status(400).send("Nome do produto e valor são campos obrigatórios.");
     return;
 }
@@ -195,6 +195,7 @@ app.get('/listagemdeprodutos', (req, res) => {
               <th>Valor</th>
               <th>Quantidade</th>
               <th>Validade</th>
+             
             </tr>
     `;
     
@@ -205,6 +206,7 @@ app.get('/listagemdeprodutos', (req, res) => {
           <td>${produto.valor}</td>
           <td>${produto.quantidade}</td>
           <td>${produto.validade}</td>
+          
 
         </tr>
       `;
@@ -266,6 +268,7 @@ app.post('/consultarprodutos', (req, res) => {
               <th>Valor</th>
               <th>Quantidade</th>
               <th>Validade</th>
+            
             </tr>
     `;
     
