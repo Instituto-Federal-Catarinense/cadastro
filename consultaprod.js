@@ -17,11 +17,41 @@ const connection = mysql.createConnection({
 // Conexão com o banco de dados
 connection.connect();
 
-// Rota para processar a consulta
-app.post('/clientes', (req, res) => {
+// Rota para exibir o formulário de consulta
+app.get('/consulta', (req, res) => {
+  res.send(`
+    <!DOCTYPE html>
+    <html>
+      <head>
+        <title>Consulta de Produtos</title>
+      </head>
+      <body>
+        <h1>Consulta de Produtos</h1>
+        <form action="/cadastroproduto" method="POST">
+            <label for="nome">Nome:</label>
+            <input type="text" id="nome" name="nome" required>
+            <br>
+            <label for="preco">Preço:</label>
+            <input type="number" id="preco" name="preco" required>
+            <br>
+            <label for="quant">Quantidade:</label>
+            <input type="number" id="quant" name="quantidade" required>
+            <br>
+            <button type="submit">Consultar</button>
+        </form>
+      </body>
+    </html>
+  `);
+});
 
+// Rota para processar a consulta
+app.post('/produto', (req, res) => {
+  //const nome = req.body.nome;
+  const { nome, endereco } = req.body;
+  //const endereco = req.body.endereco;
+  
   // Consulta no banco de dados
-  connection.query(`SELECT * FROM clientes`, (error, results, fields) => {
+  connection.query(`SELECT * FROM clientes WHERE nome LIKE '%${nome}%'`, (error, results, fields) => {
     if (error) throw error;
     
     // Exibição dos resultados
