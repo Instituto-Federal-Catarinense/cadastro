@@ -90,7 +90,7 @@ app.get('/consulta', (req, res) => {
     <!DOCTYPE html>
     <html>
       <head>
-        <title>Consulta de clientes</title>
+        <title>Consulta de Clientes</title>
       </head>
       <body>
         <h1>Consulta de clientes</h1>
@@ -157,19 +157,27 @@ app.post('/consulta', (req, res) => {
   });
 });
 
-app.get("/cadastro_produtos", (req, res) => {
+
+// PRODUTOS 
+
+
+app.get("/", (req, res) => {
+  res.sendFile(__dirname + "/index.html");
+});
+
+app.get("/produtos", (req, res) => {
   res.sendFile(__dirname + "/produtos.html");
 });
 
-app.post("/cadastro", (req, res) => {
+app.post("/produtos", (req, res) => {
   const { id, descricao, quantidade, valor } = req.body;
   if (!id || !descricao || !quantidade || !valor) {
     res.status(400).send("Todos os campos são obrigatórios.");
     return;
   }
 
-  const cliente = { id, descricao, quantidade, valor };
-  connection.query("INSERT INTO produtos SET ?", produto, (err, result) => {
+  const produtos = { id, descricao, quantidade, valor };
+  connection.query("INSERT INTO produtos SET ?", produtos, (err, result) => {
     if (err) throw err;
     console.log(`Produto ${id} cadastrado com sucesso!`);
     res.redirect("/");
@@ -177,7 +185,7 @@ app.post("/cadastro", (req, res) => {
 });
 
 // Rota para processar a listagem
-app.get('/listagem', (req, res) => {
+app.get('/listagemprodutos', (req, res) => {
 
   // Consulta no banco de dados
   connection.query(`SELECT * FROM produtos`, (error, results, fields) => {
@@ -188,7 +196,7 @@ app.get('/listagem', (req, res) => {
       <!DOCTYPE html>
       <html>
         <head>
-          <title>Produtos</title>
+          <title>Consulta de Produtos</title>
         </head>
         <body>
           <h1>Produtos encontrados</h1>
@@ -201,7 +209,7 @@ app.get('/listagem', (req, res) => {
             </tr>
     `;
 
-    results.forEach((produto) => {
+    results.forEach((produtos) => {
       html += `
         <tr>
           <td>${produtos.id}</td>
@@ -224,7 +232,7 @@ app.get('/listagem', (req, res) => {
 });
 
 // Rota para exibir o formulário de consulta
-app.get('/consulta_produtos', (req, res) => {
+app.get('/consultaprodutos', (req, res) => {
   res.send(`
     <!DOCTYPE html>
     <html>
@@ -232,8 +240,8 @@ app.get('/consulta_produtos', (req, res) => {
         <title>Consulta de produtos</title>
       </head>
       <body>
-        <h1>Consulta de produtos</h1>
-        <form method="POST" action="/consulta_produtos">
+        <h1>Consulta de Produtos</h1>
+        <form method="POST" action="/consultaprodutos">
           <label for="id">ID:</label>
           <input type="text" id="id" name="id"><br><br>
           <button type="submit">Consultar</button>
@@ -244,16 +252,15 @@ app.get('/consulta_produtos', (req, res) => {
 });
 
 // Rota para processar a consulta
-app.post('/consulta_produtos', (req, res) => {
+app.post('/consultaprodutos', (req, res) => {
   //const nome = req.body.nome;
   const {
-    nome,
-    endereco
+    id
   } = req.body;
   //const endereco = req.body.endereco;
 
   // Consulta no banco de dados
-  connection.query(`SELECT * FROM produtos WHERE nome LIKE '%${id}%'`, (error, results, fields) => {
+  connection.query(`SELECT * FROM produtos WHERE id LIKE '%${id}%'`, (error, results, fields) => {
     if (error) throw error;
 
     // Exibição dos resultados
@@ -274,7 +281,7 @@ app.post('/consulta_produtos', (req, res) => {
             </tr>
     `;
 
-    results.forEach((cliente) => {
+    results.forEach((produtos) => {
       html += `
         <tr>
           <td>${produtos.id}</td>

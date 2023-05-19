@@ -18,9 +18,15 @@
   }
   
   .dropdown-options {
+    background-color: #212529;
     display: none;
     position: absolute;
     overflow: auto;
+  }
+
+  a {
+    color: white;
+    text-decoration: none;
   }
   
   .dropdown:hover .dropdown-options {
@@ -45,7 +51,7 @@
         <a class="nav-link">Cadastrar</a>
           <div class="dropdown-options">
             <a for="cadastro" class="" href="/cadastro">Clientes</a>
-            <a for="produtos" class="" href="">Produtos</a>
+            <a for="produtos" class="" href="/produtos">Produtos</a>
           </div>
         </div>
       </li>
@@ -54,7 +60,7 @@
         <a class="nav-link">Listagem</a>
           <div class="dropdown-options">
             <a class="" href="/listagem">Clientes</a>
-            <a for="produtos" class="" href="">Produtos</a>
+            <a for="produtos" class="" href="/listagemprodutos">Produtos</a>
           </div>
         </div>
       </li>
@@ -63,7 +69,7 @@
         <a class="nav-link">Consultar</a>
           <div class="dropdown-options">
             <a class="" href="/consulta">Clientes</a>
-            <a class="" href="">Produtos</a>
+            <a class="" href="/consultaprodutos">Produtos</a>
           </div>
         </div>
       </li>

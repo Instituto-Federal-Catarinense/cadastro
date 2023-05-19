@@ -18,7 +18,7 @@ const connection = mysql.createConnection({
 connection.connect();
 
 // Rota para exibir o formulário de consulta
-app.get('/consulta_produtos', (req, res) => {
+app.get('/produtos', (req, res) => {
   res.send(`
     <!DOCTYPE html>
     <html>
