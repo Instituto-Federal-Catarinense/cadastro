@@ -27,12 +27,11 @@ CREATE TABLE `clientes` (
   `idade` int(3) default null
 );
 
-CREATE TABLE `produtos` (
+CREATE TABLE `cadastroproduto` (
   id int primary key auto_increment,
-  `nomedoproduto` varchar(255) DEFAULT NULL,
+  `nome` varchar(255) DEFAULT NULL,
   `valor` varchar(255) DEFAULT NULL,
-  `quantidade` varchar(255) DEFAULT null,
-  `validade` date DEFAULT null
+  `quantidade` varchar(255) DEFAULT null
 ) ;
 
 --
@@ -57,6 +56,8 @@ UNLOCK TABLES;
 -- Dump completed on 2023-05-04 11:48:48
 
 create database meuBanco;
+
+drop database meuBanco1;
 
 use meuBanco;
 
