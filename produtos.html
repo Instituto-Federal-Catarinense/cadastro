@@ -7,45 +7,48 @@
   <title>Cadastro de Produtos</title>
   <style>
   input[type=text], select {
-    width: 100%;
+    width: 20%;
     padding: 12px 20px;
     margin: 8px 0;
     display: inline-block;
     border: 1px solid #ccc;
     border-radius: 4px;
     box-sizing: border-box;
+    text-align: center;
   }
 
-  input[type=submit] {
-    background-color: #4CAF50;
+  input {
     color: white;
     padding: 12px 20px;
     border: none;
     border-radius: 4px;
     cursor: pointer;
   }
-
-  input[type=submit]:hover {
-    background-color: #45a049;
-  }
 </style>
 
 </head>
-<body>
-  <h1>Cadastro de Produtos</h1>
-  <form action="/cadastro" method="POST">
-    <label for="identificacao">Id:</label>
-    <input type="text" id="identificacao" name="identificacao" required>
+<body tyle="background-color:rgb(233, 233, 233);">
+  <div class="p-5 text-white text-center" style="background-color:rgb(186, 185, 185); padding: 15px; text-align: center;">
+ <h1>Cadastro de Produtos</h1> 
+ </div>
+  <form action="/produtos" method="POST"style="text-align: center; padding-top: 5px;">
+    <label for="id">Id:</label>
+    <input type="text" id="id" name="id" required>
     <br>
     <label for="descricao">Descrição:</label>
-    <input type="text" id="descricao" name="descricao" required>
+    <input type="text" id="descricao" name="descricao" style="margin-right: 40px;" required>
     <br>
     <label for="quantidade">Quantidade:</label>
-    <input type="text" id="quantidade" name="quantidade" required>
+    <input type="text" id="quantidade" name="quantidade" style="margin-right: 45px;" required>
     <br>
     <label for="valor">Valor:</label>
-    <input type="text" id="valor" name="valor" required>
-    <button type="submit">Cadastrar</button>
+    <input type="text" id="valor" name="valor" style="margin-right: 5px;" required>
+    <br>
+
+    <button type="submit" style="background-color:rgb(188, 226, 216); border-radius: 15%; border: none; height: 50px; width: 100px;">Cadastrar</button>
+    <button type="submit" style="background-color:rgb(188, 226, 216); border-radius: 15%; border: none; height: 50px; width: 100px;"> 
+      <a href="/index.html" target="_self" style="text-decoration: none; color: black; padding: 5px;"> Voltar </a>
+    </button>
   </form>
 </body>
 </html>

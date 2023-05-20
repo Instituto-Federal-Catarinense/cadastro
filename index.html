@@ -17,18 +17,21 @@
       position: relative;
       text-decoration: none;
       width: 50px;
-      background-color: black;
+      background-color: rgb(188, 226, 216);
       list-style-type: none;
+      text-align: center;
     }
 
     li ul.submenu {
       position: absolute;
       top: 40px;
       left: 5;
-      background-color:black;
+      background-color:rgb(188, 226, 216);
       display: none;
       text-decoration: none;
       width: 100px;
+      list-style-type: none;
+      text-align: center;
     }
 
     li:hover ul,
@@ -40,11 +43,11 @@
 
 <body>
 
-  <div class="p-5 bg-primary text-white text-center">
+  <div class="p-5 text-white text-center" style="background-color:rgb(99, 181, 174) ">
     <h1>Sistema de Cadastro com NodeJS</h1>
   </div>
 
-  <nav class="navbar navbar-expand-sm bg-dark navbar-dark">
+  <nav style="background-color:rgb(188, 226, 216);" class="navbar navbar-expand-sm ">
     <div class="container-fluid">
       <ul class="navbar-nav">
         <li class="nav-item">
@@ -53,24 +56,24 @@
         <li class="nav-item">
           <a class="nav-link" href="#">Cadastrar</a>
           <ul class="submenu">
-            <li class="sub"><a href="/cadastro" style="text-decoration: none; color: white;">Clientes </a></li>
-            <li class="sub"><a href="/produtos"style="text-decoration: none; color: white;">Produtos </a></li>
+            <li class="sub"><a href="/cadastro" style="text-decoration: none; color: black;">Clientes </a></li>
+            <li class="sub"><a href="/produtos"style="text-decoration: none; color: black;">Produtos </a></li>
           </ul>
         </li>
 
         <li class="nav-item">
           <a class="nav-link" href="#">Listagem</a>
           <ul class="submenu">
-            <li class="sub"><a href="/lista_clientes" style="text-decoration: none; color: white;">Clientes </a></li>
-            <li class="sub"><a href="/plistagem"style="text-decoration: none; color: white;">Produtos </a></li>
+            <li class="sub"><a href="/lista_clientes" style="text-decoration: none; color: black;">Clientes </a></li>
+            <li class="sub"><a href="/plistagem"style="text-decoration: none; color: black;">Produtos </a></li>
           </ul>
         </li>
 
         <li class="nav-item">
           <a class="nav-link" href="#">Consulta</a>
           <ul class="submenu">
-            <li class="sub"><a href="/consulta" style="text-decoration: none; color: white;">Clientes </a></li>
-            <li class="sub"><a href="/pconsulta"style="text-decoration: none; color: white;">Produtos </a></li>
+            <li class="sub"><a href="/consulta" style="text-decoration: none; color: black;">Clientes </a></li>
+            <li class="sub"><a href="/pconsulta"style="text-decoration: none; color: black;">Produtos </a></li>
           </ul>
         </li>
 
