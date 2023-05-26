@@ -1,2 +1,2 @@
 # cadastro
-Sistema de cadastro de cllientes com nodeJS
+sistema de cadastro de clientes com node-js
