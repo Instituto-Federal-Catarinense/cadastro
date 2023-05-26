@@ -11,6 +11,27 @@
     height: 200px;
     background: #aaa;
   }
+
+  .dropdown {
+    display: inline-block;
+    position: relative;
+  }
+  
+  .dropdown-options {
+    background-color: #212529;
+    display: none;
+    position: absolute;
+    overflow: auto;
+  }
+
+  a {
+    color: white;
+    text-decoration: none;
+  }
+  
+  .dropdown:hover .dropdown-options {
+    display: block;
+  }
   </style>
 </head>
 <body>
@@ -26,17 +47,36 @@
         <a class="nav-link active" href="/">Home</a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" href="/cadastro">Cadastrar</a>
+        <div class="dropdown">
+        <a class="nav-link">Cadastrar</a>
+          <div class="dropdown-options">
+            <a for="cadastro" class="" href="/cadastro">Clientes</a>
+            <a for="produtos" class="" href="/produtos">Produtos</a>
+          </div>
+        </div>
       </li>
       <li class="nav-item">
-        <a class="nav-link" href="/listagem">Listagem</a>
+        <div class="dropdown">
+        <a class="nav-link">Listagem</a>
+          <div class="dropdown-options">
+            <a class="" href="/listagem">Clientes</a>
+            <a for="produtos" class="" href="/listagemprodutos">Produtos</a>
+          </div>
+        </div>
       </li>
       <li class="nav-item">
-        <a class="nav-link " href="/consulta">Consultar</a>
+        <div class="dropdown">
+        <a class="nav-link">Consultar</a>
+          <div class="dropdown-options">
+            <a class="" href="/consulta">Clientes</a>
+            <a class="" href="/consultaprodutos">Produtos</a>
+          </div>
+        </div>
       </li>
     </ul>
   </div>
 </nav>
+
 
 </body>
 </html>
