@@ -165,8 +165,8 @@ app.post("/produtos", (req, res) => {
     return;
   }
 
-  const produtos = { id, descricao, quantidade, valor};
-  connection.query("INSERT INTO  SET ?", produtos, (err, result) => {
+  const produto = { id, descricao, quantidade, valor};
+  connection.query("INSERT INTO produtos SET ?", produto, (err, result) => {
     if (err) throw err;
     console.log(`produtos ${id} cadastrado com sucesso!`);
     res.redirect("/");
@@ -247,7 +247,7 @@ app.post('/pconsulta', (req, res) => {
   //const endereco = req.body.endereco;
   
   // Consulta no banco de dados
-  connection.query(`SELECT * FROM produtos WHERE nome LIKE '%${id}%'`, (error, results, fields) => {
+  connection.query(`SELECT * FROM produtos WHERE id LIKE '%${id}%'`, (error, results, fields) => {
     if (error) throw error;
     
     // Exibição dos resultados
