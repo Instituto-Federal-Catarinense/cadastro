@@ -35,6 +35,9 @@ app.post("/cadastro", (req, res) => {
   });
 });
 
+app.get("/index.html", (req, res) => {
+  res.sendFile(__dirname + "/index.html");
+});
 
 // Rota para processar a listagem
 app.get('/lista_clientes', (req, res) => {
