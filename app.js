@@ -194,6 +194,186 @@ app.post('/consulta', (req, res) => {
   });
 });
 
+//-------------------------------------------------------------------------------------------------------------------
+
+// Rota para processar a listagemprod
+app.get('/listagemprod', (req, res) => {
+
+  // Consulta no banco de dados
+  connection.query(`SELECT * FROM produtos`, (error, results, fields) => {
+    if (error) throw error;
+    
+    // Exibição dos resultados
+    let html = `
+      <!DOCTYPE html>
+      <html>
+        <head>
+          <title>Clientes</title>
+          <style>
+          table {
+            border-collapse: collapse;
+          }
+          
+          tr {
+            border: 1px solid black;
+          }
+          
+          th, td {
+            border: 1px solid black;
+            padding: 8px; 
+          }
+          </style>
+        </head>
+        <body>
+          <h1>Produtos encontrados</h1>
+          <table>
+            <tr>
+              <th>id</th>
+              <th>descricao</th>
+              <th>quantidade</th>
+              <th>valor</th>
+            </tr>
+    `;
+    
+    results.forEach((produtos) => {
+      html += `
+        <tr>
+          <td>${produtos.id}</td>
+          <td>${produtos.descricao}</td>
+          <td>${produtos.quantidade}</td>
+          <td>${produtos.valor}</td>
+        </tr>
+      `;
+    });
+    
+    html += `
+          </table>
+          <a href="/">Voltar</a>
+        </body>
+      </html>
+    `;
+    
+    res.send(html);
+  });
+});
+
+// Rota para exibir o formulário de consulta
+app.get('/consultaprod', (req, res) => {
+  res.send(`
+    <!DOCTYPE html>
+    <html>
+      <head>
+        <title>Consulta de produto</title>
+        <style>
+        table {
+          border-collapse: collapse;
+        }
+        
+        tr {
+          border: 1px solid black;
+        }
+        
+        th, td {
+          border: 1px solid black;
+          padding: 8px; 
+        }
+        </style>
+      </head>
+      <body>
+        <h1>Consulta de produtos</h1>
+        <form method="POST" action="/consultaprod">
+        <label for="id">id:</label>
+        <input type="text" id="id" name="id"><br><br>
+        <button type="submit">Consultar</button>
+        </form>
+      </body>
+    </html>
+  `);
+});
+
+// Rota para processar a consulta
+app.post('/consultaprod', (req, res) => {
+  //const nome = req.body.nome;
+  const { id } = req.body;
+  //const endereco = req.body.endereco;
+  
+  // Consulta no banco de dados
+  connection.query(`SELECT * FROM produtos WHERE id LIKE '%${id}%'`, (error, results, fields) => {
+    if (error) throw error;
+    
+    // Exibição dos resultados
+    let html = `
+      <!DOCTYPE html>
+      <html>
+        <head>
+          <title>Clientes</title>
+          <style>
+          table {
+            border-collapse: collapse;
+          }
+          
+          tr {
+            border: 1px solid black;
+          }
+          
+          th, td {
+            border: 1px solid black;
+            padding: 8px; 
+          }
+          </style>
+        </head>
+        <body>
+          <h1>produtos encontrados</h1>
+          <table>
+            <tr>
+              <th>id</th>
+              <th>descricao</th>
+              <th>quantidade</th>
+              <th>valor</th>
+            </tr>
+    `;
+    
+    results.forEach((produtos) => {
+      html += `
+        <tr>
+          <td>${produtos.id}</td>
+          <td>${produtos.descricao}</td>
+          <td>${produtos.quantidade}</td>
+          <td>${produtos.valor}</td>
+        </tr>
+      `;
+    });
+    
+    html += `
+          </table>
+          <a href="/">Voltar</a>
+        </body>
+      </html>
+    `;
+    
+    res.send(html);
+  });
+});
+
+app.get("/cadastroprod", (req, res) => {
+  res.sendFile(__dirname + "/cadastroprod.html");
+});
+
+app.post("/cadastroprod", (req, res) => {
+  const { id, descricao, quantidade, valor } = req.body;
+  if (!id || !descricao || !quantidade || !valor) {
+    res.status(400).send("Nome e endereço são campos obrigatórios.");
+    return;
+  }
+
+  const produtos = { id, descricao, quantidade, valor };
+  connection.query("INSERT INTO produtos SET ?", produtos, (err, result) => {
+    if (err) throw err;
+    console.log(`Produtos ${id} cadastrado com sucesso!`);
+    res.redirect("/");
+  });
+});
+
 connection.connect((err) => {
   if (err) throw err;
   console.log("Conectado ao banco de dados MySQL!");
