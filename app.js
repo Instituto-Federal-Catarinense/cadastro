@@ -149,7 +149,7 @@ app.get("/cadastrarProdutos", (req, res) => {
   res.sendFile(__dirname + "/cadastroProdutos.html");
 });
 
-app.post("/cadastrarprodutos", (req, res) => {
+app.post("/cadastrarProdutos", (req, res) => {
   const { descricao, quantidade, valor } = req.body;
   if (!descricao || !quantidade || !valor) {
     res.status(400).send("descrição, quantidade e valor são campos obrigatórios.");
