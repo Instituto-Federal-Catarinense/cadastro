@@ -78,7 +78,7 @@
 </head>
 <body>
   <div style="background-color: #914d29;" class="p-5 text-white text-center">
-    <h1>Cadastro de Clientes</h1>
+    <h1>Cadastro de Produtos</h1>
   </div>
 
   <nav style="background-color: #da966a;" class="navbar navbar-expand-sm navbar-dark">
@@ -113,18 +113,18 @@
       </ul>
     </div>
   </nav>
-  <form action="/cadastro" method="POST">
-    <label for="nome">Nome:</label>
-    <input type="text" id="nome" name="nome" required>
+  <form action="/produtos" method="POST">
+    <label for="id">id:</label>
+    <input type="text" id="id" name="id" required>
     <br>
-    <label for="endereco">Endereço:</label>
-    <input type="text" id="endereco" name="endereco" style="margin-right: 25px;" required>
+    <label for="descricao">descrição:</label>
+    <input type="text" id="descricao" name="descricao" style="margin-right: 55px;" required>
     <br>
-    <label for="sexo">Sexo:</label>
-    <input type="text" id="sexo" name="sexo" style="margin-right: -2px;" required>
+    <label for="quantidade">quantidade:</label>
+    <input type="text" id="quantidade" name="quantidade" style="margin-right: 70px;" required>
     <br>
-    <label for="idade">Idade:</label>
-    <input type="text" id="idade" name="idade" style="margin-right: 7px;" required>
+    <label for="valor">valor:</label>
+    <input type="text" id="valor" name="valor" style="margin-right: 25px;" required>
     <br>
     <button class="botao" type="submit">Cadastrar</button>
   </form>
