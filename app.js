@@ -159,7 +159,7 @@ app.post("/cadProdutos", (req, res) => {
   }
 
   const produtos = { descricao, quantidade, valor };
-  connection.query("INSERT INTO produto SET ?", produtos, (err, result) => {
+  connection.query("INSERT INTO produtos SET ?", produtos, (err, result) => {
     if (err) throw err;
     console.log(`Produto ${descricao} cadastrado com sucesso!`);
     res.redirect("/");
@@ -170,7 +170,7 @@ app.post("/cadProdutos", (req, res) => {
 app.get('/listagemProdutos', (req, res) => {
 
   // Consulta no banco de dados
-  connection.query(`SELECT * FROM clientes`, (error, results, fields) => {
+  connection.query(`SELECT * FROM produtos`, (error, results, fields) => {
     if (error) throw error;
     
     // Exibição dos resultados
@@ -178,23 +178,24 @@ app.get('/listagemProdutos', (req, res) => {
       <!DOCTYPE html>
       <html>
         <head>
-          <title>Clientes</title>
+          <title>Produtos</title>
         </head>
         <body>
-          <h1>Clientes encontrados</h1>
+          <h1>Produtos encontrados</h1>
           <table>
             <tr>
-              <th>Nome</th>
-              <th>endereco</th>
+              <th>Descrição</th>
+              <th>Quantidade</th>
+              <th>Valor</th>
             </tr>
     `;
     
-    results.forEach((cliente) => {
+    results.forEach((produto) => {
       html += `
         <tr>
-          <td>${produtos.descricao}</td>
-          <td>${produtos.quantidade}</td>
-          <td>${produtos.valor}</td>
+          <td>${produto.descricao}</td>
+          <td>${produto.quantidade}</td>
+          <td>${produto.valor}</td>
         </tr>
       `;
     });
@@ -216,11 +217,11 @@ app.get('/consultaProdutos', (req, res) => {
     <!DOCTYPE html>
     <html>
       <head>
-        <title>Consulta de clientes</title>
+        <title>Consulta de produtos</title>
       </head>
       <body>
-        <h1>Consulta de clientes</h1>
-        <form method="POST" action="/consulta">
+        <h1>Consulta de produtos</h1>
+        <form method="POST" action="/consultaProdutos">
           <label for="nome">Nome:</label>
           <input type="text" id="nome" name="nome"><br><br>
           <button type="submit">Consultar</button>
