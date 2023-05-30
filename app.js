@@ -16,7 +16,7 @@ app.post("/cadastro", (req, res) => {
     res.status(400).send("Nome e endereço são campos obrigatórios.");
     return;
 }
-  consulte 
+ 
 });
 
 app.post("/produtos", (req, res) => {
