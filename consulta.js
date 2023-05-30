@@ -8,10 +8,10 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 // Configurações do banco de dados
 const connection = mysql.createConnection({
-  host: '127.0.0.1',
-  user: 'root',
-  password: 'A1b1c1d1',
-  database: 'meuBanco'
+  ost: "localhost",
+  user: "root",
+  password: "aluno01",
+  database: "meuBanco"
 });
 
 // Conexão com o banco de dados
@@ -42,7 +42,7 @@ app.get('/consulta', (req, res) => {
 // Rota para processar a consulta
 app.post('/clientes', (req, res) => {
   //const nome = req.body.nome;
-  const { nome, endereco } = req.body;
+  const { nome, endereco, idade, cpf } = req.body;
   //const endereco = req.body.endereco;
   
   // Consulta no banco de dados
@@ -61,7 +61,9 @@ app.post('/clientes', (req, res) => {
           <table>
             <tr>
               <th>Nome</th>
-              <th>endereco</th>
+              <th>Endereco</th>
+              <th>Idade</th>
+              <th>CPF</th>
             </tr>
     `;
     
@@ -70,6 +72,8 @@ app.post('/clientes', (req, res) => {
         <tr>
           <td>${cliente.nome}</td>
           <td>${cliente.endereco}</td>
+          <td>${cliente.idade}</td>
+          <td>${cliente.cpf}</td>
         </tr>
       `;
     });
