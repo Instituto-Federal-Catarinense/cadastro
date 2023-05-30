@@ -18,10 +18,10 @@ const connection = mysql.createConnection({
 connection.connect();
 
 // Rota para processar a consulta
-app.post('/clientes', (req, res) => {
+app.post('/lista_produtos', (req, res) => {
 
   // Consulta no banco de dados
-  connection.query(`SELECT * FROM clientes`, (error, results, fields) => {
+  connection.query(`SELECT * FROM produtos`, (error, results, fields) => {
     if (error) throw error;
     
     // Exibição dos resultados
@@ -29,26 +29,26 @@ app.post('/clientes', (req, res) => {
       <!DOCTYPE html>
       <html>
         <head>
-          <title>Clientes</title>
+          <title>Produtos</title>
         </head>
         <body>
-          <h1>Clientes encontrados</h1>
+          <h1>Produtos encontrados</h1>
           <table>
             <tr>
               <th>Nome</th>
-              <th>Endereco</th>
-              <th>Sexo</th>
-              <th>Email</th>
+              <th>Valor</th>
+              <th>Categoria</th>
+              <th>Quantidade</th>
             </tr>
     `;
     
-    results.forEach((cliente) => {
+    results.forEach((produto) => {
       html += `
         <tr>
-          <td>${cliente.nome}</td>
-          <td>${cliente.endereco}</td>
-          <td>${cliente.sexo}</td>
-          <td>${cliente.email}</td>
+          <td>${produto.nomeproduto}</td>
+          <td>${produto.valorproduto}</td>
+          <td>${produto.categoria}</td>
+          <td>${produto.quantidade}</td>
         </tr>
       `;
     });
