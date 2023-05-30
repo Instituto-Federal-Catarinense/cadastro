@@ -8,10 +8,10 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 // Configurações do banco de dados
 const connection = mysql.createConnection({
-  host: '127.0.0.1',
+  host: 'localhost',
   user: 'root',
   password: '',
-  database: 'meuBanco'
+  database: 'meubanco'
 });
 
 // Conexão com o banco de dados
@@ -45,10 +45,10 @@ app.post('/produtos', (req, res) => {
     results.forEach((produtos) => {
       html += `
         <tr>
-          <td>${produto.id}</td>
-          <td>${produto.descricao}</td>
-          <td>${produto.quant}</td>
-          <td>${produto.valor}</td>
+          <td>${produtos.id}</td>
+          <td>${produtos.descricao}</td>
+          <td>${produtos.quantidade}</td>
+          <td>${produtos.valor}</td>
         </tr>
       `;
     });

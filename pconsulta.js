@@ -8,35 +8,35 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 // Configurações do banco de dados
 const connection = mysql.createConnection({
-  host: '127.0.0.1',
+  host: 'localhost',
   user: 'root',
   password: '',
-  database: 'meuBanco'
+  database: 'meubanco'
 });
 
 // Conexão com o banco de dados
 connection.connect();
 
 // Rota para exibir o formulário de consulta
-app.get('/consultaprodutos', (req, res) => {
+app.get('/pconsulta', (req, res) => {
   res.send(`
     <!DOCTYPE html>
     <html>
       <head>
-        <title>Consulta de Produtos</title>
+        <title>Consulta de produtos</title>
       </head>
       <body>
-        <h1>Consulta de Produtos</h1>
+        <h1>Consulta de produtos</h1>
         <form method="POST" action="/produtos">
-          <label for="nome">Id:</label>
+          <label for="id">Id:</label>
           <input type="text" id="id" name="id"><br><br>
-          <label for="endereco">Descrição:</label>
+          <label for="descricao">Descrição:</label>
           <input type="text" id="descricao" name="descricao"><br><br>
-          <label for="nome">Quantidade:</label>
-          <input type="text" id="quant" name="quant"><br><br>
-          <label for="nome">Valor:</label>
-          <input type="valor" id="genero" name="valor"><br><br>
           <button type="submit">Consultar</button>
+          <label for="quantidade">Quantidade:</label>
+          <input type="text" id="quantidade" name="quantidade" required>
+          <label for="idade">Valor:</label>
+          <input type="text" id="valor" name="valor" required>
         </form>
       </body>
     </html>
@@ -46,11 +46,11 @@ app.get('/consultaprodutos', (req, res) => {
 // Rota para processar a consulta
 app.post('/produtos', (req, res) => {
   //const nome = req.body.nome;
-  const { id, descricao, quant, valor } = req.body;
+  const { id, descricao, quantidade, valor } = req.body;
   //const endereco = req.body.endereco;
   
   // Consulta no banco de dados
-  connection.query(`SELECT * FROM produtos WHERE nome LIKE '%${nome}%'`, (error, results, fields) => {
+  connection.query(`SELECT * FROM produtos WHERE nome LIKE '%${id}%'`, (error, results, fields) => {
     if (error) throw error;
     
     // Exibição dos resultados
@@ -71,13 +71,13 @@ app.post('/produtos', (req, res) => {
             </tr>
     `;
     
-    results.forEach((produto) => {
+    results.forEach((produtos) => {
       html += `
         <tr>
-          <td>${produto.id}</td>
-          <td>${produto.descricao}</td>
-          <td>${produto.quant}</td>
-          <td>${produto.valor}</td>
+          <td>${produtos.id}</td>
+          <td>${produtos.descricao}</td>
+          <td>${produtos.quantidade}</td>
+          <td>${produtos.valor}</td>
         </tr>
       `;
     });
