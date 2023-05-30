@@ -31,13 +31,16 @@
 
 </head>
 <body>
-  <h1>Cadastro de Clientes</h1>
-  <form action="/cadastro" method="POST">
-    <label for="nome">Nome:</label>
-    <input type="text" id="nome" name="nome" required>
+  <h1>Cadastro de Produtos</h1>
+  <form action="/cadProdutos" method="POST">
+    <label for="descricao">Descrição:</label>
+    <input type="text" id="descricao" name="descricao" required>
     <br>
-    <label for="endereco">Endereço:</label>
-    <input type="text" id="endereco" name="endereco" required>
+    <label for="quantidade">Quantidade:</label>
+    <input type="text" id="quantidade" name="quantidade" required>
+    <br>
+    <label for="valor">Valor:</label>
+    <input type="text" id="valor" name="valor" required>
     <br>
     <button type="submit">Cadastrar</button>
   </form>
