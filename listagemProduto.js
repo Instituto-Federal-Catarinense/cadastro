@@ -8,7 +8,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 // Configurações do banco de dados
 const connection = mysql.createConnection({
-  host: 'localhost',
+  host: '127.0.0.1',
   user: 'root',
   password: '',
   database: 'meubanco'
@@ -18,7 +18,7 @@ const connection = mysql.createConnection({
 connection.connect();
 
 // Rota para processar a consulta
-app.post('/produtos', (req, res) => {
+app.post('/listagemProdutos', (req, res) => {
 
   // Consulta no banco de dados
   connection.query(`SELECT * FROM produtos`, (error, results, fields) => {
@@ -35,20 +35,18 @@ app.post('/produtos', (req, res) => {
           <h1>Produtos encontrados</h1>
           <table>
             <tr>
-              <th>Id</th>
               <th>Descrição</th>
               <th>Quantidade</th>
               <th>Valor</th>
             </tr>
     `;
     
-    results.forEach((produtos) => {
+    results.forEach((produto) => {
       html += `
         <tr>
-          <td>${produtos.id}</td>
-          <td>${produtos.descricao}</td>
-          <td>${produtos.quantidade}</td>
-          <td>${produtos.valor}</td>
+          <td>${produto.descricao}</td>
+          <td>${produto.quantidade}</td>
+          <td>${produto.valor}</td>
         </tr>
       `;
     });

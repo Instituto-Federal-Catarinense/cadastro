@@ -8,7 +8,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 // Configurações do banco de dados
 const connection = mysql.createConnection({
-  host: 'localhost',
+  host: '127.0.0.1',
   user: 'root',
   password: '',
   database: 'meubanco'
@@ -27,16 +27,15 @@ app.get('/consulta', (req, res) => {
       </head>
       <body>
         <h1>Consulta de clientes</h1>
-        <form method="POST" action="/clientes">
+        <form method="POST" action="/consultaClientes">
           <label for="nome">Nome:</label>
           <input type="text" id="nome" name="nome"><br><br>
           <label for="endereco">Endereço:</label>
           <input type="text" id="endereco" name="endereco"><br><br>
-          <button type="submit">Consultar</button>
           <label for="sexo">sexo:</label>
-          <input type="text" id="sexo" name="sexo" required>
-          <label for="idade">idade:</label>
-          <input type="text" id="idade" name="idade" required>
+          <input type="text" id="sexo" name="sexo"><br><br>
+          <button type="submit">Consultar</button>
+          
         </form>
       </body>
     </html>
@@ -44,9 +43,9 @@ app.get('/consulta', (req, res) => {
 });
 
 // Rota para processar a consulta
-app.post('/clientes', (req, res) => {
+app.post('/consultaClientes', (req, res) => {
   //const nome = req.body.nome;
-  const { nome, endereco, sexo, idade } = req.body;
+  const { nome, endereco, sexo, idade} = req.body;
   //const endereco = req.body.endereco;
   
   // Consulta no banco de dados
@@ -66,6 +65,8 @@ app.post('/clientes', (req, res) => {
             <tr>
               <th>Nome</th>
               <th>endereco</th>
+              <th>sexo</th>
+              <th>idade</th>
             </tr>
     `;
     
@@ -74,8 +75,8 @@ app.post('/clientes', (req, res) => {
         <tr>
           <td>${cliente.nome}</td>
           <td>${cliente.endereco}</td>
-          <td>${cliente.sexo}</td>
           <td>${cliente.idade}</td>
+          <td>${cliente.sexo}</td>
         </tr>
       `;
     });
