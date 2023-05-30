@@ -1,17 +1,3 @@
-const express = require("express");
-const mysql = require("mysql");
-const bodyParser = require('body-parser');
-const app = express();
-
-app.use(bodyParser.urlencoded({ extended: true }));
-
-const connection = mysql.createConnection({
-  host: "127.0.0.1",
-  user: "root",
-  password: "aluno01",
-  database: "meuBanco"
-});
-
 app.get("/", (req, res) => {
   res.sendFile(__dirname + "/index.html");
 });
@@ -30,12 +16,7 @@ app.post("/cadastro", (req, res) => {
     res.status(400).send("Nome e endereço são campos obrigatórios.");
     return;
 }
-  const cliente = { nome, sobrenome, endereco, idade };
-  connection.query("INSERT INTO clientes SET ?", cliente, (err, result) => {
-    if (err) throw err;
-    console.log(`Cliente ${nome} cadastrado com sucesso!`);
-    res.redirect("/");
-  });
+  consulte 
 });
 
 app.post("/produtos", (req, res) => {
@@ -60,7 +41,6 @@ app.get('/listagem', (req, res) => {
   connection.query(`SELECT * FROM clientes`, (error, results, fields) => {
     if (error) throw error;
 
-    
     // Exibição dos resultados
     let html = `
       <!DOCTYPE html>
@@ -77,8 +57,7 @@ app.get('/listagem', (req, res) => {
               <th>endereco</th>
               <th>idade</th>
             </tr>
-
-            
+    
     `;
     
     results.forEach((cliente) => {
