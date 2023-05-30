@@ -30,8 +30,15 @@ app.get('/consulta', (req, res) => {
         <form method="POST" action="/clientes">
           <label for="nome">Nome:</label>
           <input type="text" id="nome" name="nome"><br><br>
+        
           <label for="endereco">Endereço:</label>
           <input type="text" id="endereco" name="endereco"><br><br>
+         
+          <label for="idade">Idade:</label>
+          <input type="number" id="idade" name="idade"><br><br>
+        
+          <label for="idade">Email:</label>
+          <input type="email" id="email" name="email"><br><br>
           <button type="submit">Consultar</button>
         </form>
       </body>
@@ -62,6 +69,8 @@ app.post('/clientes', (req, res) => {
             <tr>
               <th>Nome</th>
               <th>endereco</th>
+              <th>idade</th>
+              <th>email</th>
             </tr>
     `;
     
@@ -70,6 +79,8 @@ app.post('/clientes', (req, res) => {
         <tr>
           <td>${cliente.nome}</td>
           <td>${cliente.endereco}</td>
+          <td>${cliente.idade}</td>
+          <td>${cliente.email}</td>
         </tr>
       `;
     });

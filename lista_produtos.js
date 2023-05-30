@@ -10,7 +10,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 const connection = mysql.createConnection({
   host: '127.0.0.1',
   user: 'root',
-  password: 'A1b1c1d1',
+  password: 'aluno01',
   database: 'meuBanco'
 });
 
@@ -18,10 +18,10 @@ const connection = mysql.createConnection({
 connection.connect();
 
 // Rota para processar a consulta
-app.post('/clientes', (req, res) => {
+app.post('/produto', (req, res) => {
 
   // Consulta no banco de dados
-  connection.query(`SELECT * FROM clientes`, (error, results, fields) => {
+  connection.query(`SELECT * FROM produto`, (error, results, fields) => {
     if (error) throw error;
     
     // Exibição dos resultados
@@ -29,26 +29,26 @@ app.post('/clientes', (req, res) => {
       <!DOCTYPE html>
       <html>
         <head>
-          <title>Clientes</title>
+          <title>Produtos</title>
         </head>
         <body>
-          <h1>Clientes encontrados</h1>
+          <h1>Produto Encontrado</h1>
           <table>
             <tr>
-              <th>Nome</th>
-              <th>Endereco</th>
-              <th>Idade</th>
-              <th>Email</th>
+              <th>ID</th>
+              <th>Descrição</th>
+              <th>Quantidade</th>
+              <th>Valor</th>
             </tr>
     `;
     
-    results.forEach((cliente) => {
+    results.forEach((produto) => {
       html += `
         <tr>
-          <td>${cliente.nome}</td>
-          <td>${cliente.endereco}</td>
-          <td>${cliente.idade}</td>
-          <td>${cliente.email}</td>
+          <td>${produto.id}</td>
+          <td>${produto.descricao}</td>
+          <td>${produto.quantidade}</td>
+          <td>${produto.valor}</td>
         </tr>
       `;
     });

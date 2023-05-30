@@ -6,9 +6,9 @@ const app = express();
 app.use(bodyParser.urlencoded({ extended: true }));
 
 const connection = mysql.createConnection({
-  host: "127.0.0.1",
+  host: "localhost",
   user: "root",
-  password: "A1b1c1d1",
+  password: "aluno01",
   database: "meuBanco"
 });
 
@@ -21,19 +21,42 @@ app.get("/cadastro", (req, res) => {
 });
 
 app.post("/cadastro", (req, res) => {
-  const { nome, endereco } = req.body;
+  const { nome, endereco, idade, email } = req.body;
   if (!nome || !endereco) {
     res.status(400).send("Nome e endereço são campos obrigatórios.");
     return;
   }
-
-  const cliente = { nome, endereco };
+  const cliente = { nome, endereco, idade, email };
   connection.query("INSERT INTO clientes SET ?", cliente, (err, result) => {
     if (err) throw err;
     console.log(`Cliente ${nome} cadastrado com sucesso!`);
     res.redirect("/");
   });
 });
+
+app.get("/cadprodutos", (req, res) => {
+  res.sendFile(__dirname + "/cadprodutos.html");
+});
+
+app.post("/cadprodutos", (req, res) => {
+  const { id, descricao, quantidade, valor} = req.body;
+  if (!descricao || !quantidade || !valor) {
+    res.status(400).send("Estes campos são obrigatórios.");
+    return;
+  }
+  const produtos = { descricao, quantidade, valor };
+  connection.query("INSERT INTO produtos SET ?", produtos, (err, result) => {
+    if (err) throw err;
+    console.log(`Produto id = ${id}  cadastrado com sucesso!`);
+    res.redirect("/");
+  });
+});
+
+
+
+
+
+  
 
 // Rota para processar a listagem
 app.get('/listagem', (req, res) => {
@@ -55,6 +78,8 @@ app.get('/listagem', (req, res) => {
             <tr>
               <th>Nome</th>
               <th>endereco</th>
+              <th>idade</th>
+              <th>email</th>
             </tr>
     `;
     
@@ -63,6 +88,8 @@ app.get('/listagem', (req, res) => {
         <tr>
           <td>${cliente.nome}</td>
           <td>${cliente.endereco}</td>
+          <td>${cliente.idade}</td>
+          <td>${cliente.email}</td>
         </tr>
       `;
     });
@@ -77,6 +104,54 @@ app.get('/listagem', (req, res) => {
     res.send(html);
   });
 });
+// Rota para processar a listagem de produtos
+app.get('/listagemprodutos', (req, res) => {
+
+  // Consulta no banco de dados
+  connection.query(`SELECT * FROM produtos`, (error, results, fields) => {
+    if (error) throw error;
+    
+    // Exibição dos resultados
+
+    let html = `
+      <!DOCTYPE html>
+      <html>
+        <head>
+          <title>Produtos</title>
+        </head>
+        <body>
+          <h1>Produtos encontrados</h1>
+          <table>
+            <tr>
+              <th>ID</th>
+              <th>Descrição</th>
+              <th>Quantidade</th>
+              <th>Valor</th>
+            </tr>
+    `;
+    
+    results.forEach((produtos) => {
+      html += `
+        <tr>
+          <td>${produtos.id}</td>
+          <td>${produtos.descricao}</td>
+          <td>${produtos.quantidade}</td>
+          <td>R$${produtos.valor},00</td>
+        </tr>
+      `;
+    });
+    
+    html += `
+          </table>
+          <a href="/">Voltar</a>
+        </body>
+      </html>
+    `;
+    
+    res.send(html);
+  });
+});
+
 
 // Rota para exibir o formulário de consulta
 app.get('/consulta', (req, res) => {
@@ -97,6 +172,78 @@ app.get('/consulta', (req, res) => {
     </html>
   `);
 });
+
+// Rota para exibir o formulário de consulta de produtos
+app.get('/consultaprodutos', (req, res) => {
+  res.send(`
+    <!DOCTYPE html>
+    <html>
+      <head>
+        <title>Consulta de produtos</title>
+      </head>
+      <body>
+        <h1>Consulta de produtos</h1>
+        <form method="POST" action="/consultaprodutos">
+          <label for="id">ID:</label>
+          <input type="number" id="id" name="id"><br><br>
+          <button type="submit">Consultar</button>
+        </form>
+      </body>
+    </html>
+  `);
+});
+
+// Rota para processar a consulta
+app.post('/consultaprodutos', (req, res) => {
+  //const nome = req.body.nome;
+  const { id ,descricao, quantidade, valor } = req.body;
+  //const endereco = req.body.endereco;
+  
+  // Consulta no banco de dados de PRODUTOS
+  connection.query(`SELECT * FROM produtos WHERE id LIKE '%${id}%'`, (error, results, fields) => {
+    if (error) throw error;
+    
+    // Exibição dos resultados
+    let html = `
+      <!DOCTYPE html>
+      <html>
+        <head>
+          <title>Produtos</title>
+        </head>
+        <body>
+          <h1>Produtos encontrados</h1>
+          <table>
+            <tr>
+              <th>ID</th>
+              <th>Descrição</th>
+              <th>Quantidade</th>
+              <th>Valor</th>
+            </tr>
+    `;
+    
+    results.forEach((produtos) => {
+      html += `
+        <tr>
+          <td>${produtos.id}</td>
+          <td>${produtos.descricao}</td>
+          <td>${produtos.quantidade}</td>
+          <td>R$${produtos.valor},00</td>
+        </tr>
+      `;
+    });
+    
+    html += `
+          </table>
+          <a href="/">Voltar</a>
+        </body>
+      </html>
+    `;
+    
+    res.send(html);
+  });
+});
+
+
 
 // Rota para processar a consulta
 app.post('/consulta', (req, res) => {
@@ -121,6 +268,8 @@ app.post('/consulta', (req, res) => {
             <tr>
               <th>Nome</th>
               <th>endereco</th>
+              <th>idade</th>
+              <th>email</th>
             </tr>
     `;
     
@@ -129,6 +278,8 @@ app.post('/consulta', (req, res) => {
         <tr>
           <td>${cliente.nome}</td>
           <td>${cliente.endereco}</td>
+          <td>${cliente.idade}</td>
+          <td>${cliente.email}</td>
         </tr>
       `;
     });
@@ -143,6 +294,9 @@ app.post('/consulta', (req, res) => {
     res.send(html);
   });
 });
+
+
+
 
 connection.connect((err) => {
   if (err) throw err;
