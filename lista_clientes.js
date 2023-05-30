@@ -8,7 +8,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 // Configurações do banco de dados
 const connection = mysql.createConnection({
-  host: '127.0.0.1',
+  host: 'localhost',
   user: 'root',
   password: 'aluno01',
   database: 'meuBanco'
@@ -37,8 +37,8 @@ app.post('/clientes', (req, res) => {
             <tr>
               <th>Nome</th>
               <th>endereco</th>
-              <th>idade</th>
               <th>sexo</th>
+              <th>idade</th>
             </tr>
     `;
     
@@ -47,8 +47,9 @@ app.post('/clientes', (req, res) => {
         <tr>
           <td>${cliente.nome}</td>
           <td>${cliente.endereco}</td>
-          <td>${cliente.idade}</td>
           <td>${cliente.sexo}</td>
+          <td>${cliente.idade}</td>
+
         </tr>
       `;
     });

@@ -8,7 +8,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 // Configurações do banco de dados
 const connection = mysql.createConnection({
-  host: '127.0.0.1',
+  host: 'localhost',
   user: 'root',
   password: 'aluno01',
   database: 'meuBanco'
@@ -30,17 +30,12 @@ app.get('/consulta', (req, res) => {
         <form method="POST" action="/clientes">
           <label for="nome">Nome:</label>
           <input type="text" id="nome" name="nome"><br><br>
-
           <label for="endereco">Endereço:</label>
           <input type="text" id="endereco" name="endereco"><br><br>
-
-          <label for="nome">idade:</label>
-          <input type="text" id="idade" name="idade"><br><br>
-
-          <label for="endereco">sexo:</label>
           <input type="text" id="sexo" name="sexo"><br><br>
-
+          <input type="text" id="idade" name="idade"><br><br>
           <button type="submit">Consultar</button>
+          
         </form>
       </body>
     </html>
@@ -50,13 +45,16 @@ app.get('/consulta', (req, res) => {
 // Rota para processar a consulta
 app.post('/clientes', (req, res) => {
   //const nome = req.body.nome;
-  const { nome, endereco, idade, sexo } = req.body;
+  const { nome, endereco, sexo, idade } = req.body;
   //const endereco = req.body.endereco;
-  
+  //const endereco = req.body.sexo;
+  //const endereco = req.body.idade;
+
+
   // Consulta no banco de dados
   connection.query(`SELECT * FROM clientes WHERE nome LIKE '%${nome}%'`, (error, results, fields) => {
     if (error) throw error;
-    
+
     // Exibição dos resultados
     let html = `
       <!DOCTYPE html>
@@ -70,28 +68,28 @@ app.post('/clientes', (req, res) => {
             <tr>
               <th>Nome</th>
               <th>endereco</th>
-              <th>idade</th>
               <th>sexo</th>
+              <th>idade</th>
             </tr>
     `;
-    
+
     results.forEach((cliente) => {
       html += `
         <tr>
           <td>${cliente.nome}</td>
           <td>${cliente.endereco}</td>
-          <td>${cliente.idade}</td>
           <td>${cliente.sexo}</td>
+          <td>${cliente.idade}</td>
         </tr>
       `;
     });
-    
+
     html += `
           </table>
         </body>
       </html>
     `;
-    
+
     res.send(html);
   });
 });
