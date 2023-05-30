@@ -10,7 +10,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 const connection = mysql.createConnection({
   host: '127.0.0.1',
   user: 'root',
-  password: 'A1b1c1d1',
+  password: '',
   database: 'meuBanco'
 });
 
@@ -18,20 +18,20 @@ const connection = mysql.createConnection({
 connection.connect();
 
 // Rota para exibir o formulário de consulta
-app.get('/consulta', (req, res) => {
+app.get('/consultap', (req, res) => {
   res.send(`
     <!DOCTYPE html>
     <html>
       <head>
-        <title>Consulta de clientes</title>
+        <title>Consulta de produto</title>
       </head>
       <body>
-        <h1>Consulta de clientes</h1>
-        <form method="POST" action="/clientes">
-          <label for="nome">Nome:</label>
-          <input type="text" id="nome" name="nome"><br><br>
-          <label for="endereco">Endereço:</label>
-          <input type="text" id="endereco" name="endereco"><br><br>
+        <h1>Consulta de produto</h1>
+        <form method="POST" action="/produto">
+          <label for="nomep">Nome:</label>
+          <input type="text" id="nomep" name="nomep"><br><br>
+          <label for="codp">codigo:</label>
+          <input type="text" id="codp" name="codp"><br><br>
           <button type="submit">Consultar</button>
         </form>
       </body>
@@ -40,46 +40,60 @@ app.get('/consulta', (req, res) => {
 });
 
 // Rota para processar a consulta
-app.post('/clientes', (req, res) => {
+app.post('/produto', (req, res) => {
   //const nome = req.body.nome;
-  const { nome, endereco } = req.body;
+  const { nomep, codp } = req.body;
   //const endereco = req.body.endereco;
-  
+
   // Consulta no banco de dados
-  connection.query(`SELECT * FROM clientes WHERE nome LIKE '%${nome}%'`, (error, results, fields) => {
+  connection.query(`SELECT * FROM produto WHERE nomep LIKE '%${nomep}%'`, (error, results, fields) => {
     if (error) throw error;
-    
+
     // Exibição dos resultados
     let html = `
       <!DOCTYPE html>
       <html>
         <head>
-          <title>Clientes</title>
+          <title>produto</title>
+          <style>
+          table {
+            border-collapse: collapse;
+          }
+
+          tr {
+            border: 1px solid black;
+          }
+
+          th, td {
+            border: 1px solid black;
+            padding: 8px;
+          }
+          </style>
         </head>
         <body>
-          <h1>Clientes encontrados</h1>
+          <h1>produto encontrados</h1>
           <table>
             <tr>
               <th>Nome</th>
-              <th>endereco</th>
+              <th>codigo</th>
             </tr>
     `;
-    
-    results.forEach((cliente) => {
+
+    results.forEach((produto) => {
       html += `
         <tr>
-          <td>${cliente.nome}</td>
-          <td>${cliente.endereco}</td>
+          <td>${produto.nomep}</td>
+          <td>${produto.codp}</td>
         </tr>
       `;
     });
-    
+
     html += `
           </table>
         </body>
       </html>
     `;
-    
+
     res.send(html);
   });
 });

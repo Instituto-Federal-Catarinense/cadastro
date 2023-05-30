@@ -6,10 +6,10 @@ const app = express();
 app.use(bodyParser.urlencoded({ extended: true }));
 
 const connection = mysql.createConnection({
-  host: "localhost",
+  host: "127.0.0.1",
   user: "root",
   password: "",
-  database: "meuBanco"
+  database: "meuBanco",
 });
 
 app.get("/", (req, res) => {
@@ -27,7 +27,7 @@ app.post("/cadastro", (req, res) => {
     return;
   }
 
-  const cliente = { nome, endereco, sexo, idade};
+  const cliente = { nome, endereco, idade, sexo };
   connection.query("INSERT INTO clientes SET ?", cliente, (err, result) => {
     if (err) throw err;
     console.log(`Cliente ${nome} cadastrado com sucesso!`);
@@ -55,8 +55,6 @@ app.get('/listagem', (req, res) => {
             <tr>
               <th>Nome</th>
               <th>endereco</th>
-              <th>sexo</th>
-              <th>idade</th>
             </tr>
     `;
 
@@ -65,8 +63,6 @@ app.get('/listagem', (req, res) => {
         <tr>
           <td>${cliente.nome}</td>
           <td>${cliente.endereco}</td>
-          <td>${cliente.idade}</td>
-          <td>${cliente.sexo}</td>
         </tr>
       `;
     });
@@ -125,8 +121,6 @@ app.post('/consulta', (req, res) => {
             <tr>
               <th>Nome</th>
               <th>endereco</th>
-              <th>idade</th>
-              <th>sexo</th>
             </tr>
     `;
 
@@ -135,15 +129,13 @@ app.post('/consulta', (req, res) => {
         <tr>
           <td>${cliente.nome}</td>
           <td>${cliente.endereco}</td>
-          <td>${cliente.idade}</td>
-          <td>${cliente.sexo}</td>
         </tr>
       `;
     });
 
     html += `
           </table>
-          <button type="submit">voltar</button>
+          <a href="/">Voltar</a>
         </body>
       </html>
     `;
@@ -160,3 +152,140 @@ connection.connect((err) => {
 app.listen(3000, () => {
   console.log("Servidor iniciado na porta 3000");
 });
+
+
+                                  //----------------------------------------------------------------
+
+app.get("/", (req, res) => {
+  res.sendFile(__dirname + "/index.html");
+});
+
+app.get("/cadastrop", (req, res) => {
+  res.sendFile(__dirname + "/cadastroprod.html");
+});
+
+app.post("/cadastrop", (req, res) => {
+  const { nomep, codp } = req.body;
+  if (!nomep || !codp) {
+    res.status(400).send("Nome e código são campos obrigatórios.");
+    return;
+  }
+
+  const  produto = { nomep, codp };
+  connection.query("INSERT INTO produto SET ?", produto, (err, result) => {
+    if (err) throw err;
+    console.log(`produto ${nomep} cadastrado com sucesso!`);
+    res.redirect("/");
+  });
+});
+
+// Rota para processar a listagem
+app.get('/listagemp', (req, res) => {
+
+  // Consulta no banco de dados
+  connection.query(`SELECT * FROM produto`, (error, results, fields) => {
+    if (error) throw error;
+
+    // Exibição dos resultados
+    let html = `
+      <!DOCTYPE html>
+      <html>
+        <head>
+          <title>produto</title>
+        </head>
+        <body>
+          <h1>produtos encontrados</h1>
+          <table>
+            <tr>
+              <th>Nome do produto</th>
+              <th>código do produto</th>
+            </tr>
+    `;
+
+    results.forEach((produto) => {
+      html += `
+        <tr>
+          <td>${produto.nomep}</td>
+          <td>${produto.codp}</td>
+        </tr>
+      `;
+    });
+
+    html += `
+          </table>
+          <a href="/">Voltar</a>
+        </body>
+      </html>
+    `;
+
+    res.send(html);
+  });
+});
+
+// Rota para exibir o formulário de consulta
+app.get('/consultap', (req, res) => {
+  res.send(`
+    <!DOCTYPE html>
+    <html>
+      <head>
+        <title>Consulta de produto</title>
+      </head>
+      <body>
+        <h1>Consulta de produto</h1>
+        <form method="POST" action="/consultap">
+          <label for="nomep">Nome do produto:</label>
+          <input type="text" id="nomep" name="nomep"><br><br>
+          <button type="submit">consultar</button>
+        </form>
+      </body>
+    </html>
+  `);
+});
+
+// Rota para processar a consulta
+app.post('/consultap', (req, res) => {
+  //const nome = req.body.nome;
+  const { nomep, codp } = req.body;
+  //const endereco = req.body.endereco;
+
+  // Consulta no banco de dados
+  connection.query(`SELECT * FROM produto WHERE nomep LIKE '%${nomep}%'`, (error, results, fields) => {
+    if (error) throw error;
+
+    // Exibição dos resultados
+    let html = `
+      <!DOCTYPE html>
+      <html>
+        <head>
+          <title>produtos</title>
+        </head>
+        <body>
+          <h1>produtos encontrados</h1>
+          <table>
+            <tr>
+              <th>Nome do produtos</th>
+              <th>codigo do produto</th>
+            </tr>
+    `;
+
+    results.forEach((produto) => {
+      html += `
+        <tr>
+          <td>${produto.nomep}</td>
+          <td>${produto.codp}</td>
+        </tr>
+      `;
+    });
+    
+    html += `
+          </table>
+          <a href="/">Voltar</a>
+        </body>
+      </html>
+    `;
+    
+    res.send(html);
+  });
+});
+
+
