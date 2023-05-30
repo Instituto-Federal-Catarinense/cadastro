@@ -14,6 +14,7 @@ const connection = mysql.createConnection({
   database: 'meuBanco'
 });
 
+
 // Conexão com o banco de dados
 connection.connect();
 
