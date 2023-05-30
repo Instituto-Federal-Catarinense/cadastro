@@ -10,9 +10,10 @@ app.use(bodyParser.urlencoded({ extended: true }));
 const connection = mysql.createConnection({
   host: '127.0.0.1',
   user: 'root',
-  password: 'A1b1c1d1',
+  password: 'aluno01',
   database: 'meuBanco'
 });
+
 
 // Conexão com o banco de dados
 connection.connect();
@@ -30,8 +31,16 @@ app.get('/consulta', (req, res) => {
         <form method="POST" action="/clientes">
           <label for="nome">Nome:</label>
           <input type="text" id="nome" name="nome"><br><br>
+
           <label for="endereco">Endereço:</label>
           <input type="text" id="endereco" name="endereco"><br><br>
+
+          <label for="sexo">sexo:</label>
+          <input type="text" id="sexo" name="sexo"><br><br>
+
+          <label for="idade">idade:</label>
+          <input type="text" id="idade" name="endereco"><br><br>
+
           <button type="submit">Consultar</button>
         </form>
       </body>

@@ -25,6 +25,8 @@ DROP TABLE IF EXISTS `clientes`;
 CREATE TABLE `clientes` (
   `nome` varchar(255) DEFAULT NULL,
   `endereco` varchar(255) DEFAULT NULL
+  `sexo` varchar(15) DEFAULT null,
+  `idade` varchar(3) default null
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -36,6 +38,30 @@ LOCK TABLES `clientes` WRITE;
 /*!40000 ALTER TABLE `clientes` DISABLE KEYS */;
 INSERT INTO `clientes` VALUES ('dfgdfg','dfgsdfg'),('Joedio','Arroio do Silva'),('Teste','teste'),('aloou','alou'),('teste2','teste2'),('Teste4','Teste4'),('teste5','teste5'),('teste6','teste6');
 /*!40000 ALTER TABLE `clientes` ENABLE KEYS */;
+UNLOCK TABLES;
+/*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
+
+-- Table structure for table `produtos`
+--
+
+DROP TABLE IF EXISTS `produtos`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `produtos` (
+  `descricao` varchar(255) DEFAULT NULL,
+  `quantidade` varchar(255) DEFAULT NULL,
+  `valor` varchar(15) DEFAULT null,
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `produtos`
+--
+
+LOCK TABLES `produtos` WRITE;
+/*!40000 ALTER TABLE `produtos` DISABLE KEYS */;
+INSERT INTO `produtos` VALUES ('copo','12','10');
+/*!40000 ALTER TABLE `produtos` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
