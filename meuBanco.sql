@@ -4,6 +4,9 @@
 -- ------------------------------------------------------
 -- Server version	8.0.32-0ubuntu0.22.04.2
 
+create database meuBanco;
+use meuBanco;
+
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
 /*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
@@ -34,7 +37,7 @@ CREATE TABLE `clientes` (
 
 LOCK TABLES `clientes` WRITE;
 /*!40000 ALTER TABLE `clientes` DISABLE KEYS */;
-INSERT INTO `clientes` VALUES ('dfgdfg','dfgsdfg'),('Joedio','Arroio do Silva'),('Teste','teste'),('aloou','alou'),('teste2','teste2'),('Teste4','Teste4'),('teste5','teste5'),('teste6','teste6');
+INSERT INTO `clientes` VALUES ('dfgdfg','dfgsdfg'),('Mariaa','Torres'),('Teste','teste'),('aloou','alou'),('teste2','teste2'),('Teste4','Teste4'),('teste5','teste5'),('teste6','teste6');
 /*!40000 ALTER TABLE `clientes` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
