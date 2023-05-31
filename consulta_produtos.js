@@ -18,20 +18,20 @@ const connection = mysql.createConnection({
 connection.connect();
 
 // Rota para exibir o formulário de consulta
-app.get('/consulta', (req, res) => {
+app.get('/consulta-produtos', (req, res) => {
   res.send(`
     <!DOCTYPE html>
     <html>
       <head>
-        <title>Consulta de clientes</title>
+        <title>Consulta de Produtos</title>
       </head>
       <body>
-        <h1>Consulta de clientes</h1>
-        <form method="POST" action="/clientes">
+        <h1>Consulta de Produtos</h1>
+        <form method="POST" action="/produtos">
           <label for="nome">Nome:</label>
           <input type="text" id="nome" name="nome"><br><br>
-          <label for="endereco">Endereço:</label>
-          <input type="text" id="endereco" name="endereco"><br><br>
+          <label for="valor">valor:</label>
+          <input type="text" id="valor" name="valor"><br><br>
           <button type="submit">Consultar</button>
         </form>
       </body>
@@ -40,7 +40,7 @@ app.get('/consulta', (req, res) => {
 });
 
 // Rota para processar a consulta
-app.post('/clientes', (req, res) => {
+app.post('/prosutos', (req, res) => {
   //const nome = req.body.nome;
   const { nome, endereco } = req.body;
   //const endereco = req.body.endereco;
@@ -54,22 +54,22 @@ app.post('/clientes', (req, res) => {
       <!DOCTYPE html>
       <html>
         <head>
-          <title>Clientes</title>
+          <title>Produtos</title>
         </head>
         <body>
-          <h1>Clientes encontrados</h1>
+          <h1>Produtos encontrados</h1>
           <table>
             <tr>
               <th>Nome</th>
-              <th>endereco</th>
+              <th>Valor</th>
             </tr>
     `;
     
-    results.forEach((cliente) => {
+    results.forEach((produto) => {
       html += `
         <tr>
-          <td>${cliente.nome}</td>
-          <td>${cliente.endereco}</td>
+          <td>${produto.nome}</td>
+          <td>${produto.endereco}</td>
         </tr>
       `;
     });
