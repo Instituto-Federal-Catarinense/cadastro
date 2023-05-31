@@ -1,6 +1,6 @@
 -- MySQL dump 10.13  Distrib 8.0.32, for Linux (x86_64)
 --
--- Host: localhost    Database: meuBanco
+-- Host: localhost    Database: meubanco
 -- ------------------------------------------------------
 -- Server version	8.0.32-0ubuntu0.22.04.2
 
@@ -25,8 +25,7 @@ DROP TABLE IF EXISTS `clientes`;
 CREATE TABLE `clientes` (
   `nome` varchar(255) DEFAULT NULL,
   `endereco` varchar(255) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
+) ;
 
 --
 -- Dumping data for table `clientes`
@@ -48,3 +47,4 @@ UNLOCK TABLES;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
 -- Dump completed on 2023-05-04 11:48:48
+
