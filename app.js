@@ -9,12 +9,16 @@ const connection = mysql.createConnection({
   host: "127.0.0.1",
   user: "root",
   password: "",
-  database: "meubanco"
+  database: "meuBanco"
 });
+
 
 app.get("/", (req, res) => {
   res.sendFile(__dirname + "/index.html");
 });
+
+
+// Clientes:
 
 app.get("/cadastro", (req, res) => {
   res.sendFile(__dirname + "/cadastro.html");
@@ -55,8 +59,8 @@ app.get('/listagem', (req, res) => {
             <tr>
               <th>Nome</th>
               <th>endereco</th>
+              <th>Idade</th>
               <th>sexo</th>
-              <th>idade</th>
             </tr>
     `;
     
@@ -65,8 +69,8 @@ app.get('/listagem', (req, res) => {
         <tr>
           <td>${cliente.nome}</td>
           <td>${cliente.endereco}</td>
-          <td>${cliente.sexo}</td>
           <td>${cliente.idade}</td>
+          <td>${cliente.sexo}</td>
         </tr>
       `;
     });
@@ -92,7 +96,7 @@ app.get('/consulta', (req, res) => {
       </head>
       <body>
         <h1>Consulta de clientes</h1>
-        <form method="POST" action="/consulta">
+        <form method="POST" action="/consultaClientes">
           <label for="nome">Nome:</label>
           <input type="text" id="nome" name="nome"><br><br>
           <button type="submit">Consultar</button>
@@ -103,7 +107,7 @@ app.get('/consulta', (req, res) => {
 });
 
 // Rota para processar a consulta
-app.post('/consulta', (req, res) => {
+app.post('/consultaClientes', (req, res) => {
   //const nome = req.body.nome;
   const { nome, endereco } = req.body;
   //const endereco = req.body.endereco;
@@ -125,8 +129,8 @@ app.post('/consulta', (req, res) => {
             <tr>
               <th>Nome</th>
               <th>endereco</th>
-              <th>sexo</th>
-              <th>idade</th>
+              <th>Sexo</th>
+              <th>Idade</th>
             </tr>
     `;
     
@@ -152,29 +156,31 @@ app.post('/consulta', (req, res) => {
   });
 });
 
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-app.get("/produtos", (req, res) => {
-  res.sendFile(__dirname + "/produtos.html");
+// Produtos:
+
+
+app.get("/cadProdutos", (req, res) => {
+  res.sendFile(__dirname + "/cadProdutos.html");
 });
 
-app.post("/produtos", (req, res) => {
-  const { id, descricao, quantidade, valor } = req.body;
-  if (!id || !descricao || !quantidade || !valor) {
-    res.status(400).send("id, descrição, quantidade e valor são campos obrigatórios.");
+app.post("/cadProdutos", (req, res) => {
+  const { descricao , quantidade , valor } = req.body;
+  if (!descricao || !quantidade || !valor) {
+    res.status(400).send("Descrição, Quantidade e valor são campos obrigatórios.");
     return;
   }
 
-  const produto = { id, descricao, quantidade, valor};
-  connection.query("INSERT INTO produtos SET ?", produto, (err, result) => {
+  const produtos = { descricao, quantidade , valor };
+  connection.query("INSERT INTO produtos SET ?", produtos, (err, result) => {
     if (err) throw err;
-    console.log(`produtos ${id} cadastrado com sucesso!`);
+    console.log(`Produtos ${descricao} cadastrado com sucesso!`);
     res.redirect("/");
   });
 });
 
 // Rota para processar a listagem
-app.get('/plistagem', (req, res) => {
+app.get('/listagemProduto', (req, res) => {
 
   // Consulta no banco de dados
   connection.query(`SELECT * FROM produtos`, (error, results, fields) => {
@@ -188,11 +194,10 @@ app.get('/plistagem', (req, res) => {
           <title>Produtos</title>
         </head>
         <body>
-          <h1>produtos encontrados</h1>
+          <h1>Produtos encontrados</h1>
           <table>
             <tr>
-              <th>id</th>
-              <th>descricao</th>
+              <th>Descrição</th>
               <th>quantidade</th>
               <th>valor</th>
             </tr>
@@ -201,7 +206,6 @@ app.get('/plistagem', (req, res) => {
     results.forEach((produtos) => {
       html += `
         <tr>
-          <td>${produtos.id}</td>
           <td>${produtos.descricao}</td>
           <td>${produtos.quantidade}</td>
           <td>${produtos.valor}</td>
@@ -221,18 +225,18 @@ app.get('/plistagem', (req, res) => {
 });
 
 // Rota para exibir o formulário de consulta
-app.get('/pconsulta', (req, res) => {
+app.get('/consultaProduto', (req, res) => {
   res.send(`
     <!DOCTYPE html>
     <html>
       <head>
-        <title>Consulta de produtos</title>
+        <title>Consulta de Produtos</title>
       </head>
       <body>
-        <h1>Consulta de produtos</h1>
-        <form method="POST" action="/pconsulta">
-          <label for="nome">id:</label>
-          <input type="text" id="id" name="id"><br><br>
+        <h1>Consulta de Produtos</h1>
+        <form method="POST" action="/consultaProduto">
+          <label for="descricao">Descrição:</label>
+          <input type="text" id="descricao" name="descricao"><br><br>
           <button type="submit">Consultar</button>
         </form>
       </body>
@@ -241,13 +245,13 @@ app.get('/pconsulta', (req, res) => {
 });
 
 // Rota para processar a consulta
-app.post('/pconsulta', (req, res) => {
-  //const nome = req.body.nome;
-  const { id, descricao, quantidade, valor } = req.body;
-  //const endereco = req.body.endereco;
+app.post('/consultaProduto', (req, res) => {
+  //const descricao = req.body.nome;
+  const { descricao, quantidade, valor } = req.body;
+  //const quantidade = req.body.quantidade;
   
   // Consulta no banco de dados
-  connection.query(`SELECT * FROM produtos WHERE id LIKE '%${id}%'`, (error, results, fields) => {
+  connection.query(`SELECT * FROM produtos WHERE descricao LIKE '%${descricao}%'`, (error, results, fields) => {
     if (error) throw error;
     
     // Exibição dos resultados
@@ -255,26 +259,24 @@ app.post('/pconsulta', (req, res) => {
       <!DOCTYPE html>
       <html>
         <head>
-          <title>produtos</title>
+          <title>Produtos</title>
         </head>
         <body>
-          <h1>produtos encontrados</h1>
+          <h1>Produtos encontrados</h1>
           <table>
             <tr>
-              <th>id</th>
-              <th>descricao</th>
-              <th>quantidade</th>
-              <th>valor</th>
+              <th>Descrição</th>
+              <th>Quantidade</th>
+              <th>Valor</th>
             </tr>
     `;
     
-    results.forEach((produtos) => {
+    results.forEach((produto) => {
       html += `
         <tr>
-          <td>${produtos.id}</td>
-          <td>${produtos.descricao}</td>
-          <td>${produtos.quantidade}</td>
-          <td>${produtos.valor}</td>
+          <td>${produto.descricao}</td>
+          <td>${produto.quantidade}</td>
+          <td>${produto.valor}</td>
         </tr>
       `;
     });
@@ -289,7 +291,6 @@ app.post('/pconsulta', (req, res) => {
     res.send(html);
   });
 });
-
 
 connection.connect((err) => {
   if (err) throw err;
