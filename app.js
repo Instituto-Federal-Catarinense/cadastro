@@ -8,8 +8,13 @@ app.use(bodyParser.urlencoded({ extended: true }));
 const connection = mysql.createConnection({
   host: "127.0.0.1",
   user: "root",
+<<<<<<< HEAD
   password: "",
   database: "meuBanco",
+=======
+  password: "A1b1c1d1",
+  database: "meuBanco"
+>>>>>>> be5067466cdf1fd93ebed76c4b108404658d3723
 });
 3;
 
@@ -21,10 +26,13 @@ app.get("/cadastro", (req, res) => {
   res.sendFile(__dirname + "/cadastro.html");
 });
 
+<<<<<<< HEAD
 app.get("/cadastro_produtos", (req, res) => {
   res.sendFile(__dirname + "/cadastro2.html");
 });
 
+=======
+>>>>>>> be5067466cdf1fd93ebed76c4b108404658d3723
 app.post("/cadastro", (req, res) => {
   const { nome, endereco, sexo, idadel } = req.body;
   if (!nome || !endereco || !sexo || !idade) {
@@ -42,6 +50,7 @@ app.post("/cadastro", (req, res) => {
   });
 });
 
+<<<<<<< HEAD
 app.post("/cadastro2", (req, res) => {
   const { nomeproduto, valorproduto, categoria, quantidade } = req.body;
   if (!nomeproduto || !valorproduto || !categoria || !quantidade) {
@@ -67,6 +76,15 @@ app.get("/listagem", (req, res) => {
   connection.query(`SELECT * FROM clientes`, (error, results, fields) => {
     if (error) throw error;
 
+=======
+// Rota para processar a listagem
+app.get('/listagem', (req, res) => {
+
+  // Consulta no banco de dados
+  connection.query(`SELECT * FROM clientes`, (error, results, fields) => {
+    if (error) throw error;
+    
+>>>>>>> be5067466cdf1fd93ebed76c4b108404658d3723
     // Exibição dos resultados
     let html = `
       <!DOCTYPE html>
@@ -79,29 +97,44 @@ app.get("/listagem", (req, res) => {
           <table>
             <tr>
               <th>Nome</th>
+<<<<<<< HEAD
               <th>Endereco</th>
               <th>Sexo</th>
               <th>Idade</th>
             </tr>
     `;
 
+=======
+              <th>endereco</th>
+            </tr>
+    `;
+    
+>>>>>>> be5067466cdf1fd93ebed76c4b108404658d3723
     results.forEach((cliente) => {
       html += `
         <tr>
           <td>${cliente.nome}</td>
           <td>${cliente.endereco}</td>
+<<<<<<< HEAD
           <td>${cliente.sexo}</td>
           <td>${cliente.idade}</td>
         </tr>
       `;
     });
 
+=======
+        </tr>
+      `;
+    });
+    
+>>>>>>> be5067466cdf1fd93ebed76c4b108404658d3723
     html += `
           </table>
           <a href="/">Voltar</a>
         </body>
       </html>
     `;
+<<<<<<< HEAD
 
     res.send(html);
   });
@@ -149,12 +182,19 @@ app.get("/lista2  ", (req, res) => {
       </html>
     `;
 
+=======
+    
+>>>>>>> be5067466cdf1fd93ebed76c4b108404658d3723
     res.send(html);
   });
 });
 
 // Rota para exibir o formulário de consulta
+<<<<<<< HEAD
 app.get("/consulta", (req, res) => {
+=======
+app.get('/consulta', (req, res) => {
+>>>>>>> be5067466cdf1fd93ebed76c4b108404658d3723
   res.send(`
     <!DOCTYPE html>
     <html>
@@ -174,6 +214,7 @@ app.get("/consulta", (req, res) => {
 });
 
 // Rota para processar a consulta
+<<<<<<< HEAD
 app.post("/consulta", (req, res) => {
   //const nome = req.body.nome;
   const { nome, endereco } = req.body;
@@ -187,6 +228,19 @@ app.post("/consulta", (req, res) => {
 
       // Exibição dos resultados
       let html = `
+=======
+app.post('/consulta', (req, res) => {
+  //const nome = req.body.nome;
+  const { nome, endereco } = req.body;
+  //const endereco = req.body.endereco;
+  
+  // Consulta no banco de dados
+  connection.query(`SELECT * FROM clientes WHERE nome LIKE '%${nome}%'`, (error, results, fields) => {
+    if (error) throw error;
+    
+    // Exibição dos resultados
+    let html = `
+>>>>>>> be5067466cdf1fd93ebed76c4b108404658d3723
       <!DOCTYPE html>
       <html>
         <head>
@@ -197,6 +251,7 @@ app.post("/consulta", (req, res) => {
           <table>
             <tr>
               <th>Nome</th>
+<<<<<<< HEAD
               <th>Endereco</th>
               <th>Sexo</th>
               <th>Idade</th>
@@ -215,11 +270,28 @@ app.post("/consulta", (req, res) => {
       });
 
       html += `
+=======
+              <th>endereco</th>
+            </tr>
+    `;
+    
+    results.forEach((cliente) => {
+      html += `
+        <tr>
+          <td>${cliente.nome}</td>
+          <td>${cliente.endereco}</td>
+        </tr>
+      `;
+    });
+    
+    html += `
+>>>>>>> be5067466cdf1fd93ebed76c4b108404658d3723
           </table>
           <a href="/">Voltar</a>
         </body>
       </html>
     `;
+<<<<<<< HEAD
 
       res.send(html);
     }
@@ -294,6 +366,11 @@ app.post("/consulta2", (req, res) => {
       res.send(html);
     }
   );
+=======
+    
+    res.send(html);
+  });
+>>>>>>> be5067466cdf1fd93ebed76c4b108404658d3723
 });
 
 connection.connect((err) => {
