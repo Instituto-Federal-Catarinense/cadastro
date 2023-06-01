@@ -34,7 +34,6 @@ CREATE TABLE `clientes` (
 
 LOCK TABLES `clientes` WRITE;
 /*!40000 ALTER TABLE `clientes` DISABLE KEYS */;
-INSERT INTO `clientes` VALUES ('dfgdfg','dfgsdfg'),('Joedio','Arroio do Silva'),('Teste','teste'),('aloou','alou'),('teste2','teste2'),('Teste4','Teste4'),('teste5','teste5'),('teste6','teste6');
 /*!40000 ALTER TABLE `clientes` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
