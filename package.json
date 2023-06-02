@@ -1,24 +1,27 @@
 {
-  "name": "cadastro",
-  "version": "1.0.0",
-  "description": "Sistema de cadastro de clientes com nodeJS",
-  "main": "app.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/joedio-borges/cadastro.git"
-  },
-  "author": "Joédio Borges Jr.",
-  "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/joedio-borges/cadastro/issues"
-  },
-  "homepage": "https://github.com/joedio-borges/cadastro#readme",
-  "dependencies": {
-    "body-parser": "^1.20.2",
-    "express": "^4.18.2",
-    "mysql": "^2.18.1"
-  }
+    "name": "nodejs",
+    "version": "1.0.0",
+    "description": "meu primeiro aplicativo web com nodeJS",
+    "main": "index.js",
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/MissionYeary0o/node.js.git"
+    },
+    "author": "Gustavo",
+    "license": "ISC",
+    "bugs": {
+        "url": "https://github.com/MissionYeary0o/node.js/issues"
+    },
+    "homepage": "https://github.com/MissionYear0o/node.js#readme",
+    "devDependencies": {
+        "nodemon": "^2.0.22"
+    },
+    "dependencies": {
+        "express": "^4.18.2",
+        "mysql": "^2.18.1",
+        "upper-case": "^2.0.2"
+    }
 }
