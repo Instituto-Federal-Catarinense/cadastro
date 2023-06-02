@@ -10,7 +10,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 const connection = mysql.createConnection({
   host: '127.0.0.1',
   user: 'root',
-  password: 'A1b1c1d1',
+  password: 'Aluno01',
   database: 'meuBanco'
 });
 
@@ -18,7 +18,7 @@ const connection = mysql.createConnection({
 connection.connect();
 
 // Rota para exibir o formulário de consulta
-app.get('/consulta', (req, res) => {
+app.get('/ConsProdutos', (req, res) => {
   res.send(`
     <!DOCTYPE html>
     <html>
@@ -83,6 +83,32 @@ app.post('/clientes', (req, res) => {
     res.send(html);
   });
 });
+
+
+// consulta produto
+
+app.get('/consulta', (req, res) => {
+  res.send(`
+    <!DOCTYPE html>
+    <html>
+      <head>
+        <title>Consulta de clientes</title>
+      </head>
+      <body>
+        <h1>Consulta de clientes</h1>
+        <form method="POST" action="/clientes">
+          <label for="nome">Nome:</label>
+          <input type="text" id="nome" name="nome"><br><br>
+          <label for="endereco">Endereço:</label>
+          <input type="text" id="endereco" name="endereco"><br><br>
+          <button type="submit">Consultar</button>
+        </form>
+      </body>
+    </html>
+  `);
+});
+
+
 
 // Inicia o servidor
 app.listen(port, () => {

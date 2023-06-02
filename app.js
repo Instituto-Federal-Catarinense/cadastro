@@ -15,6 +15,7 @@ const connection = mysql.createConnection({
 app.get("/", (req, res) => {
   res.sendFile(__dirname + "/index.html");
 });
+
 //tratando a rota cadastro de clientes
 app.get("/cadClientes", (req, res) => {
   res.sendFile(__dirname + "/cadastro.html");
@@ -87,7 +88,7 @@ app.get('/consultaClientes', (req, res) => {
       </head>
       <body>
         <h1>Consulta de clientes</h1>
-        <form method="POST" action="/consulta">
+        <form method="POST" action="/consultaClientes">
           <label for="nome">Nome:</label>
           <input type="text" id="nome" name="nome"><br><br>
           <button type="submit">Consultar</button>
@@ -100,7 +101,7 @@ app.get('/consultaClientes', (req, res) => {
 // Rota para processar a consulta
 app.post('/consultaClientes', (req, res) => {
   //const nome = req.body.nome;
-  const { nome, endereco } = req.body;
+  const { nome } = req.body;
   //const endereco = req.body.endereco;
   
   // Consulta no banco de dados
@@ -182,18 +183,18 @@ app.get('/listagemProdutos', (req, res) => {
           <h1>Produtos encontrados</h1>
           <table>
             <tr>
-              <th>desção</th>
-              <th>endereco</th>
-              <th>endereco</th>
+              <th>descrição</th>
+              <th>quantidade</th>
+              <th>valor</th>
             </tr>
     `;
     
     results.forEach((produto) => {
       html += `
         <tr>
-          <td>${cliente.nome}</td>
-          <td>${cliente.endereco}</td>
-          <td>${cliente.nome}</td>
+          <td>${produto.descricao}</td>
+          <td>${produto.quantidade}</td>
+          <td>${produto.valor}</td>
         </tr>
       `;
     });
@@ -210,18 +211,18 @@ app.get('/listagemProdutos', (req, res) => {
 });
 
 // Rota para exibir o formulário de consulta
-app.get('/consultaClientes', (req, res) => {
+app.get('/consProdutos', (req, res) => {
   res.send(`
     <!DOCTYPE html>
     <html>
       <head>
-        <title>Consulta de clientes</title>
+        <title>Consulta Produtos</title>
       </head>
       <body>
-        <h1>Consulta de clientes</h1>
-        <form method="POST" action="/consulta">
-          <label for="nome">Nome:</label>
-          <input type="text" id="nome" name="nome"><br><br>
+        <h1>Consprodutos</h1>
+        <form method="POST" action="/consProdutos">
+          <label for="descricao">Descrição:</label>
+          <input type="text" id="descricao" name="descricao"><br><br>
           <button type="submit">Consultar</button>
         </form>
       </body>
@@ -230,13 +231,13 @@ app.get('/consultaClientes', (req, res) => {
 });
 
 // Rota para processar a consulta
-app.post('/consultaClientes', (req, res) => {
+app.post('/consProdutos', (req, res) => {
   //const nome = req.body.nome;
-  const { nome, endereco } = req.body;
+  const { descricao, quantidade, valor } = req.body;
   //const endereco = req.body.endereco;
   
   // Consulta no banco de dados
-  connection.query(`SELECT * FROM clientes WHERE nome LIKE '%${nome}%'`, (error, results, fields) => {
+  connection.query(`SELECT * FROM produtos WHERE descricao LIKE '%${descricao}%'`, (error, results, fields) => {
     if (error) throw error;
     
     // Exibição dos resultados
@@ -244,22 +245,24 @@ app.post('/consultaClientes', (req, res) => {
       <!DOCTYPE html>
       <html>
         <head>
-          <title>Clientes</title>
+          <title>Produtos</title>
         </head>
         <body>
-          <h1>Clientes encontrados</h1>
+          <h1>Produtos encontrados</h1>
           <table>
             <tr>
-              <th>Nome</th>
-              <th>endereco</th>
+              <th>Descrição</th>
+              <th>Quantidade</th>
+              <th>valor</th>
             </tr>
     `;
     
-    results.forEach((cliente) => {
+    results.forEach((produto) => {
       html += `
         <tr>
-          <td>${cliente.nome}</td>
-          <td>${cliente.endereco}</td>
+          <td>${produto.descricao}</td>
+          <td>${produto.quantidade}</td>
+          <td>${produto.valor}</td>
         </tr>
       `;
     });
