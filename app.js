@@ -151,7 +151,7 @@ app.get("/cadProdutos", (req, res) => {
 
 app.post("/cadProdutos", (req, res) => {
   const { descricao, quantidade, valor } = req.body;
-  if (!nome || !endereco) {
+  if (!nome || !endereco ||!descricao ||!quantidade ||!valor) {
     res.status(400).send("Nome e endereço são campos obrigatórios.");
     return;
   }
