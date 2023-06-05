@@ -20,6 +20,17 @@ app.get("/cadClientes", (req, res) => {
   res.sendFile(__dirname + "/cadClientes.html");
 });
 
+
+app.get('/:nome', (req, res) => {
+  const userNome = req.params.nome;
+  // faça algo com o userId
+  console.log(`O nome do usuário é ${userNome}`);
+});
+
+app.get("/cadastro", (req, res) => {
+  res.sendFile(__dirname + "/cadastro.html");
+});  
+
 app.post("/cadClientes", (req, res) => {
   const { nome, endereco } = req.body;
   if (!nome || !endereco) {
