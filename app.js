@@ -1,3 +1,17 @@
+const express = require("express");
+const mysql = require("mysql");
+const bodyParser = require('body-parser');
+const app = express();
+
+app.use(bodyParser.urlencoded({ extended: true }));
+
+const connection = mysql.createConnection({
+  host: "127.0.0.1",
+  user: "root",
+  password: "aluno01",
+  database: "meuBanco"
+});
+
 app.get("/", (req, res) => {
   res.sendFile(__dirname + "/index.html");
 });
@@ -16,6 +30,9 @@ app.post("/cadastro", (req, res) => {
     res.status(400).send("Nome e endereço são campos obrigatórios.");
     return;
 }
+ else{
+  
+ }
  
 });
 
