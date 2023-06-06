@@ -10,7 +10,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 const connection = mysql.createConnection({
   host: '127.0.0.1',
   user: 'root',
-  password: '',
+  password: 'TheSuperMario64',
   database: 'meuBanco'
 });
 
@@ -18,18 +18,18 @@ const connection = mysql.createConnection({
 connection.connect();
 
 // Rota para exibir o formulário de consulta
-app.get('/consulta', (req, res) => {
+app.get('/consultaprod', (req, res) => {
   res.send(`
     <!DOCTYPE html>
     <html>
       <head>
-        <title>Consulta de clientes</title>
+        <title>Consulta de produto</title>
       </head>
       <body>
-        <h1>Consulta de clientes</h1>
-        <form method="POST" action="/clientes">
-          <label for="nome">Nome:</label>
-          <input type="text" id="nome" name="nome"><br><br>
+        <h1>Consulta de produto</h1>
+        <form method="POST" action="/produto">
+          <label for="id">id:</label>
+          <input type="text" id="id" name="id"><br><br>
           <label for="endereco">Endereço:</label>
           <input type="text" id="endereco" name="endereco"><br><br>
           <button type="submit">Consultar</button>
@@ -40,13 +40,13 @@ app.get('/consulta', (req, res) => {
 });
 
 // Rota para processar a consulta
-app.post('/clientes', (req, res) => {
-  //const nome = req.body.nome;
-  const { nome, endereco, idade, sexo } = req.body;
+app.post('/produtos', (req, res) => {
+  //const id = req.body.id;
+  const { id, descricao, quantidade, valor } = req.body;
   //const endereco = req.body.endereco;
   
   // Consulta no banco de dados
-  connection.query(`SELECT * FROM clientes WHERE nome LIKE '%${nome}%'`, (error, results, fields) => {
+  connection.query(`SELECT * FROM produtos WHERE id LIKE '%${id}%'`, (error, results, fields) => {
     if (error) throw error;
     
     // Exibição dos resultados
@@ -54,7 +54,7 @@ app.post('/clientes', (req, res) => {
       <!DOCTYPE html>
       <html>
         <head>
-          <title>Clientes</title>
+          <title>produto</title>
           <style>
           table {
             border-collapse: collapse;
@@ -71,23 +71,23 @@ app.post('/clientes', (req, res) => {
           </style>
         </head>
         <body>
-          <h1>Clientes encontrados</h1>
+          <h1>produto encontrados</h1>
           <table>
             <tr>
-              <th>Nome</th>
-              <th>endereco</th>
-              <th>idade</th>
-              <th>sexo</th>
+              <th>id</th>
+              <th>descricao</th>
+              <th>quantidade</th>
+              <th>valor</th>
             </tr>
     `;
     
-    results.forEach((cliente) => {
+    results.forEach((produtos) => {
       html += `
         <tr>
-          <td>${cliente.nome}</td>
-          <td>${cliente.endereco}</td>
-          <td>${cliente.idade}</td>
-          <td>${cliente.sexo}</td>
+          <td>${produtos.id}</td>
+          <td>${produtos.descricao}</td>
+          <td>${produtos.quantidade}</td>
+          <td>${produtos.valor}</td>
         </tr>
       `;
     });
