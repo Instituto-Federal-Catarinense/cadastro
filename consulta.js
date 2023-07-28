@@ -27,7 +27,7 @@ app.get('/consulta', (req, res) => {
       </head>
       <body>
         <h1>Consulta de clientes</h1>
-        <form method="POST" action="/consclientes">
+        <form method="POST" action="/clientes">
           <label for="nome">Nome:</label>
           <input type="text" id="nome" name="nome"><br><br>
           <label for="endereco">Endereço:</label>
@@ -62,8 +62,6 @@ app.post('/clientes', (req, res) => {
             <tr>
               <th>Nome</th>
               <th>endereco</th>
-              <th>sexo</th>
-              <th>idade</th>
             </tr>
     `;
     

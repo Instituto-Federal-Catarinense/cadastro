@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Cadastro de Clientes</title>
+  <title>Cadastro de produtos</title>
   <style>
   input[type=text], select {
     width: 100%;
@@ -31,13 +31,9 @@
 
 </head>
 <body>
-  <h1>Cadastro de Produtos</h1>
-  <form action="/cadProdutos" method="POST">
-
-    <label for="id">ID:</label>
-    <input type="text" id="id" name="id" required>
-    <br>
-    <label for="descricao">Descrição:</label>
+  <h1>Cadastro de produtos</h1>
+  <form action="/cadastrarProdutos" method="POST">
+    <label for="descricao">Descriçao:</label>
     <input type="text" id="descricao" name="descricao" required>
     <br>
     <label for="quantidade">Quantidade:</label>
