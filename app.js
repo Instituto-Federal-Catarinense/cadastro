@@ -2,8 +2,26 @@ const express = require("express");
 const mysql = require("mysql");
 const bodyParser = require('body-parser');
 const app = express();
+const path = require('path');
 
 app.use(bodyParser.urlencoded({ extended: true }));
+
+// Configurando o mecanismo de visualização Pug
+app.set('view engine', 'pug');
+app.set('views', path.join(__dirname, 'views'));
+
+// Rota para renderizar o template com os dados
+app.get('/', (req, res) => {
+  res.render('index');
+});
+
+app.get('/cadastro_produtos', (req, res) => {
+  res.render('cadastro_produtos');
+});
+
+app.get('/cadastro', (req, res) => {
+  res.render('cadastro');
+});
 
 const connection = mysql.createConnection({
   host: "127.0.0.1",
@@ -11,18 +29,6 @@ const connection = mysql.createConnection({
   password: "",
   database: "meuBanco"
 });
-
-app.get("/", (req, res) => {
-  res.sendFile(__dirname + "/index.html");
-});
-
-app.get("/cadastro", (req, res) => {
-  res.sendFile(__dirname + "/cadastro.html");
-});
-
-app.get("/cadastro_produtos", (req, res) => {
-  res.sendFile(__dirname + "/cadastro_produtos.html");
-})
 
 app.post("/cadastro", (req, res) => {
   const { nome, endereco, sexo, email } = req.body;
