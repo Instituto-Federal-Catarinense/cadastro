@@ -1,6 +1,6 @@
 -- MySQL dump 10.13  Distrib 8.0.32, for Linux (x86_64)
 --
--- Host: localhost    Database: meuBanco
+-- Host: localhost    Database: meuBanco_2A
 -- ------------------------------------------------------
 -- Server version	8.0.32-0ubuntu0.22.04.2
 
@@ -18,8 +18,8 @@
 --
 -- Table structure for table `clientes`
 --
-CREATE DATABASE meuBanco;
-USE meuBanco;
+CREATE DATABASE meuBanco_2A;
+USE meuBanco_2A;
 
 DROP TABLE IF EXISTS `clientes`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
