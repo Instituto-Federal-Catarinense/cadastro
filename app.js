@@ -8,18 +8,12 @@ app.use(bodyParser.urlencoded({ extended: true }));
 const connection = mysql.createConnection({
   host: "127.0.0.1",
   user: "root",
-  password: "A1b1c1d1",
-  database: "meuBanco"
+  password: "aluno01",
+  database: "cadastro"
 });
 
 app.get("/", (req, res) => {
   res.sendFile(__dirname + "/index.html");
-});
-
-app.get('/:nome', (req, res) => {
-  const userNome = req.params.nome;
-  // faça algo com o userId
-  console.log(`O nome do usuário é ${userNome}`);
 });
 
 app.get("/cadastro", (req, res) => {
@@ -39,6 +33,18 @@ app.post("/cadastro", (req, res) => {
     console.log(`Cliente ${nome} cadastrado com sucesso!`);
     res.redirect("/");
   });
+});
+
+app.get('/:nome', (req, res) => {
+  const userNome = req.params.nome;
+
+
+  connection.query("SELECT * FROM clientes WHERE nome = ?", userNome, (err, result) => {
+    if (err) throw err;
+    console.log(`O dados do cliente:`);
+    console.dir(result);
+  })
+  res.redirect("/", userNome);
 });
 
 // Rota para processar a listagem
