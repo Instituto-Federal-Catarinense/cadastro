@@ -8,7 +8,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 const connection = mysql.createConnection({
   host: "127.0.0.1",
   user: "root",
-  password: "A1b1c1d1",
+  password: "aluno01",
   database: "meuBanco"
 });
 
@@ -16,14 +16,12 @@ app.get("/", (req, res) => {
   res.sendFile(__dirname + "/index.html");
 });
 
-app.get('/:nome', (req, res) => {
-  const userNome = req.params.nome;
-  // faça algo com o userId
-  console.log(`O nome do usuário é ${userNome}`);
-});
-
 app.get("/cadastro", (req, res) => {
   res.sendFile(__dirname + "/cadastro.html");
+});
+
+app.get("/listagem", (req, res) => {
+  res.sendFile(__dirname + "/listagem.html");
 });
 
 app.post("/cadastro", (req, res) => {
@@ -155,6 +153,6 @@ connection.connect((err) => {
   console.log("Conectado ao banco de dados MySQL!");
 });
 
-app.listen(3000, () => {
+app.listen(8080, () => {
   console.log("Servidor iniciado na porta 3000");
 });
