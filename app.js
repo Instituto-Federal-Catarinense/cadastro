@@ -21,13 +21,16 @@ app.get("/cadastro", (req, res) => {
 });
 
 app.post("/cadastro", (req, res) => {
-  const { nome, endereco } = req.body;
-  if (!nome || !endereco) {
-    res.status(400).send("Nome e endereço são campos obrigatórios.");
+  const { nome, endereco, data_nasc, sexo } = req.body;
+  if (!nome || !endereco || !data_nasc) {
+    res.status(400).send("Nome, endereço e data de nascimento são campos obrigatórios.");
     return;
   }
 
-  const cliente = { nome, endereco };
+  // Formatando a data no formato 'YYYY-MM-DD' para ser inserida no MySQL
+  const dataNascimento = new Date(data_nasc).toISOString().split('T')[0];
+
+  const cliente = { nome, endereco, data_nasc: dataNascimento, sexo };
   connection.query("INSERT INTO clientes SET ?", cliente, (err, result) => {
     if (err) throw err;
     console.log(`Cliente ${nome} cadastrado com sucesso!`);
@@ -45,16 +48,78 @@ app.get('/listagem', (req, res) => {
     // Exibição dos resultados
     let html = `
       <!DOCTYPE html>
-      <html>
+      <html lang="en">
         <head>
-          <title>Clientes</title>
+          <meta charset="UTF-8">
+          <meta name="viewport" content="width=device-width, initial-scale=1.0">
+          <title>Lista de Clientes</title>
+          <style>
+            body {
+              font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+              background-color: #f5f5f5;
+              margin: 0;
+              padding: 0;
+              display: flex;
+              flex-direction: column;
+              align-items: center;
+              justify-content: center;
+              height: 100vh;
+            }
+
+            h1 {
+              color: #3498db;
+              margin-bottom: 20px;
+            }
+
+            table {
+              width: 80%;
+              border-collapse: collapse;
+              margin-top: 20px;
+              box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+              background-color: #fff;
+              border-radius: 8px;
+              overflow: hidden;
+            }
+
+            th, td {
+              padding: 15px;
+              text-align: left;
+              border-bottom: 1px solid #ddd;
+            }
+
+            th {
+              background-color: #3498db;
+              color: #fff;
+            }
+
+            td {
+              color: #333;
+            }
+
+            a {
+              display: inline-block;
+              margin-top: 20px;
+              padding: 10px 20px;
+              background-color: #3498db;
+              color: #fff;
+              text-decoration: none;
+              border-radius: 5px;
+              transition: background-color 0.3s;
+            }
+
+            a:hover {
+              background-color: #2980b9;
+            }
+          </style>
         </head>
         <body>
-          <h1>Clientes encontrados</h1>
+          <h1>Clientes Encontrados</h1>
           <table>
             <tr>
               <th>Nome</th>
-              <th>endereco</th>
+              <th>Endereço</th>
+              <th>Data de nascimento</th>
+              <th>Sexo</th>
             </tr>
     `;
     
@@ -63,6 +128,8 @@ app.get('/listagem', (req, res) => {
         <tr>
           <td>${cliente.nome}</td>
           <td>${cliente.endereco}</td>
+          <td>${new Date(cliente.data_nasc).toLocaleDateString('pt-BR')}</td>
+          <td>${cliente.sexo}</td>
         </tr>
       `;
     });
@@ -78,13 +145,65 @@ app.get('/listagem', (req, res) => {
   });
 });
 
+
 // Rota para exibir o formulário de consulta
 app.get('/consulta', (req, res) => {
   res.send(`
     <!DOCTYPE html>
-    <html>
+    <html lang="en">
       <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>Consulta de clientes</title>
+        <style>
+          body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f5f5f5;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+          }
+
+          h1 {
+            color: #3498db;
+            margin-bottom: 20px;
+          }
+
+          form {
+            background-color: #fff;
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+          }
+
+          label {
+            display: block;
+            margin-bottom: 10px;
+          }
+
+          input {
+            padding: 10px;
+            margin-bottom: 10px;
+          }
+
+          button {
+            padding: 10px 20px;
+            background-color: #3498db;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+          }
+
+          button:hover {
+            background-color: #2980b9;
+          }
+        </style>
       </head>
       <body>
         <h1>Consulta de clientes</h1>
@@ -100,9 +219,7 @@ app.get('/consulta', (req, res) => {
 
 // Rota para processar a consulta
 app.post('/consulta', (req, res) => {
-  //const nome = req.body.nome;
-  const { nome, endereco } = req.body;
-  //const endereco = req.body.endereco;
+  const { nome, endereco, data_nasc, sexo } = req.body;
   
   // Consulta no banco de dados
   connection.query(`SELECT * FROM clientes WHERE nome LIKE '%${nome}%'`, (error, results, fields) => {
@@ -111,16 +228,78 @@ app.post('/consulta', (req, res) => {
     // Exibição dos resultados
     let html = `
       <!DOCTYPE html>
-      <html>
+      <html lang="en">
         <head>
+          <meta charset="UTF-8">
+          <meta name="viewport" content="width=device-width, initial-scale=1.0">
           <title>Clientes</title>
+          <style>
+            body {
+              font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+              background-color: #f5f5f5;
+              margin: 0;
+              padding: 0;
+              display: flex;
+              flex-direction: column;
+              align-items: center;
+              justify-content: center;
+              height: 100vh;
+            }
+
+            h1 {
+              color: #3498db;
+              margin-bottom: 20px;
+            }
+
+            table {
+              width: 80%;
+              border-collapse: collapse;
+              margin-top: 20px;
+              box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+              background-color: #fff;
+              border-radius: 8px;
+              overflow: hidden;
+            }
+
+            th, td {
+              padding: 15px;
+              text-align: left;
+              border-bottom: 1px solid #ddd;
+            }
+
+            th {
+              background-color: #3498db;
+              color: #fff;
+            }
+
+            td {
+              color: #333;
+            }
+
+            a {
+              display: inline-block;
+              margin-top: 20px;
+              padding: 10px 20px;
+              background-color: #3498db;
+              color: #fff;
+              text-decoration: none;
+              border-radius: 5px;
+              transition: background-color 0.3s;
+            }
+
+            a:hover {
+              background-color: #2980b9;
+            }
+          </style>
         </head>
         <body>
           <h1>Clientes encontrados</h1>
           <table>
             <tr>
               <th>Nome</th>
-              <th>endereco</th>
+              <th>Endereco</th>
+              <th>Data de nascimento</th>
+              <th>Sexo</th>
             </tr>
     `;
     
@@ -129,6 +308,8 @@ app.post('/consulta', (req, res) => {
         <tr>
           <td>${cliente.nome}</td>
           <td>${cliente.endereco}</td>
+          <td>${new Date(cliente.data_nasc).toLocaleDateString('pt-BR')}</td>
+          <td>${cliente.sexo}</td>
         </tr>
       `;
     });
@@ -143,6 +324,7 @@ app.post('/consulta', (req, res) => {
     res.send(html);
   });
 });
+
 
 connection.connect((err) => {
   if (err) throw err;

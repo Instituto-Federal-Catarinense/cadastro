@@ -10,7 +10,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 const connection = mysql.createConnection({
   host: '127.0.0.1',
   user: 'root',
-  password: 'A1b1c1d1',
+  password: 'aluno01',
   database: 'meuBanco'
 });
 
@@ -24,21 +24,47 @@ app.post('/clientes', (req, res) => {
   connection.query(`SELECT * FROM clientes`, (error, results, fields) => {
     if (error) throw error;
     
-    // Exibição dos resultados
     let html = `
-      <!DOCTYPE html>
-      <html>
-        <head>
-          <title>Clientes</title>
-        </head>
-        <body>
-          <h1>Clientes encontrados</h1>
-          <table>
-            <tr>
-              <th>Nome</th>
-              <th>endereco</th>
-            </tr>
-    `;
+    <!DOCTYPE html>
+    <html>
+      <head>
+        <title>Clientes</title>
+        <style>
+          body {
+            font-family: 'Arial', sans-serif;
+            margin: 20px;
+          }
+  
+          h1 {
+            color: #333;
+          }
+  
+          table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+          }
+  
+          th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+          }
+  
+          th {
+            background-color: #f2f2f2;
+          }
+        </style>
+      </head>
+      <body>
+        <h1>Clientes encontrados</h1>
+        <table>
+          <tr>
+            <th>Nome</th>
+            <th>Endereço</th>
+          </tr>
+        `;
+  
     
     results.forEach((cliente) => {
       html += `

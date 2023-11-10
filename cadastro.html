@@ -1,96 +1,106 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Cadastro de Clientes</title>
   <style>
-  input[type=text], select {
-    width: 100%;
-    padding: 12px 20px;
-    margin: 8px 0;
-    display: inline-block;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    box-sizing: border-box;
-  }
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background-color: #f4f4f4;
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
 
-  input[type=submit] {
-    background-color: #4CAF50;
-    color: white;
-    padding: 12px 20px;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-  }
+    h1 {
+      text-align: center;
+      color: #3498db; /* Alterado para uma cor azul mais suave */
+      margin-bottom: 20px;
+    }
 
-  input[type=submit]:hover {
-    background-color: #45a049;
-  }
+    form {
+      max-width: 400px;
+      margin: 20px auto;
+      background-color: #fff;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
 
-  body {
-    font-family: Arial, sans-serif;
-    background-color: #f4f4f4;
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
+    label {
+      display: block;
+      margin-bottom: 8px;
+      color: #333;
+    }
 
-h1 {
-    text-align: center;
-    color: #333;
-}
+    input[type="text"], select, input[type="date"] {
+      width: 100%;
+      padding: 12px;
+      margin-bottom: 10px;
+      box-sizing: border-box;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      font-size: 14px; /* Tamanho da fonte ajustado para melhor legibilidade */
+    }
 
-form {
-    max-width: 400px;
-    margin: 20px auto;
-    background-color: #fff;
-    padding: 20px;
-    border-radius: 8px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-}
+    input[type="radio"] {
+      margin-bottom: 10px;
+      margin-right: 5px;
+    }
 
-label {
-    display: block;
-    margin-bottom: 8px;
-    color: #333;
-}
+    /* Estilo adicionado para exibir rótulos e botões lado a lado */
+    label.radio-label {
+      display: inline-block;
+      margin-right: 15px;
+    }
 
-input[type="text"] {
-    width: 100%;
-    padding: 12px;
-    margin-bottom: 10px;
-    box-sizing: border-box;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-}
+    .gender-container {
+      text-align: center; /* Centralizar horizontalmente */
+    }
 
-button {
-    background-color: #4CAF50;
-    color: white;
-    padding: 12px 20px;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    font-size: 16px;
-}
+    button {
+      background-color: #3498db;
+      color: white;
+      padding: 12px 20px;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 16px;
+      transition: background-color 0.3s; /* Adicionado efeito de transição */
+      display: block; /* Para ocupar a largura total do contêiner pai */
+      margin: 0 auto; /* Centralizar horizontalmente */
+    }
 
-button:hover {
-    background-color: #45a049;
-}
-</style>
-
+    button:hover {
+      background-color: #0a639e;
+    }
+  </style>
 </head>
 <body>
   <h1>Cadastro de Clientes</h1>
   <form action="/cadastro" method="POST">
-      <label for="nome">Nome:</label>
-      <input type="text" id="nome" name="nome" required>
-      <br>
-      <label for="endereco">Endereço:</label>
-      <input type="text" id="endereco" name="endereco" required>
-      <br>
-      <button type="submit">Cadastrar</button>
+    <label for="nome">Nome:</label>
+    <input type="text" id="nome" name="nome" required>
+    <br>
+    <label for="endereco">Endereço:</label>
+    <input type="text" id="endereco" name="endereco" required>
+    <br>
+    <label for="idade">Data de Nascimento</label>
+    <input type="date" id="data_nasc" name="data_nasc" required style="padding: 10px; font-size: 14px;">
+    <br>
+    <div class="gender-container">
+      <label class="radio-label" for="feminino">
+        <input type="radio" id="feminino" name="sexo" value="feminino" required>
+        Feminino
+      </label>
+      <label class="radio-label" for="masculino">
+        <input type="radio" id="masculino" name="sexo" value="masculino" required>
+        Masculino
+      </label>
+    </div>
+    <br>
+    <button type="submit">Cadastrar</button>
   </form>
 </body>
 </html>
