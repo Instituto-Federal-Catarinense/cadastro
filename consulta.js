@@ -32,6 +32,14 @@ app.get('/consulta', (req, res) => {
           <input type="text" id="nome" name="nome"><br><br>
           <label for="endereco">Endereço:</label>
           <input type="text" id="endereco" name="endereco"><br><br>
+          <br>
+          <label for="idade">Sexo:</label>
+          <input type="text" id="idade" name="idade" required>
+          <br>
+          <br>
+          <label for="endereco">Idade:</label>
+          <input type="text" id="idade" name="idade" required>
+          <br>
           <button type="submit">Consultar</button>
         </form>
       </body>
@@ -62,6 +70,8 @@ app.post('/clientes', (req, res) => {
             <tr>
               <th>Nome</th>
               <th>endereco</th>
+              <th>idade</th>
+              <th>sexo</th>
             </tr>
     `;
     
@@ -70,6 +80,8 @@ app.post('/clientes', (req, res) => {
         <tr>
           <td>${cliente.nome}</td>
           <td>${cliente.endereco}</td>
+          <td>${cliente.idade}</td>
+          <td>${cliente.sexo}</td>
         </tr>
       `;
     });
