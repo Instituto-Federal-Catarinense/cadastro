@@ -55,6 +55,8 @@ app.get('/listagem', (req, res) => {
             <tr>
               <th>Nome</th>
               <th>endereco</th>
+              <th>Idade</th>
+              <th>Sexo</th>
             </tr>
     `;
     
@@ -123,6 +125,8 @@ app.post('/consulta', (req, res) => {
             <tr>
               <th>Nome</th>
               <th>endereco</th>
+              <th>idade</th>
+              <th>sexo</th>
             </tr>
     `;
     
