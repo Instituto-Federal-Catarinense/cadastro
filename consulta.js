@@ -2,15 +2,15 @@ const express = require('express');
 const mysql = require('mysql');
 const bodyParser = require('body-parser');
 const app = express();
-const port = 3000;
+const port = 8080;
 
 app.use(bodyParser.urlencoded({ extended: true }));
 
 // Configurações do banco de dados
 const connection = mysql.createConnection({
-  host: '127.0.0.1',
+  host: 'localhost',
   user: 'root',
-  password: 'A1b1c1d1',
+  password: 'aluno01',
   database: 'meuBanco'
 });
 
