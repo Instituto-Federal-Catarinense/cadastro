@@ -23,13 +23,13 @@ app.get("/cadastro", (req, res) => {
 });
 
 app.post("/cadastro", (req, res) => {
-  const { nome, endereco } = req.body;
-  if (!nome || !endereco) {
+  const { nome, endereco, telefone, email } = req.body;
+  if (!nome || !endereco || !telefone || !email) {
     res.status(400).send("Nome e endereço são campos obrigatórios.");
     return;
   }
 
-  const cliente = { nome, endereco };
+  const cliente = { nome, endereco, telefone, email };
   connection.query("INSERT INTO clientes SET ?", cliente, (err, result) => {
     if (err) throw err;
     console.log(`Cliente ${nome} cadastrado com sucesso!`);
@@ -65,6 +65,8 @@ app.get('/listagem', (req, res) => {
         <tr>
           <td>${cliente.nome}</td>
           <td>${cliente.endereco}</td>
+          <td>${cliente.telefone}</td>
+          <td>${cliente.email}</td>
         </tr>
       `;
     });
@@ -103,7 +105,7 @@ app.get('/consulta', (req, res) => {
 // Rota para processar a consulta
 app.post('/consulta', (req, res) => {
   //const nome = req.body.nome;
-  const { nome, endereco } = req.body;
+  const { nome, endereco, telefone, email } = req.body;
   //const endereco = req.body.endereco;
   
   // Consulta no banco de dados
@@ -123,6 +125,8 @@ app.post('/consulta', (req, res) => {
             <tr>
               <th>Nome</th>
               <th>endereco</th>
+              <th>telefone</th>
+              <th>email</th>
             </tr>
     `;
     
@@ -131,6 +135,8 @@ app.post('/consulta', (req, res) => {
         <tr>
           <td>${cliente.nome}</td>
           <td>${cliente.endereco}</td>
+          <td>${cliente.telefone}</td>
+          <td>${cliente.email}</td>
         </tr>
       `;
     });
