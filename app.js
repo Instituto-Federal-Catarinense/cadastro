@@ -23,8 +23,8 @@ app.get("/cadastro", (req, res) => {
 });
 
 app.post("/cadastro", (req, res) => {
-  const { nome, endereco } = req.body;
-  if (!nome || !endereco) {
+  const { nome, endereco, sexo, idade, nascimento, email, telefone } = req.body;
+  if (!nome || !endereco || !sexo || !idade || !nascimento || !email || !telefone) {
     res.status(400).send("Nome e endereço são campos obrigatórios.");
     return;
   }
@@ -151,6 +151,6 @@ connection.connect((err) => {
   console.log("Conectado ao banco de dados MySQL!");
 });
 
-app.listen(3000, () => {
-  console.log("Servidor iniciado na porta 3000");
+app.listen(8080, () => {
+  console.log("Servidor iniciado na porta 8080");
 });
