@@ -8,7 +8,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 const connection = mysql.createConnection({
   host: "127.0.0.1",
   user: "root",
-  password: "A1b1c1d1",
+  password: "aluno01",
   database: "meuBanco"
 });
 
@@ -16,20 +16,16 @@ app.get("/", (req, res) => {
   res.sendFile(__dirname + "/index.html");
 });
 
-app.get('/:nome', (req, res) => {
-  const userNome = req.params.nome;
-  // faça algo com o userId
-  console.log(`O nome do usuário é ${userNome}`);
-});
+
 
 app.get("/cadastro", (req, res) => {
   res.sendFile(__dirname + "/cadastro.html");
 });
 
 app.post("/cadastro", (req, res) => {
-  const { nome, endereco } = req.body;
-  if (!nome || !endereco) {
-    res.status(400).send("Nome e endereço são campos obrigatórios.");
+  const { nome, endereco, sexo, idade, responsavel, nascimento  } = req.body;
+  if (!nome || !endereco || !sexo || !idade || !responsavel || !nascimento) {
+    res.status(400).send("Todos os campos são obrigatórios.");
     return;
   }
 
@@ -59,8 +55,12 @@ app.get('/listagem', (req, res) => {
           <h1>Clientes encontrados</h1>
           <table>
             <tr>
-              <th>Nome</th>
+              <th>nome</th>
               <th>endereco</th>
+              <th>sexo</th>
+              <th>idade</th>
+              <th>responsavel</th>
+              <th>nascimento</th>
             </tr>
     `;
     
@@ -69,6 +69,10 @@ app.get('/listagem', (req, res) => {
         <tr>
           <td>${cliente.nome}</td>
           <td>${cliente.endereco}</td>
+          <td>${cliente.sexo}</td>
+          <td>${cliente.idade}</td>
+          <td>${cliente.responsavel}</td>
+          <td>${cliente.nascimento}</td>
         </tr>
       `;
     });
@@ -126,7 +130,11 @@ app.post('/consulta', (req, res) => {
           <table>
             <tr>
               <th>Nome</th>
-              <th>endereco</th>
+              <th>Endereco</th>
+              <th>Sexo</th>
+              <th>Idade</th>
+              <th>Responsável</th>
+              <th>Nascimento</th>
             </tr>
     `;
     
@@ -135,6 +143,10 @@ app.post('/consulta', (req, res) => {
         <tr>
           <td>${cliente.nome}</td>
           <td>${cliente.endereco}</td>
+          <td>${cliente.sexo}</td>
+          <td>${cliente.idade}</td>
+          <td>${cliente.responsavel}</td>
+          <td>${cliente.nascimento}</td>
         </tr>
       `;
     });
