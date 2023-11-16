@@ -9,7 +9,7 @@ const connection = mysql.createConnection({
   host: "127.0.0.1",
   user: "root",
   password: "aluno01",
-  database: "meuBanco"
+  database: "Meu_Banco"
 });
 
 app.get("/", (req, res) => {
@@ -20,14 +20,22 @@ app.get("/cadastro", (req, res) => {
   res.sendFile(__dirname + "/cadastro.html");
 });
 
+app.get("/cadastro", (req, res) => {
+  res.sendFile(__dirname + "/listagem.html");
+});
+
+app.get("/cadastro", (req, res) => {
+  res.sendFile(__dirname + "/consulta.html");
+});
+
 app.post("/cadastro", (req, res) => {
-  const { nome, endereco } = req.body;
-  if (!nome || !endereco) {
-    res.status(400).send("Nome e endereço são campos obrigatórios.");
+  const { nome, endereco, email, sexo, nascimento } = req.body;
+  if (!nome || !endereco || !email || !sexo || !nascimento) {
+    res.status(400).send("Nome, endereço, email, sexo e nascimento  são campos obrigatórios.");
     return;
   }
 
-  const cliente = { nome, endereco };
+  const cliente = { nome, endereco, email, sexo, nascimento };
   connection.query("INSERT INTO clientes SET ?", cliente, (err, result) => {
     if (err) throw err;
     console.log(`Cliente ${nome} cadastrado com sucesso!`);
@@ -55,6 +63,9 @@ app.get('/listagem', (req, res) => {
             <tr>
               <th>Nome</th>
               <th>endereco</th>
+              <th>email</th>
+              <th>sexo</th>
+              <th>nascimento</th>
             </tr>
     `;
     
@@ -63,6 +74,9 @@ app.get('/listagem', (req, res) => {
         <tr>
           <td>${cliente.nome}</td>
           <td>${cliente.endereco}</td>
+          <td>${cliente.email}</td>
+          <td>${cliente.sexo}</td>
+          <td>${cliente.nascimento}</td>
         </tr>
       `;
     });
@@ -101,7 +115,7 @@ app.get('/consulta', (req, res) => {
 // Rota para processar a consulta
 app.post('/consulta', (req, res) => {
   //const nome = req.body.nome;
-  const { nome, endereco } = req.body;
+  const { nome, endereco, email, sexo, nascimento } = req.body;
   //const endereco = req.body.endereco;
   
   // Consulta no banco de dados
@@ -121,6 +135,9 @@ app.post('/consulta', (req, res) => {
             <tr>
               <th>Nome</th>
               <th>endereco</th>
+              <th>email</th>
+              <th>sexo</th>
+              <th>nascimeto</th>
             </tr>
     `;
     
@@ -129,6 +146,9 @@ app.post('/consulta', (req, res) => {
         <tr>
           <td>${cliente.nome}</td>
           <td>${cliente.endereco}</td>
+          <td>${cliente.email}</td>
+          <td>${cliente.sexo}</td>
+          <td>${cliente.nascimento}</td>
         </tr>
       `;
     });
