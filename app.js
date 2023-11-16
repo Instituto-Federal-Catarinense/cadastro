@@ -8,7 +8,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 const connection = mysql.createConnection({
   host: "127.0.0.1",
   user: "root",
-  password: "A1b1c1d1",
+  password: "aluno01",
   database: "meuBanco"
 });
 
@@ -16,18 +16,12 @@ app.get("/", (req, res) => {
   res.sendFile(__dirname + "/index.html");
 });
 
-app.get('/:nome', (req, res) => {
-  const userNome = req.params.nome;
-  // faça algo com o userId
-  console.log(`O nome do usuário é ${userNome}`);
-});
-
-app.get("/cadastro", (req, res) => {
-  res.sendFile(__dirname + "/cadastro.html");
-});
+app.get("/cadastro", function (req, res) {
+    res.sendFile(__dirname + "/cadastro.html");
+  });
 
 app.post("/cadastro", (req, res) => {
-  const { nome, endereco } = req.body;
+  const { nome, endereco, nick, genero, nascimento, vulgo  } = req.body;
   if (!nome || !endereco) {
     res.status(400).send("Nome e endereço são campos obrigatórios.");
     return;
