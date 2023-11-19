@@ -16,19 +16,15 @@ app.get("/", (req, res) => {
   res.sendFile(__dirname + "/index.html");
 });
 
-app.get('/:nome', (req, res) => {
-  const userNome = req.params.nome;
-  // faça algo com o userId
-  console.log(`O nome do usuário é ${userNome}`);
-});
+
 
 app.get("/cadastro", (req, res) => {
   res.sendFile(__dirname + "/cadastro.html");
 });
 
 app.post("/cadastro", (req, res) => {
-  const { nome, endereco } = req.body;
-  if (!nome || !endereco) {
+  const { nome, endereco, sexo, idade, nascimento, email, telefone } = req.body;
+  if (!nome || !endereco || !sexo || !idade || !nascimento || !email || !telefone) {
     res.status(400).send("Nome e endereço são campos obrigatórios.");
     return;
   }
@@ -155,6 +151,6 @@ connection.connect((err) => {
   console.log("Conectado ao banco de dados MySQL!");
 });
 
-app.listen(3000, () => {
-  console.log("Servidor iniciado na porta 3000");
+app.listen(8080, () => {
+  console.log("Servidor iniciado na porta 8080");
 });
