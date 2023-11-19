@@ -25,8 +25,13 @@ DROP TABLE IF EXISTS `clientes`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `clientes` (
-  `nome` varchar(255) DEFAULT NULL,
-  `endereco` varchar(255) DEFAULT NULL
+  `nome` varchar(40) DEFAULT NULL,
+  `endereco` varchar(80) DEFAULT NULL,
+  `sexo` varchar(20) DEFAULT NULL,
+  `idade` int DEFAULT NULL,
+  `nascimento` date DEFAULT NULL,
+  `email` varchar(40) DEFAULT NULL,
+  `telefone` varchar(15) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
