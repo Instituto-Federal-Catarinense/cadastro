@@ -18,23 +18,24 @@
 --
 -- Table structure for table `clientes`
 --
+
+/*drop database if exists meuBanco;*/
 CREATE DATABASE meuBanco;
 USE meuBanco;
 
-DROP TABLE IF EXISTS `clientes`;
+DROP TABLE IF EXISTS 'clientes';
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `clientes` (
-  `nome` varchar(40) DEFAULT NULL,
-  `endereco` varchar(80) DEFAULT NULL,
-  `sexo` varchar(20) DEFAULT NULL,
-  `idade` int DEFAULT NULL,
-  `nascimento` date DEFAULT NULL,
-  `email` varchar(40) DEFAULT NULL,
-  `telefone` varchar(15) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+CREATE TABLE 'clientes' (
+    'nome' VARCHAR(40) DEFAULT NULL,
+    'endereco' VARCHAR(80) DEFAULT NULL,
+    'sexo' VARCHAR(20) DEFAULT NULL,
+    'idade' INT DEFAULT NULL,
+    'nascimento' DATE DEFAULT NULL,
+    'email' VARCHAR(40) DEFAULT NULL,
+    'telefone' VARCHAR(15) DEFAULT NULL
+)ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
 --
 -- Dumping data for table `clientes`
 --

@@ -8,7 +8,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 const connection = mysql.createConnection({
   host: "127.0.0.1",
   user: "root",
-  password: "1989",
+  password: "aluno01",
   database: "meuBanco"
 });
 
@@ -25,11 +25,11 @@ app.get("/cadastro", (req, res) => {
 app.post("/cadastro", (req, res) => {
   const { nome, endereco, sexo, idade, nascimento, email, telefone } = req.body;
   if (!nome || !endereco || !sexo || !idade || !nascimento || !email || !telefone) {
-    res.status(400).send("Nome e endereço são campos obrigatórios.");
+    res.status(400).send("todos os campos são obrigatórios.");
     return;
   }
 
-  const cliente = { nome, endereco };
+  const cliente = { nome, endereco, sexo, idade, nascimento, email, telefone };
   connection.query("INSERT INTO clientes SET ?", cliente, (err, result) => {
     if (err) throw err;
     console.log(`Cliente ${nome} cadastrado com sucesso!`);
@@ -103,7 +103,7 @@ app.get('/consulta', (req, res) => {
 // Rota para processar a consulta
 app.post('/consulta', (req, res) => {
   //const nome = req.body.nome;
-  const { nome, endereco } = req.body;
+  const { nome, endereco, sexo, idade, nascimento, email, telefone } = req.body;
   //const endereco = req.body.endereco;
   
   // Consulta no banco de dados
