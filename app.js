@@ -43,7 +43,7 @@ app.get('/listagem', (req, res) => {
   // Consulta no banco de dados
   connection.query(`SELECT * FROM clientes`, (error, results, fields) => {
     if (error) throw error;
-    
+
     // Exibição dos resultados
     let html = `
       <!DOCTYPE html>
@@ -56,26 +56,36 @@ app.get('/listagem', (req, res) => {
           <table>
             <tr>
               <th>Nome</th>
-              <th>endereco</th>
+              <th>Endereco</th>
+              <th>Sexo</th>
+              <th>Idade</th>
+              <th>Nascimento</th>
+              <th>Email</th>
+              <th>Telefone</th>
             </tr>
     `;
-    
+
     results.forEach((cliente) => {
       html += `
         <tr>
           <td>${cliente.nome}</td>
           <td>${cliente.endereco}</td>
+          <td>${cliente.sexo}</td>
+          <td>${cliente.idade}</td>
+          <td>${cliente.nascimento}</td>
+          <td>${cliente.email}</td>
+          <td>${cliente.telefone}</td>
         </tr>
       `;
     });
-    
+
     html += `
           </table>
           <a href="/">Voltar</a>
         </body>
       </html>
     `;
-    
+
     res.send(html);
   });
 });
@@ -105,11 +115,11 @@ app.post('/consulta', (req, res) => {
   //const nome = req.body.nome;
   const { nome, endereco } = req.body;
   //const endereco = req.body.endereco;
-  
+
   // Consulta no banco de dados
   connection.query(`SELECT * FROM clientes WHERE nome LIKE '%${nome}%'`, (error, results, fields) => {
     if (error) throw error;
-    
+
     // Exibição dos resultados
     let html = `
       <!DOCTYPE html>
@@ -120,28 +130,38 @@ app.post('/consulta', (req, res) => {
         <body>
           <h1>Clientes encontrados</h1>
           <table>
-            <tr>
-              <th>Nome</th>
-              <th>endereco</th>
-            </tr>
-    `;
-    
+          <tr>
+            <th>Nome</th>
+            <th>Endereco</th>
+            <th>Sexo</th>
+            <th>Idade</th>
+            <th>Nascimento</th>
+            <th>Email</th>
+            <th>Telefone</th>
+          </tr>
+    `;  
+
     results.forEach((cliente) => {
       html += `
-        <tr>
-          <td>${cliente.nome}</td>
-          <td>${cliente.endereco}</td>
-        </tr>
+      <tr>
+        <td>${cliente.nome}</td>
+        <td>${cliente.endereco}</td>
+        <td>${cliente.sexo}</td>
+        <td>${cliente.idade}</td>
+        <td>${cliente.nascimento}</td>
+        <td>${cliente.email}</td>
+        <td>${cliente.telefone}</td>
+      </tr>
       `;
     });
-    
+
     html += `
           </table>
           <a href="/">Voltar</a>
         </body>
       </html>
     `;
-    
+
     res.send(html);
   });
 });
