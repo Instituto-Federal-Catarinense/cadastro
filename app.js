@@ -48,10 +48,10 @@ app.post("/cadProduto", (req, res) => {
     return;
   }
 
-  const clientes = { nome, valor };
-  connection.query("INSERT INTO clientes SET ?", cliente, (err, result) => {
+  const produto = { nome, valor };
+  connection.query("INSERT INTO cadProduto SET ?", produto, (err, result) => {
     if (err) throw err;
-    console.log(`Cliente ${nome} cadastrado com sucesso!`);
+    console.log(`Produto ${nome} cadastrado com sucesso!`);
     res.redirect("/");
   });
 });
@@ -59,7 +59,7 @@ app.post("/cadProduto", (req, res) => {
 
 
 
-// Rota para processar a listagem
+// Rota para processar a listagem de clientes
 app.get('/listagem', (req, res) => {
 
   // Consulta no banco de dados
@@ -110,6 +110,50 @@ app.get('/listagem', (req, res) => {
     
 
 
+    
+    res.send(html);
+  });
+});
+
+
+// Rota para processar a listagem de produtos
+app.get('/prodListagem', (req, res) => {
+
+  // Consulta no banco de dados
+  connection.query(`SELECT * FROM cadProduto`, (error, results, fields) => {
+    if (error) throw error;
+    
+    // Exibição dos resultados
+    let html = `
+      <!DOCTYPE html>
+      <html>
+        <head>
+          <title>Produtos</title>
+        </head>
+        <body>
+          <h1>Produtos encontrados</h1>
+          <table>
+            <tr>
+              <th>Nome</th>
+              <th>valor</th>
+            </tr>
+    `;
+    
+    results.forEach((produto) => {
+      html += `
+        <tr>
+          <td>${produto.nome}</td>
+          <td>${produto.valor}</td>
+        </tr>
+      `;
+    });
+    
+    html += `
+          </table>
+          <a href="/">Voltar</a>
+        </body>
+      </html>
+    `;
     
     res.send(html);
   });
