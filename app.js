@@ -17,24 +17,29 @@ app.get("/", (req, res) => {
 });
 
 
-app.get("/cadastro", (req, res) => {
-  res.sendFile(__dirname + "/cadastro.html");
+app.get("/cadClientes", (req, res) => {
+  res.sendFile(__dirname + "/cadClientes.html");
 });
 
-app.post("/cadastro", (req, res) => {
+app.get("/cadastro-produto", (req, res) => {
+  res.sendFile(__dirname + "/produtos.html");
+});
+
+app.post("/cadClientes", (req, res) => {
   const { nome, endereco } = req.body;
   if (!nome || !endereco) {
     res.status(400).send("Nome e endereço são campos obrigatórios.");
     return;
   }
 
-  const cliente = { nome, endereco };
+  const cliente = { nome, endereco, sexo, nascimento, telefone, email };
   connection.query("INSERT INTO clientes SET ?", cliente, (err, result) => {
     if (err) throw err;
     console.log(`Cliente ${nome} cadastrado com sucesso!`);
     res.redirect("/");
   });
 });
+
 
 // Rota para processar a listagem
 app.get('/listagem', (req, res) => {
@@ -55,8 +60,12 @@ app.get('/listagem', (req, res) => {
           <table>
             <tr>
               <th>Nome</th>
-              <th>endereco</th>
-            </tr>
+              <th>Endereco</th>
+              <th>Sexo</th>
+              <th>Nascimento</th>
+              <th>Telefone</th>
+              <th>Email</th>
+              </tr>
     `;
     
     results.forEach((cliente) => {
@@ -64,7 +73,11 @@ app.get('/listagem', (req, res) => {
         <tr>
           <td>${cliente.nome}</td>
           <td>${cliente.endereco}</td>
-        </tr>
+          <td>${cliente.sexo}</td>
+          <td>${cliente.nascimento}</td>
+          <td>${cliente.telefone}</td>
+          <td>${cliente.email}</td>
+          </tr>
       `;
     });
     
