@@ -21,13 +21,13 @@ app.get("/cadastro", (req, res) => {
 });
 
 app.post("/cadastro", (req, res) => {
-  const { nome, endereco, email, telefone, sexo, nascimento } = req.body;
-  if (!nome || !endereco|| !email|| !telefone|| !sexo|| !nascimento) {
-    res.status(400).send("todos sao obrigatorios.");
+  const { nome, endereco,sexo, responsavel, nascimento } = req.body;
+  if (!nome || !endereco|| !sexo|| !responsavel|| !nascimento) {
+   res.status(400).send("todos sao obrigatorios.");
     return;
   }
 
-  const cliente = { nome, endereco, email, telefone, sexo, nascimento };
+  const cliente = { nome, endereco, sexo, responsavel, nascimento };
   connection.query("INSERT INTO clientes SET ?", cliente, (err, result) => {
     if (err) throw err;
     console.log(`Cliente ${nome} cadastrado com sucesso!`);
@@ -42,7 +42,7 @@ app.get('/listagem', (req, res) => {
   connection.query(`SELECT * FROM clientes`, (error, results, fields) => {
     if (error) throw error;
     
-    // Exibição dos resultados
+    // Exibicao dos resultados
     let html = `
       <!DOCTYPE html>
       <html>
@@ -55,6 +55,9 @@ app.get('/listagem', (req, res) => {
             <tr>
               <th>Nome</th>
               <th>endereco</th>
+              <th>sexo</th>
+              <th>responsavel</th>
+              <th>nascimento</th>
             </tr>
     `;
     
@@ -63,6 +66,9 @@ app.get('/listagem', (req, res) => {
         <tr>
           <td>${cliente.nome}</td>
           <td>${cliente.endereco}</td>
+          <td>${cliente.sexo}</td>
+          <td>${cliente.responsavel}</td>
+          <td>${cliente.nascimento}</td>
         </tr>
       `;
     });
@@ -78,7 +84,7 @@ app.get('/listagem', (req, res) => {
   });
 });
 
-// Rota para exibir o formulário de consulta
+// Rota para exibir o formulario de consulta
 app.get('/consulta', (req, res) => {
   res.send(`
     <!DOCTYPE html>
@@ -108,7 +114,7 @@ app.post('/consulta', (req, res) => {
   connection.query(`SELECT * FROM clientes WHERE nome LIKE '%${nome}%'`, (error, results, fields) => {
     if (error) throw error;
     
-    // Exibição dos resultados
+    // Exibicao dos resultados
     let html = `
       <!DOCTYPE html>
       <html>

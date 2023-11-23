@@ -25,9 +25,14 @@
       <li class="nav-item">
         <a class="nav-link active" href="/">Home</a>
       </li>
-      <li class="nav-item">
-        <a class="nav-link" href="/cadastro">Cadastrar</a>
-      </li>
+      <div class="dropdown">
+        <button type="button" class="btn-primary dropdown-toggle" data-bs-toggle="dropdown">cadastro
+        </button>
+        <ul class="dropdown-menu">
+          <li><a class="dropdown-item" href="cadastro">cliente</a></li>
+          <li><a class="dropdown-item" href="cadprodutos">produto</a></li>
+        </ul>
+      </div> 
       <li class="nav-item">
         <a class="nav-link" href="/listagem">Listagem</a>
       </li>
