@@ -33,7 +33,31 @@ app.post("/cadastro", (req, res) => {
     console.log(`Cliente ${nome} cadastrado com sucesso!`);
     res.redirect("/");
   });
+  });
+
+
+
+app.get("/cadProduto", (req, res) => {
+  res.sendFile(__dirname + "/cadProduto.html");
 });
+
+app.post("/cadProduto", (req, res) => {
+  const { nome, valor} = req.body;
+  if (!nome || !valor) {
+    res.status(400).send("todos os campos são obrigatórios.");
+    return;
+  }
+
+  const clientes = { nome, valor };
+  connection.query("INSERT INTO clientes SET ?", cliente, (err, result) => {
+    if (err) throw err;
+    console.log(`Cliente ${nome} cadastrado com sucesso!`);
+    res.redirect("/");
+  });
+});
+
+
+
 
 // Rota para processar a listagem
 app.get('/listagem', (req, res) => {
@@ -55,8 +79,8 @@ app.get('/listagem', (req, res) => {
             <tr>
               <th>Nome</th>
               <th>endereco</th>
-              <th>telefone</th>
               <th>email</th>
+              <th>telefone</th>
               <th>sexo</th>
               <th>data_nasc</th>
             </tr>
@@ -67,6 +91,10 @@ app.get('/listagem', (req, res) => {
         <tr>
           <td>${cliente.nome}</td>
           <td>${cliente.endereco}</td>
+          <td>${cliente.email}</td>
+          <td>${cliente.telefone}</td>
+          <td>${cliente.sexo}</td>
+          <td>${cliente.data_nasc}</td>
         </tr>
       `;
     });
@@ -77,6 +105,11 @@ app.get('/listagem', (req, res) => {
         </body>
       </html>
     `;
+    
+
+    
+
+
     
     res.send(html);
   });
