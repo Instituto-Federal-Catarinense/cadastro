@@ -18,18 +18,18 @@ app.get("/", (req, res) => {
 
 
 
-app.get("/cadastro", (req, res) => {
-  res.sendFile(__dirname + "/cadastro.html");
+app.get("/clientes", (req, res) => {
+  res.sendFile(__dirname + "/clientes.html");
 });
 
-app.post("/cadastro", (req, res) => {
+app.post("/clientes", (req, res) => {
   const { nome, endereco, sexo, idade, nascimento, email, telefone } = req.body;
   if (!nome || !endereco || !sexo || !idade || !nascimento || !email || !telefone) {
     res.status(400).send("Nome e endereço são campos obrigatórios.");
     return;
   }
 
-  const cliente = { nome, endereco };
+  const cliente = {  nome, endereco, sexo, idade, nascimento, email, telefone };
   connection.query("INSERT INTO clientes SET ?", cliente, (err, result) => {
     if (err) throw err;
     console.log(`Cliente ${nome} cadastrado com sucesso!`);
@@ -113,7 +113,7 @@ app.get('/consulta', (req, res) => {
 // Rota para processar a consulta
 app.post('/consulta', (req, res) => {
   //const nome = req.body.nome;
-  const { nome, endereco } = req.body;
+  const { nome, endereco, sexo, idade, nascimento, email, telefone  } = req.body;
   //const endereco = req.body.endereco;
 
   // Consulta no banco de dados
@@ -171,6 +171,6 @@ connection.connect((err) => {
   console.log("Conectado ao banco de dados MySQL!");
 });
 
-app.listen(8080, () => {
-  console.log("Servidor iniciado na porta 8080");
+app.listen(5000, () => {
+  console.log("Servidor iniciado na porta 5000");
 });
