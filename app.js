@@ -21,13 +21,13 @@ app.get("/cadastro", (req, res) => {
 });
 
 app.post("/cadastro", (req, res) => {
-  const { nome, endereco, sexo, nascimento, email, telefone } = req.body;
-  if (!nome || !endereco || !sexo || !nascimento || !email || !telefone) {
+  const { nome, endereco, sexo, datanasc, email, telefone } = req.body;
+  if (!nome || !endereco || !sexo || !datanasc || !email || !telefone) {
     res.status(400).send("Todos os campos são obrigatórios.");
     return;
   }
 
-  const cliente = { nome, endereco, sexo, nascimento, email, telefone};
+  const cliente = { nome, endereco, sexo, datanasc, email, telefone};
   connection.query("INSERT INTO clientes SET ?", cliente, (err, result) => {
     if (err) throw err;
     console.log(`Cliente ${nome} cadastrado com sucesso!`);
@@ -55,6 +55,10 @@ app.get('/listagem', (req, res) => {
             <tr>
               <th>Nome</th>
               <th>endereco</th>
+              <th>sexo</th>
+              <th>data nascimento</th>
+              <th>email</th>
+              <th>telefone</th>
             </tr>
     `;
     
@@ -63,6 +67,10 @@ app.get('/listagem', (req, res) => {
         <tr>
           <td>${cliente.nome}</td>
           <td>${cliente.endereco}</td>
+          <td>${cliente.sexo}</td>
+          <td>${cliente.datanasc}</td>
+          <td>${cliente.email}</td>
+          <td>${cliente.telefone}</td>
         </tr>
       `;
     });
@@ -149,6 +157,6 @@ connection.connect((err) => {
   console.log("Conectado ao banco de dados MySQL!");
 });
 
-app.listen(3000, () => {
-  console.log("Servidor iniciado na porta 3000");
+app.listen(8080, () => {
+  console.log("Servidor iniciado na porta 8080");
 });
