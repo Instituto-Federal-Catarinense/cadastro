@@ -40,7 +40,16 @@ CREATE TABLE `clientes` (
 
 LOCK TABLES `clientes` WRITE;
 /*!40000 ALTER TABLE `clientes` DISABLE KEYS */;
-INSERT INTO `clientes` VALUES ('dfgdfg','dfgsdfg'),('Joedio','Arroio do Silva'),('Teste','teste'),('aloou','alou'),('teste2','teste2'),('Teste4','Teste4'),('teste5','teste5'),('teste6','teste6');
+INSERT INTO `clientes` (`nome`, `endereco`, `email`, `sexo`, `nascimento`) VALUES
+('dfgdfg', 'dfgsdfg', 'email1@example.com', 'M', '1990-01-01'),
+('Joedio', 'Arroio do Silva', 'email2@example.com', 'F', '1995-05-05'),
+('Teste', 'teste', 'email3@example.com', 'M', '1985-10-10'),
+('aloou', 'alou', 'email4@example.com', 'F', '2000-02-15'),
+('teste2', 'teste2', 'email5@example.com', 'M', '1998-07-20'),
+('Teste4', 'Teste4', 'email6@example.com', 'F', '1992-03-30'),
+('teste5', 'teste5', 'email7@example.com', 'M', '1980-12-25'),
+('teste6', 'teste6', 'email8@example.com', 'F', '1993-08-05');
+
 /*!40000 ALTER TABLE `clientes` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;

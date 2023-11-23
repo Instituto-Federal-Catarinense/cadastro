@@ -16,19 +16,11 @@ app.get("/", (req, res) => {
   res.sendFile(__dirname + "/index.html");
 });
 
-app.get("/cadastro", (req, res) => {
-  res.sendFile(__dirname + "/cadastro.html");
+app.get("/cadClientes", (req, res) => {
+  res.sendFile(__dirname + "/cadClientes.html");
 });
 
-app.get("/cadastro", (req, res) => {
-  res.sendFile(__dirname + "/listagem.html");
-});
-
-app.get("/cadastro", (req, res) => {
-  res.sendFile(__dirname + "/consulta.html");
-});
-
-app.post("/cadastro", (req, res) => {
+app.post("/cadClientes", (req, res) => {
   const { nome, endereco, email, sexo, nascimento } = req.body;
   if (!nome || !endereco || !email || !sexo || !nascimento) {
     res.status(400).send("Nome, endereço, email, sexo e nascimento  são campos obrigatórios.");
@@ -38,7 +30,7 @@ app.post("/cadastro", (req, res) => {
   const cliente = { nome, endereco, email, sexo, nascimento };
   connection.query("INSERT INTO clientes SET ?", cliente, (err, result) => {
     if (err) throw err;
-    console.log(`Cliente ${nome} cadastrado com sucesso!`);
+    console.log(`clientes ${nome} cadastrado com sucesso!`);
     res.redirect("/");
   });
 });
@@ -102,7 +94,6 @@ app.get('/consulta', (req, res) => {
       </head>
       <body>
         <h1>Consulta de clientes</h1>
-        <form method="POST" action="/consulta">
           <label for="nome">Nome:</label>
           <input type="text" id="nome" name="nome"><br><br>
           <button type="submit">Consultar</button>
