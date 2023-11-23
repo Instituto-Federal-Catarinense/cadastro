@@ -32,12 +32,21 @@
 </head>
 <body>
   <h1>Cadastro de Clientes</h1>
-  <form action="/cadastro" method="POST">
+  <form action="/cadClientes" method="POST">
     <label for="nome">Nome:</label>
     <input type="text" id="nome" name="nome" required>
     <br>
     <label for="endereco">Endereço:</label>
     <input type="text" id="endereco" name="endereco" required>
+    <br>
+    <label for="sexo">sexo:</label>
+    <input type="text" id="sexo" name="sexo" required>
+    <br>
+    <label for="responsavel">responsavel:</label>
+    <input type="text" id="responsavel" name="responsavel" required>
+    <br>
+    <label for="nascimento">nascimento:</label>
+    <input type="date" id="nascimento" name="nascimento" required>
     <br>
     <button type="submit">Cadastrar</button>
   </form>
