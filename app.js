@@ -9,7 +9,7 @@ const connection = mysql.createConnection({
   host: "127.0.0.1",
   user: "root",
   password: "aluno01",
-  database: "Meu_Banco"
+  database: "meuBanco"
 });
 
 app.get("/", (req, res) => {
@@ -31,6 +31,25 @@ app.post("/cadClientes", (req, res) => {
   connection.query("INSERT INTO clientes SET ?", cliente, (err, result) => {
     if (err) throw err;
     console.log(`clientes ${nome} cadastrado com sucesso!`);
+    res.redirect("/");
+  });
+});
+
+app.get("/cadProdutos", (req, res) => {
+  res.sendFile(__dirname + "/cadProdutos.html");
+});
+
+app.post("/cadProdutos", (req, res) => {
+  const { nome, descricao, validade, valor, dfabricacao } = req.body;
+  if (!nome || !descricao || !validade || !valor || !dfabricacao) {
+    res.status(400).send("Nome, descricao, validade, valor e dfabricacao  são campos obrigatórios.");
+    return;
+  }
+
+  const produtos = { nome, descricao, validade, valor, dfabricacao };
+  connection.query("INSERT INTO produtos SET ?", produtos, (err, result) => {
+    if (err) throw err;
+    console.log(`produtos ${nome} cadastrado com sucesso!`);
     res.redirect("/");
   });
 });
@@ -160,6 +179,6 @@ connection.connect((err) => {
   console.log("Conectado ao banco de dados MySQL!");
 });
 
-app.listen(3000, () => {
+app.listen(8080, () => {
   console.log("Servidor iniciado na porta 3000");
 });

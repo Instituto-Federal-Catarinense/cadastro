@@ -33,6 +33,14 @@ CREATE TABLE `clientes` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
+CREATE TABLE `produtos` (
+  `nome` varchar(255) DEFAULT NULL,
+  `descrição` varchar(255) DEFAULT NULL
+  `validade` date DEFAULT NULL
+  `valor` numeric(255) DEFAULT NULL
+  `dfabricacao` date DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
 
 --
 -- Dumping data for table `clientes`
