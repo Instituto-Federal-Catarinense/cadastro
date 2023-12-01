@@ -8,7 +8,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 const connection = mysql.createConnection({
   host: "127.0.0.1",
   user: "root",
-  password: "A1b1c1d1",
+  password: "aluno01",
   database: "meuBanco"
 });
 
@@ -16,24 +16,20 @@ app.get("/", (req, res) => {
   res.sendFile(__dirname + "/index.html");
 });
 
-app.get('/:nome', (req, res) => {
-  const userNome = req.params.nome;
-  // faça algo com o userId
-  console.log(`O nome do usuário é ${userNome}`);
+
+
+app.get("/clientes", (req, res) => {
+  res.sendFile(__dirname + "/clientes.html");
 });
 
-app.get("/cadastro", (req, res) => {
-  res.sendFile(__dirname + "/cadastro.html");
-});
-
-app.post("/cadastro", (req, res) => {
-  const { nome, endereco } = req.body;
-  if (!nome || !endereco) {
+app.post("/clientes", (req, res) => {
+  const { nome, endereco, sexo, idade, nascimento, email, telefone } = req.body;
+  if (!nome || !endereco || !sexo || !idade || !nascimento || !email || !telefone) {
     res.status(400).send("Nome e endereço são campos obrigatórios.");
     return;
   }
 
-  const cliente = { nome, endereco };
+  const cliente = {  nome, endereco, sexo, idade, nascimento, email, telefone };
   connection.query("INSERT INTO clientes SET ?", cliente, (err, result) => {
     if (err) throw err;
     console.log(`Cliente ${nome} cadastrado com sucesso!`);
@@ -47,7 +43,7 @@ app.get('/listagem', (req, res) => {
   // Consulta no banco de dados
   connection.query(`SELECT * FROM clientes`, (error, results, fields) => {
     if (error) throw error;
-    
+
     // Exibição dos resultados
     let html = `
       <!DOCTYPE html>
@@ -60,26 +56,36 @@ app.get('/listagem', (req, res) => {
           <table>
             <tr>
               <th>Nome</th>
-              <th>endereco</th>
+              <th>Endereco</th>
+              <th>Sexo</th>
+              <th>Idade</th>
+              <th>Nascimento</th>
+              <th>Email</th>
+              <th>Telefone</th>
             </tr>
     `;
-    
+
     results.forEach((cliente) => {
       html += `
         <tr>
           <td>${cliente.nome}</td>
           <td>${cliente.endereco}</td>
+          <td>${cliente.sexo}</td>
+          <td>${cliente.idade}</td>
+          <td>${cliente.nascimento}</td>
+          <td>${cliente.email}</td>
+          <td>${cliente.telefone}</td>
         </tr>
       `;
     });
-    
+
     html += `
           </table>
           <a href="/">Voltar</a>
         </body>
       </html>
     `;
-    
+
     res.send(html);
   });
 });
@@ -107,13 +113,13 @@ app.get('/consulta', (req, res) => {
 // Rota para processar a consulta
 app.post('/consulta', (req, res) => {
   //const nome = req.body.nome;
-  const { nome, endereco } = req.body;
+  const { nome, endereco, sexo, idade, nascimento, email, telefone  } = req.body;
   //const endereco = req.body.endereco;
-  
+
   // Consulta no banco de dados
   connection.query(`SELECT * FROM clientes WHERE nome LIKE '%${nome}%'`, (error, results, fields) => {
     if (error) throw error;
-    
+
     // Exibição dos resultados
     let html = `
       <!DOCTYPE html>
@@ -124,28 +130,38 @@ app.post('/consulta', (req, res) => {
         <body>
           <h1>Clientes encontrados</h1>
           <table>
-            <tr>
-              <th>Nome</th>
-              <th>endereco</th>
-            </tr>
-    `;
-    
+          <tr>
+            <th>Nome</th>
+            <th>Endereco</th>
+            <th>Sexo</th>
+            <th>Idade</th>
+            <th>Nascimento</th>
+            <th>Email</th>
+            <th>Telefone</th>
+          </tr>
+    `;  
+
     results.forEach((cliente) => {
       html += `
-        <tr>
-          <td>${cliente.nome}</td>
-          <td>${cliente.endereco}</td>
-        </tr>
+      <tr>
+        <td>${cliente.nome}</td>
+        <td>${cliente.endereco}</td>
+        <td>${cliente.sexo}</td>
+        <td>${cliente.idade}</td>
+        <td>${cliente.nascimento}</td>
+        <td>${cliente.email}</td>
+        <td>${cliente.telefone}</td>
+      </tr>
       `;
     });
-    
+
     html += `
           </table>
           <a href="/">Voltar</a>
         </body>
       </html>
     `;
-    
+
     res.send(html);
   });
 });
@@ -155,6 +171,6 @@ connection.connect((err) => {
   console.log("Conectado ao banco de dados MySQL!");
 });
 
-app.listen(3000, () => {
-  console.log("Servidor iniciado na porta 3000");
+app.listen(5000, () => {
+  console.log("Servidor iniciado na porta 5000");
 });
