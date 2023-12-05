@@ -20,18 +20,16 @@ app.get("/cadastro", (req, res) => {
   res.sendFile(__dirname + "/cadastro.html");
 });
 
+app.get("/cadastroProduto", (req, res) => {
+  res.sendFile(__dirname + "/cadastroProduto.html");
+});
+
 app.post("/cadastro", (req, res) => {
   const { nome, endereco, sexo, idade } = req.body;
   if (!nome || !endereco || !idade || !sexo) {
     res.status(400).send("Nome e endereço são campos obrigatórios.");
     return;
   }
-
-  const produto = { nome, tipo };
-  connection.query("INSERT INTO produto SET ?", produto, (err, result) => {
-    if (err) throw err;
-    console.log(`Produto ${nome} cadastrado com sucesso!`);
-  })
 
   const cliente = { nome, endereco,sexo,idade };
   connection.query("INSERT INTO clientes SET ?", cliente, (err, result) => {
@@ -41,6 +39,21 @@ app.post("/cadastro", (req, res) => {
   });
 
   
+});
+
+app.post("/cadastroProduto", (req, res) => {
+  const { nome, tipo} = req.body;
+  if (!nome || !tipo) {
+    res.status(400).send("Nome e tipo são campos obrigatórios.");
+    return;
+  }
+
+  const produto = { nome, tipo };
+  connection.query("INSERT INTO produtos SET ?", produto, (err, result) => {
+    if (err) throw err;
+    console.log(`Produto ${nome} cadastrado com sucesso!`);
+    res.redirect("/");
+  })
 });
 
 // Rota para processar a listagem
@@ -78,6 +91,49 @@ app.get('/listagem', (req, res) => {
           <td>${cliente.endereco}</td>
           <td>${cliente.idade}</td>
           <td>${cliente.sexo}</td>
+          <td>${produto.nome}</td>
+          <td>${produto.tipo}</td>
+        </tr>
+      `;
+    });
+    
+    html += `
+          </table>
+          <a href="/">Voltar</a>
+        </body>
+      </html>
+    `;
+    
+    res.send(html);
+  });
+});
+
+app.get('/listagemProduto', (req, res) => {
+
+  // Consulta no banco de dados
+  connection.query(`SELECT * FROM produtos`, (error, results, fields) => {
+    if (error) throw error;
+  
+    
+    // Exibição dos resultados
+    let html = `
+      <!DOCTYPE html>
+      <html>
+        <head>
+          <title>Produtos</title>
+        </head>
+        <body>
+          <h1>Produtos encontrados</h1>
+          <table>
+            <tr>
+              <th>Nome Produto</th>
+              <th>Tipo Produto</th>
+            </tr>
+    `;
+    
+    results.forEach((produto) => {
+      html += `
+        <tr>
           <td>${produto.nome}</td>
           <td>${produto.tipo}</td>
         </tr>
