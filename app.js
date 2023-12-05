@@ -17,19 +17,18 @@ app.get("/", (req, res) => {
 });
 
 
-
 app.get("/cadastro", (req, res) => {
   res.sendFile(__dirname + "/cadastro.html");
 });
 
 app.post("/cadastro", (req, res) => {
-  const { nome, endereco, telefone, email } = req.body;
-  if (!nome || !endereco || !telefone || !email) {
+  const { nome, endereco, sexo, idade  } = req.body;
+  if (!nome || !endereco || !sexo || !idade) {
     res.status(400).send("Nome e endereço são campos obrigatórios.");
     return;
   }
 
-  const cliente = { nome, endereco, telefone, email };
+  const cliente = { nome, endereco, sexo, idade };
   connection.query("INSERT INTO clientes SET ?", cliente, (err, result) => {
     if (err) throw err;
     console.log(`Cliente ${nome} cadastrado com sucesso!`);
@@ -57,6 +56,8 @@ app.get('/listagem', (req, res) => {
             <tr>
               <th>Nome</th>
               <th>endereco</th>
+              <th>idade</th>
+              <th>sexo</th>
             </tr>
     `;
     
@@ -65,8 +66,8 @@ app.get('/listagem', (req, res) => {
         <tr>
           <td>${cliente.nome}</td>
           <td>${cliente.endereco}</td>
-          <td>${cliente.telefone}</td>
-          <td>${cliente.email}</td>
+          <td>${cliente.idade}</td>
+          <td>${cliente.sexo}</td>
         </tr>
       `;
     });
@@ -105,7 +106,7 @@ app.get('/consulta', (req, res) => {
 // Rota para processar a consulta
 app.post('/consulta', (req, res) => {
   //const nome = req.body.nome;
-  const { nome, endereco, telefone, email } = req.body;
+  const { nome, endereco } = req.body;
   //const endereco = req.body.endereco;
   
   // Consulta no banco de dados
@@ -125,8 +126,8 @@ app.post('/consulta', (req, res) => {
             <tr>
               <th>Nome</th>
               <th>endereco</th>
-              <th>telefone</th>
-              <th>email</th>
+              <th>Idade</th>
+              <th>Sexo</th>
             </tr>
     `;
     
@@ -135,8 +136,8 @@ app.post('/consulta', (req, res) => {
         <tr>
           <td>${cliente.nome}</td>
           <td>${cliente.endereco}</td>
-          <td>${cliente.telefone}</td>
-          <td>${cliente.email}</td>
+          <td>${cliente.idade}</td>
+          <td>${cliente.sexo}</td>
         </tr>
       `;
     });
