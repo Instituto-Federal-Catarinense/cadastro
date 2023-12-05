@@ -16,18 +16,19 @@ app.get("/", (req, res) => {
   res.sendFile(__dirname + "/index.html");
 });
 
+
 app.get("/cadastro", (req, res) => {
   res.sendFile(__dirname + "/cadastro.html");
 });
 
 app.post("/cadastro", (req, res) => {
-  const { nome, endereco, email, telefone } = req.body;
-  if (!nome || !endereco || !email || !telefone) {
+  const { nome, endereco, sexo, idade  } = req.body;
+  if (!nome || !endereco || !sexo || !idade) {
     res.status(400).send("Nome e endereço são campos obrigatórios.");
     return;
   }
 
-  const cliente = { nome, endereco, email, telefone };
+  const cliente = { nome, endereco, sexo, idade };
   connection.query("INSERT INTO clientes SET ?", cliente, (err, result) => {
     if (err) throw err;
     console.log(`Cliente ${nome} cadastrado com sucesso!`);
@@ -47,16 +48,16 @@ app.get('/listagem', (req, res) => {
       <!DOCTYPE html>
       <html>
         <head>
-          <title>Clientes</title> 
+          <title>Clientes</title>
         </head>
         <body>
           <h1>Clientes encontrados</h1>
           <table>
             <tr>
               <th>Nome</th>
-              <th>Endereco</th>
-              <th>Email</th>
-              <th>Telefone</th>
+              <th>endereco</th>
+              <th>idade</th>
+              <th>sexo</th>
             </tr>
     `;
     
@@ -65,8 +66,8 @@ app.get('/listagem', (req, res) => {
         <tr>
           <td>${cliente.nome}</td>
           <td>${cliente.endereco}</td>
-          <td>${cliente.email}</td>
-          <td>${cliente.telefone}</td>
+          <td>${cliente.idade}</td>
+          <td>${cliente.sexo}</td>
         </tr>
       `;
     });
@@ -105,7 +106,7 @@ app.get('/consulta', (req, res) => {
 // Rota para processar a consulta
 app.post('/consulta', (req, res) => {
   //const nome = req.body.nome;
-  const { nome, endereco, email, telefone } = req.body;
+  const { nome, endereco } = req.body;
   //const endereco = req.body.endereco;
   
   // Consulta no banco de dados
@@ -124,9 +125,9 @@ app.post('/consulta', (req, res) => {
           <table>
             <tr>
               <th>Nome</th>
-              <th>Endereco</th>
-              <th>Email</th>
-              <th>Telefone</th>
+              <th>endereco</th>
+              <th>Idade</th>
+              <th>Sexo</th>
             </tr>
     `;
     
@@ -135,8 +136,8 @@ app.post('/consulta', (req, res) => {
         <tr>
           <td>${cliente.nome}</td>
           <td>${cliente.endereco}</td>
-          <td>${cliente.email}</td>
-          <td>${cliente.telefone}</td>
+          <td>${cliente.idade}</td>
+          <td>${cliente.sexo}</td>
         </tr>
       `;
     });
