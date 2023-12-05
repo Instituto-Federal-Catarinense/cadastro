@@ -2,12 +2,11 @@ const express = require("express");
 const mysql = require("mysql");
 const bodyParser = require('body-parser');
 const app = express();
-exports.app = app;
 
 app.use(bodyParser.urlencoded({ extended: true }));
 
 const connection = mysql.createConnection({
-  host: "localhost",
+  host: "127.0.0.1",
   user: "root",
   password: "aluno01",
   database: "meuBanco"
@@ -17,18 +16,19 @@ app.get("/", (req, res) => {
   res.sendFile(__dirname + "/index.html");
 });
 
+
 app.get("/cadastro", (req, res) => {
   res.sendFile(__dirname + "/cadastro.html");
 });
 
 app.post("/cadastro", (req, res) => {
-  const { nome, endereco, Email, Telefone } = req.body;
-  if (!nome || !endereco || !Email || !Telefone) {
-    res.status(400).send("Nome, endereço, Email e Telefone são campos obrigatórios.");
+  const { nome, endereco, sexo, idade  } = req.body;
+  if (!nome || !endereco || !sexo || !idade) {
+    res.status(400).send("Nome e endereço são campos obrigatórios.");
     return;
   }
 
-  const cliente = { nome, endereco, Email, Telefone};
+  const cliente = { nome, endereco, sexo, idade };
   connection.query("INSERT INTO clientes SET ?", cliente, (err, result) => {
     if (err) throw err;
     console.log(`Cliente ${nome} cadastrado com sucesso!`);
@@ -56,6 +56,8 @@ app.get('/listagem', (req, res) => {
             <tr>
               <th>Nome</th>
               <th>endereco</th>
+              <th>idade</th>
+              <th>sexo</th>
             </tr>
     `;
     
@@ -64,6 +66,8 @@ app.get('/listagem', (req, res) => {
         <tr>
           <td>${cliente.nome}</td>
           <td>${cliente.endereco}</td>
+          <td>${cliente.idade}</td>
+          <td>${cliente.sexo}</td>
         </tr>
       `;
     });
@@ -122,8 +126,8 @@ app.post('/consulta', (req, res) => {
             <tr>
               <th>Nome</th>
               <th>endereco</th>
-              <th>Email</>
-              <th>Telefone</>
+              <th>Idade</th>
+              <th>Sexo</th>
             </tr>
     `;
     
@@ -132,8 +136,8 @@ app.post('/consulta', (req, res) => {
         <tr>
           <td>${cliente.nome}</td>
           <td>${cliente.endereco}</td>
-          <td>${cliente.Email}</td>
-          <td>${cliente.Telefone}</td>
+          <td>${cliente.idade}</td>
+          <td>${cliente.sexo}</td>
         </tr>
       `;
     });
@@ -154,7 +158,6 @@ connection.connect((err) => {
   console.log("Conectado ao banco de dados MySQL!");
 });
 
-app.listen(8080, () => {
-  console.log("Servidor iniciado na porta 8080");
+app.listen(3000, () => {
+  console.log("Servidor iniciado na porta 3000");
 });
-
