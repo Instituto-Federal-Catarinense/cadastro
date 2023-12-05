@@ -28,7 +28,13 @@ app.post("/cadastro", (req, res) => {
     res.status(400).send("Nome e endereço são campos obrigatórios.");
     return;
   }
-
+  const produto = { nome, validade, fabricacao, preco };
+  connection.query("INSERT INTO clientes SET ?", produto, (err, result) => {
+    if (err) throw err;
+    console.log(`produto ${nome} cadastrado com sucesso!`);
+    res.redirect("/");
+  });
+  
   const cliente = { nome, endereco, telefone, email };
   connection.query("INSERT INTO clientes SET ?", cliente, (err, result) => {
     if (err) throw err;
