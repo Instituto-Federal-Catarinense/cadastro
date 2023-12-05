@@ -174,6 +174,66 @@ app.post('/consulta', (req, res) => {
   });
 });
 
+// ... (seu código existente)
+
+// Rota para processar a listagem de produtos
+app.get('/listagemProdutos', (req, res) => {
+  // Consulta no banco de dados
+  connection.query(`SELECT * FROM produtos`, (error, results, fields) => {
+    if (error) throw error;
+
+    // Exibição dos resultados
+    let html = `
+      <!DOCTYPE html>
+      <html>
+        <head>
+          <title>Produtos</title>
+        </head>
+        <body>
+          <h1>Produtos encontrados</h1>
+          <table>
+            <tr>
+              <th>Nome</th>
+              <th>Descrição</th>
+              <th>Validade</th>
+              <th>Valor</th>
+              <th>Data de Fabricação</th>
+            </tr>
+    `;
+
+    results.forEach((produto) => {
+      html += `
+        <tr>
+          <td>${produto.nome}</td>
+          <td>${produto.descricao}</td>
+          <td>${produto.validade}</td>
+          <td>${produto.valor}</td>
+          <td>${produto.dfabricacao}</td>
+        </tr>
+      `;
+    });
+
+    html += `
+          </table>
+          <a href="/">Voltar</a>
+        </body>
+      </html>
+    `;
+
+    res.send(html);
+  });
+});
+
+// ... (seu código existente)
+app.get('/listagemClientes', (req, res) => {
+  res.sendFile(__dirname + '/listagemClientes.html');
+});
+
+app.get('/listagemProdutos', (req, res) => {
+  res.sendFile(__dirname + '/listagemProdutos.html');
+});
+
+
 connection.connect((err) => {
   if (err) throw err;
   console.log("Conectado ao banco de dados MySQL!");

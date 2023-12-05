@@ -18,8 +18,8 @@
 --
 -- Table structure for table `clientes`
 --
-CREATE DATABASE Meu_Banco;
-USE Meu_Banco;
+CREATE DATABASE meuBanco;
+USE meuBanco;
 
 DROP TABLE IF EXISTS `clientes`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
