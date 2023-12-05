@@ -16,23 +16,18 @@ app.get("/", (req, res) => {
   res.sendFile(__dirname + "/index.html");
 });
 
-
-app.get("/cadClientes", (req, res) => {
-  res.sendFile(__dirname + "/cadClientes.html");
+app.get("/clientes", (req, res) => {
+  res.sendFile(__dirname + "/clientes.html");
 });
 
-app.get("/cadastro-produto", (req, res) => {
-  res.sendFile(__dirname + "/produtos.html");
-});
-
-app.post("/cadClientes", (req, res) => {
-  const { nome, endereco } = req.body;
-  if (!nome || !endereco) {
-    res.status(400).send("Nome e endereço são campos obrigatórios.");
+app.post("/clientes", (req, res) => {
+  const { nome, endereco, email, telefone, sexo, nascimento } = req.body;
+  if (!nome || !endereco || !email || !telefone || !sexo || !nascimento ) {
+    res.status(400).send("todos são campos obrigatórios.");
     return;
   }
 
-  const cliente = { nome, endereco, sexo, nascimento, telefone, email };
+  const cliente = { nome, endereco };
   connection.query("INSERT INTO clientes SET ?", cliente, (err, result) => {
     if (err) throw err;
     console.log(`Cliente ${nome} cadastrado com sucesso!`);
@@ -40,9 +35,27 @@ app.post("/cadClientes", (req, res) => {
   });
 });
 
+app.get("/produtos", (req, res) => {
+  res.sendFile(__dirname + "/produtos.html");
+});
+
+app.post("/produtos", (req, res) => {
+  const { nome, descricao, quantidade, valor } = req.body;
+  if (!nome || !descricao || !quantidade || !valor) {
+    res.status(400).send("todos são campos obrigatórios.");
+    return;
+  }
+
+  const produto = { nome, descricao, quantidade, valor };
+  connection.query("INSERT INTO produtos SET ?", produto, (err, result) => {
+    if (err) throw err;
+    console.log(`Produto ${nome} cadastrado com sucesso!`);
+    res.redirect("/");
+  });
+});
 
 // Rota para processar a listagem
-app.get('/listagem', (req, res) => {
+app.get('/listagem-clientes', (req, res) => {
 
   // Consulta no banco de dados
   connection.query(`SELECT * FROM clientes`, (error, results, fields) => {
@@ -60,12 +73,12 @@ app.get('/listagem', (req, res) => {
           <table>
             <tr>
               <th>Nome</th>
-              <th>Endereco</th>
-              <th>Sexo</th>
-              <th>Nascimento</th>
-              <th>Telefone</th>
-              <th>Email</th>
-              </tr>
+              <th>endereco</th>
+              <th>email</th>
+              <th>telefone</th>
+              <th>sexo</th>
+              <th>nascimento</th>
+            </tr>
     `;
     
     results.forEach((cliente) => {
@@ -73,11 +86,59 @@ app.get('/listagem', (req, res) => {
         <tr>
           <td>${cliente.nome}</td>
           <td>${cliente.endereco}</td>
+          <td>${cliente.email}</td>
+          <td>${cliente.telefone}</td>
           <td>${cliente.sexo}</td>
           <td>${cliente.nascimento}</td>
-          <td>${cliente.telefone}</td>
-          <td>${cliente.email}</td>
-          </tr>
+        </tr>
+      `;
+    });
+    
+    html += `
+          </table>
+          <a href="/">Voltar</a>
+        </body>
+      </html>
+    `;
+    
+    res.send(html);
+  });
+});
+
+app.get('/listagem-produtos', (req, res) => {
+
+  // Consulta no banco de dados
+  connection.query(`SELECT * FROM produtos`, (error, results, fields) => {
+    if (error) throw error;
+    
+    // Exibição dos resultados
+    let html = `
+      <!DOCTYPE html>
+      <html>
+        <head>
+          <title>Clientes</title>
+        </head>
+        <body>
+          <h1>Clientes encontrados</h1>
+          <table>
+            <tr>
+              <th>ID</th>
+              <th>Nome</th>
+              <th>Descrição</th>
+              <th>Quantidade</th>
+              <th>Valor</th>
+            </tr>
+    `;
+    
+    results.forEach((produto) => {
+      html += `
+        <tr>
+          <td>${produto.id}</td>
+          <td>${produto.nome}</td>
+          <td>${produto.descricao}</td>
+          <td>${produto.quantidade}</td>
+          <td>R$ ${produto.valor}</td>
+        </tr>
       `;
     });
     
@@ -135,6 +196,10 @@ app.post('/consulta', (req, res) => {
             <tr>
               <th>Nome</th>
               <th>endereco</th>
+              <th>email</th>
+              <th>telefone</th>
+              <th>sexo</th>
+              <th>nascimento</th>
             </tr>
     `;
     
@@ -143,12 +208,17 @@ app.post('/consulta', (req, res) => {
         <tr>
           <td>${cliente.nome}</td>
           <td>${cliente.endereco}</td>
+          <td>${cliente.email}</td>
+          <td>${cliente.telefone}</td>
+          <td>${cliente.nascimento}</td>
+          <td>${cliente.sexo}</td>
         </tr>
       `;
     });
     
     html += `
           </table>
+          <br>
           <a href="/">Voltar</a>
         </body>
       </html>

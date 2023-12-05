@@ -1,24 +1,51 @@
-<!-- cadastro-produto.html -->
 <!DOCTYPE html>
 <html>
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Cadastro de Produtos</title>
+  <title>Cadastro de Clientes</title>
   <style>
-    /* ... (seu estilo CSS existente) */
-  </style>
+  input[type=text], select {
+    width: 100%;
+    padding: 12px 20px;
+    margin: 8px 0;
+    display: inline-block;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+  }
+
+  input[type=submit] {
+    background-color: #4CAF50;
+    color: white;
+    padding: 12px 20px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+
+  input[type=submit]:hover {
+    background-color: #45a049;
+  }
+</style>
+
 </head>
 <body>
-  <h1>Cadastro de Produtos</h1>
-  <form action="/cadastro-produto" method="POST">
-    <label for="nome">Nome do Produto:</label>
+  <h1>Cadastro de Clientes</h1>
+  <form action="/produtos" method="POST">
+    <label for="nome">Nome:</label>
     <input type="text" id="nome" name="nome" required>
     <br>
-    <!-- Adicione outros campos do formulário conforme necessário -->
+    <label for="endereco">Descricao:</label>
+    <input type="text" id="descricao" name="descricao" required>
     <br>
-
-    <button type="submit">Cadastrar Produto</button>
+    <label for="email">Quantidade:</label>
+    <input type="text" id="quantidade" name="quantidade" required>
+    <br>
+    <label for="telefone">Valor:</label>
+    <input type="text" id="valor" name="valor" required>
+   
+    <button type="submit">Cadastrar</button>
   </form>
 </body>
 </html>
