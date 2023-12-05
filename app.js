@@ -27,20 +27,29 @@ app.post("/cadastro", (req, res) => {
     return;
   }
 
+  const produto = { nome, tipo };
+  connection.query("INSERT INTO produto SET ?", produto, (err, result) => {
+    if (err) throw err;
+    console.log(`Produto ${nome} cadastrado com sucesso!`);
+  })
+
   const cliente = { nome, endereco,sexo,idade };
   connection.query("INSERT INTO clientes SET ?", cliente, (err, result) => {
     if (err) throw err;
     console.log(`Cliente ${nome} cadastrado com sucesso!`);
     res.redirect("/");
   });
+
+  
 });
 
 // Rota para processar a listagem
 app.get('/listagem', (req, res) => {
 
   // Consulta no banco de dados
-  connection.query(`SELECT * FROM clientes`, (error, results, fields) => {
+  connection.query(`SELECT * FROM clientes`, `SELECT * FROM produtos`, (error, results, fields) => {
     if (error) throw error;
+  
     
     // Exibição dos resultados
     let html = `
@@ -57,16 +66,20 @@ app.get('/listagem', (req, res) => {
               <th>endereco</th>
               <th>Idade</th>
               <th>Sexo</th>
+              <th>Nome Produto</th>
+              <th>Tipo Produto</th>
             </tr>
     `;
     
-    results.forEach((cliente) => {
+    results.forEach((cliente, produto) => {
       html += `
         <tr>
           <td>${cliente.nome}</td>
           <td>${cliente.endereco}</td>
           <td>${cliente.idade}</td>
           <td>${cliente.sexo}</td>
+          <td>${produto.nome}</td>
+          <td>${produto.tipo}</td>
         </tr>
       `;
     });
@@ -137,6 +150,8 @@ app.post('/consulta', (req, res) => {
           <td>${cliente.endereco}</td>
           <td>${cliente.idade}</td>
           <td>${cliente.sexo}</td>
+          <td>${produto.nome}</td>
+          <td>${produto.tipo}</td>
         </tr>
       `;
     });

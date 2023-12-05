@@ -39,6 +39,8 @@ app.post('/clientes', (req, res) => {
               <th>endereco</th>
               <th>Idade</th>
               <th>Sexo</th>
+              <th>Nome Produto</th>
+              <th>Tipo Produto</th>
             </tr>
     `;
     
@@ -49,6 +51,8 @@ app.post('/clientes', (req, res) => {
           <td>${cliente.endereco}</td>
           <td>${cliente.idade}</td>
           <td>${cliente.sexo}</td>
+          <td>${produto.nome}</td>
+          <td>${produto.tipo}</td>
         </tr>
       `;
     });
