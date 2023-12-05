@@ -9,7 +9,7 @@ const connection = mysql.createConnection({
   host: "127.0.0.1",
   user: "root",
   password: "aluno01",
-  database: "meuBanco"
+  database: "meubanco"
 });
 
 app.get("/", (req, res) => {
@@ -116,10 +116,10 @@ app.get('/listagem-produtos', (req, res) => {
       <!DOCTYPE html>
       <html>
         <head>
-          <title>Clientes</title>
+          <title>Produtos</title>
         </head>
         <body>
-          <h1>Clientes encontrados</h1>
+          <h1>Produtos encontrados</h1>
           <table>
             <tr>
               <th>ID</th>
