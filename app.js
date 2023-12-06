@@ -9,32 +9,42 @@ const connection = mysql.createConnection({
   host: "127.0.0.1",
   user: "root",
   password: "aluno01",
-  database: "meuBanco"
+  database: "cadastro"
 });
 
 app.get("/", (req, res) => {
   res.sendFile(__dirname + "/index.html");
 });
 
-
-
 app.get("/cadastro", (req, res) => {
   res.sendFile(__dirname + "/cadastro.html");
 });
 
 app.post("/cadastro", (req, res) => {
-  const { nome, endereco, sexo, idade, nascimento, email, telefone } = req.body;
-  if (!nome || !endereco || !sexo || !idade || !nascimento || !email || !telefone) {
-    res.status(400).send("todos os campos são obrigatórios.");
+  const { nome, endereco } = req.body;
+  if (!nome || !endereco) {
+    res.status(400).send("Nome e endereço são campos obrigatórios.");
     return;
   }
 
-  const cliente = { nome, endereco, sexo, idade, nascimento, email, telefone };
+  const cliente = { nome, endereco };
   connection.query("INSERT INTO clientes SET ?", cliente, (err, result) => {
     if (err) throw err;
     console.log(`Cliente ${nome} cadastrado com sucesso!`);
     res.redirect("/");
   });
+});
+
+app.get('/:nome', (req, res) => {
+  const userNome = req.params.nome;
+
+
+  connection.query("SELECT * FROM clientes WHERE nome = ?", userNome, (err, result) => {
+    if (err) throw err;
+    console.log(`O dados do cliente:`);
+    console.dir(result);
+  })
+  res.redirect("/", userNome);
 });
 
 // Rota para processar a listagem
@@ -103,7 +113,7 @@ app.get('/consulta', (req, res) => {
 // Rota para processar a consulta
 app.post('/consulta', (req, res) => {
   //const nome = req.body.nome;
-  const { nome, endereco, sexo, idade, nascimento, email, telefone } = req.body;
+  const { nome, endereco } = req.body;
   //const endereco = req.body.endereco;
   
   // Consulta no banco de dados
@@ -151,6 +161,6 @@ connection.connect((err) => {
   console.log("Conectado ao banco de dados MySQL!");
 });
 
-app.listen(8080, () => {
-  console.log("Servidor iniciado na porta 8080");
+app.listen(3000, () => {
+  console.log("Servidor iniciado na porta 3000");
 });
