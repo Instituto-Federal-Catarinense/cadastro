@@ -16,51 +16,46 @@ app.get("/", (req, res) => {
   res.sendFile(__dirname + "/index.html");
 });
 
-app.get("/cadastro", (req, res) => {
-  res.sendFile(__dirname + "/cadastro.html");
+app.get("/clientes", (req, res) => {
+  res.sendFile(__dirname + "/clientes.html");
 });
 
-app.post("/cadastro", (req, res) => {
-  const { nome, endereco, telefone, email, sexo, data_nasc} = req.body;
-  if (!nome || !endereco || !telefone || !email || !sexo || !data_nasc) {
-    res.status(400).send("todos os campos são obrigatórios.");
+app.post("/clientes", (req, res) => {
+  const { nome, endereco, email, telefone, sexo, nascimento } = req.body;
+  if (!nome || !endereco || !email || !telefone || !sexo || !nascimento ) {
+    res.status(400).send("todos são campos obrigatórios.");
     return;
   }
 
-  const cliente = { nome, endereco, telefone, email, sexo, data_nasc };
+  const cliente = { nome, endereco };
   connection.query("INSERT INTO clientes SET ?", cliente, (err, result) => {
     if (err) throw err;
     console.log(`Cliente ${nome} cadastrado com sucesso!`);
     res.redirect("/");
   });
-  });
-
-
-
-app.get("/cadProduto", (req, res) => {
-  res.sendFile(__dirname + "/cadProduto.html");
 });
 
-app.post("/cadProduto", (req, res) => {
-  const { nome, valor} = req.body;
-  if (!nome || !valor) {
-    res.status(400).send("todos os campos são obrigatórios.");
+app.get("/produtos", (req, res) => {
+  res.sendFile(__dirname + "/produtos.html");
+});
+
+app.post("/produtos", (req, res) => {
+  const { nome, descricao, quantidade, valor } = req.body;
+  if (!nome || !descricao || !quantidade || !valor) {
+    res.status(400).send("todos são campos obrigatórios.");
     return;
   }
 
-  const produto = { nome, valor };
-  connection.query("INSERT INTO cadProduto SET ?", produto, (err, result) => {
+  const produto = { nome, descricao, quantidade, valor };
+  connection.query("INSERT INTO produtos SET ?", produto, (err, result) => {
     if (err) throw err;
     console.log(`Produto ${nome} cadastrado com sucesso!`);
     res.redirect("/");
   });
 });
 
-
-
-
-// Rota para processar a listagem de clientes
-app.get('/listagem', (req, res) => {
+// Rota para processar a listagem
+app.get('/listagem-clientes', (req, res) => {
 
   // Consulta no banco de dados
   connection.query(`SELECT * FROM clientes`, (error, results, fields) => {
@@ -82,7 +77,7 @@ app.get('/listagem', (req, res) => {
               <th>email</th>
               <th>telefone</th>
               <th>sexo</th>
-              <th>data_nasc</th>
+              <th>nascimento</th>
             </tr>
     `;
     
@@ -94,7 +89,7 @@ app.get('/listagem', (req, res) => {
           <td>${cliente.email}</td>
           <td>${cliente.telefone}</td>
           <td>${cliente.sexo}</td>
-          <td>${cliente.data_nasc}</td>
+          <td>${cliente.nascimento}</td>
         </tr>
       `;
     });
@@ -106,21 +101,14 @@ app.get('/listagem', (req, res) => {
       </html>
     `;
     
-
-    
-
-
-    
     res.send(html);
   });
 });
 
-
-// Rota para processar a listagem de produtos
-app.get('/prodListagem', (req, res) => {
+app.get('/listagem-produtos', (req, res) => {
 
   // Consulta no banco de dados
-  connection.query(`SELECT * FROM cadProduto`, (error, results, fields) => {
+  connection.query(`SELECT * FROM produtos`, (error, results, fields) => {
     if (error) throw error;
     
     // Exibição dos resultados
@@ -134,16 +122,22 @@ app.get('/prodListagem', (req, res) => {
           <h1>Produtos encontrados</h1>
           <table>
             <tr>
+              <th>ID</th>
               <th>Nome</th>
-              <th>valor</th>
+              <th>Descrição</th>
+              <th>Quantidade</th>
+              <th>Valor</th>
             </tr>
     `;
     
     results.forEach((produto) => {
       html += `
         <tr>
+          <td>${produto.id}</td>
           <td>${produto.nome}</td>
-          <td>${produto.valor}</td>
+          <td>${produto.descricao}</td>
+          <td>${produto.quantidade}</td>
+          <td>R$ ${produto.valor}</td>
         </tr>
       `;
     });
@@ -202,10 +196,10 @@ app.post('/consulta', (req, res) => {
             <tr>
               <th>Nome</th>
               <th>endereco</th>
-              <th>telefone</th>
               <th>email</th>
+              <th>telefone</th>
               <th>sexo</th>
-              <th>data_nasc</th>
+              <th>nascimento</th>
             </tr>
     `;
     
@@ -214,12 +208,17 @@ app.post('/consulta', (req, res) => {
         <tr>
           <td>${cliente.nome}</td>
           <td>${cliente.endereco}</td>
+          <td>${cliente.email}</td>
+          <td>${cliente.telefone}</td>
+          <td>${cliente.nascimento}</td>
+          <td>${cliente.sexo}</td>
         </tr>
       `;
     });
     
     html += `
           </table>
+          <br>
           <a href="/">Voltar</a>
         </body>
       </html>
@@ -237,5 +236,3 @@ connection.connect((err) => {
 app.listen(3000, () => {
   console.log("Servidor iniciado na porta 3000");
 });
-
-
