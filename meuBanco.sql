@@ -27,6 +27,15 @@ DROP TABLE IF EXISTS `clientes`;
 CREATE TABLE `clientes` (
   `nome` varchar(255) DEFAULT NULL,
   `endereco` varchar(255) DEFAULT NULL
+  'Telefone'	varchar(20)DEFAULT NULL
+	'CPF' varchar(15)DEFAULT NULL
+  'Email'	varchar(30)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+CREATE TABLE `clientes2` (
+  `nome` varchar(255) DEFAULT NULL,
+  `preço` numeric(15) DEFAULT NULL
+  'validade'	varchar(20)DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -35,6 +44,9 @@ CREATE TABLE `clientes` (
 --
 
 LOCK TABLES `clientes` WRITE;
+LOCK TABLES `clientes2` WRITE;
+
+
 /*!40000 ALTER TABLE `clientes` DISABLE KEYS */;
 INSERT INTO `clientes` VALUES ('dfgdfg','dfgsdfg'),('Joedio','Arroio do Silva'),('Teste','teste'),('aloou','alou'),('teste2','teste2'),('Teste4','Teste4'),('teste5','teste5'),('teste6','teste6');
 /*!40000 ALTER TABLE `clientes` ENABLE KEYS */;

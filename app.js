@@ -21,16 +21,38 @@ app.get("/cadastro", (req, res) => {
 });
 
 app.post("/cadastro", (req, res) => {
-  const { nome, endereco } = req.body;
-  if (!nome || !endereco) {
+  const { nome, endereco,Telefone,CPF,Email } = req.body;
+  if (!nome || !endereco|| !Telefone|| !CPF| !Email ) {
     res.status(400).send("Nome e endereço são campos obrigatórios.");
     return;
   }
 
-  const cliente = { nome, endereco };
+
+
+    
+  const cliente = { nome, endereco,Telefone,CPF,Email };
   connection.query("INSERT INTO clientes SET ?", cliente, (err, result) => {
     if (err) throw err;
     console.log(`Cliente ${nome} cadastrado com sucesso!`);
+    res.redirect("/");
+  });
+});
+
+app.get("/produto", (req, res) => {
+  res.sendFile(__dirname + "/produto.html");
+});
+
+app.post ("/produto", (req, res) => {
+  const { nome, preço,validade } = req.body;
+  if (!nome || !preço|| !validade ) {
+    res.status(400).send("preço e validade são campos obrigatórios.");
+    return;
+  }
+
+  const clientes2 = { nome, preço,validade };
+  connection.query("INSERT INTO clientes2 SET ?", clientes2, (err, result) => {
+    if (err) throw err;
+    console.log(`Clientes2 ${nome} cadastrado com sucesso!`);
     res.redirect("/");
   });
 });
@@ -39,8 +61,11 @@ app.post("/cadastro", (req, res) => {
 app.get('/listagem', (req, res) => {
 
   // Consulta no banco de dados
-  connection.query(`SELECT * FROM clientes`, (error, results, fields) => {
+  connection.query(`SELECT * FROM clientes`), (error, results, fields) => {
     if (error) throw error;
+
+    connection.query(`SELECT * FROM clientes2`, (error, results, fields) => {
+      if (error) throw error;
     
     // Exibição dos resultados
     let html = `
@@ -55,6 +80,9 @@ app.get('/listagem', (req, res) => {
             <tr>
               <th>Nome</th>
               <th>endereco</th>
+              <td>Telefone</td>
+              <td>CPF</td>
+              <td>Email</td>
             </tr>
     `;
     
@@ -63,6 +91,36 @@ app.get('/listagem', (req, res) => {
         <tr>
           <td>${cliente.nome}</td>
           <td>${cliente.endereco}</td>
+          <td>${cliente.Telefone}</td>
+          <td>${cliente.CPF}</td>
+          <td>${cliente.Email}</td>
+
+        </tr>
+      `;
+    });
+    let html1 = `
+    <!DOCTYPE html>
+    <html>
+      <head>
+        <title>Clientes</title>
+      </head>
+      <body>
+        <h1>Clientes encontrados</h1>
+        <table>
+          <tr>
+            <th>Nome</th>
+            <th>preço</th>
+            <td>validade</td>
+          </tr>
+  `;
+    results.forEach((clientes2) => {
+      html += `
+        <tr>
+          <td>${clientes2.nome}</td>
+          <td>${clientes2.preço}</td>
+          <td>${clientes2.validade}</td>
+       
+
         </tr>
       `;
     });
@@ -76,7 +134,7 @@ app.get('/listagem', (req, res) => {
     
     res.send(html);
   });
-});
+}});
 
 // Rota para exibir o formulário de consulta
 app.get('/consulta', (req, res) => {
@@ -97,16 +155,38 @@ app.get('/consulta', (req, res) => {
     </html>
   `);
 });
-
+app.get('/consulta', (req, res) => {
+  res.send(`
+    <!DOCTYPE html>
+    <html>
+      <head>
+        <title>Consulta de clientes2</title>
+      </head>
+      <body>
+        <h1>Consulta de clientes2</h1>
+        <form method="POST" action="/consulta">
+          <label for="nome">Nome:</label>
+          <input type="text" id="nome" name="nome"><br><br>
+          <button type="submit">Consultar</button>
+        </form>
+      </body>
+    </html>
+  `);
+});
 // Rota para processar a consulta
-app.post('/consulta', (req, res) => {
+app.post('/consulta'), (req, res) => {
   //const nome = req.body.nome;
-  const { nome, endereco } = req.body;
+  const { nome, endereco, Telefone, CPF, Email } = req.body;
   //const endereco = req.body.endereco;
-  
+}
+  app.post('/consulta', (req, res) => {
+    //const nome = req.body.nome;
+    const { nome,preço,validade, CPF, Email } = req.body;
+    //const endereco = req.body.endereco;
   // Consulta no banco de dados
   connection.query(`SELECT * FROM clientes WHERE nome LIKE '%${nome}%'`, (error, results, fields) => {
     if (error) throw error;
+    
     
     // Exibição dos resultados
     let html = `
@@ -121,17 +201,49 @@ app.post('/consulta', (req, res) => {
             <tr>
               <th>Nome</th>
               <th>endereco</th>
+              <td>Telefone</td>
+              <td>CPF</td>
+              <td>Email</td>
             </tr>
     `;
-    
+      
     results.forEach((cliente) => {
       html += `
         <tr>
           <td>${cliente.nome}</td>
           <td>${cliente.endereco}</td>
+          <td>${cliente.Telefone}</td>
+          <td>${cliente.CPF}</td>
+          <td>${cliente.Email}</td>
         </tr>
       `;
     });
+
+    let html1 = `
+    <!DOCTYPE html>
+    <html>
+      <head>
+        <title>Produtos Cadastrados</title>
+      </head>
+      <body>
+        <h1>Clientes encontrados</h1>
+        <table>
+          <tr>
+            <th>Nome</th>
+            <th>preço</th>
+            <td>validade</td>
+          </tr>
+  `;
+  
+  results.forEach((clientes2) => {
+    html += `
+      <tr>
+        <td>${clientes2.nome}</td>
+        <td>${clientes2.preço}</td>
+        <td>${clientes2.validade}</td>
+      </tr>
+    `;
+  });
     
     html += `
           </table>
@@ -140,10 +252,12 @@ app.post('/consulta', (req, res) => {
       </html>
     `;
     
+    
+
+
     res.send(html);
   });
 });
-
 connection.connect((err) => {
   if (err) throw err;
   console.log("Conectado ao banco de dados MySQL!");
