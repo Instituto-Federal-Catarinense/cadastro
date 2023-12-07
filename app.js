@@ -67,8 +67,8 @@ app.get('/listagem', (req, res) => {
         <tr>
           <td>${cliente.nome}</td>
           <td>${cliente.endereco}</td>
-          <td>${cliente.email}</td>
-          <td>${cliente.telefone}</td>
+          <td>${cliente.Email}</td>
+          <td>${cliente.Telefone}</td>
         </tr>
       `;
     });
