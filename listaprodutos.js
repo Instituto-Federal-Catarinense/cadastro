@@ -2,7 +2,7 @@ const express = require('express');
 const mysql = require('mysql');
 const bodyParser = require('body-parser');
 const app = express();
-const port = 3000;
+const port = 8080;
 
 app.use(bodyParser.urlencoded({ extended: true }));
 
@@ -23,7 +23,7 @@ app.post('/clientes', (req, res) => {
   // Consulta no banco de dados
   connection.query(`SELECT * FROM clientes`, (error, results, fields) => {
     if (error) throw error;
-    
+   
     // Exibição dos resultados
     let html = `
       <!DOCTYPE html>
@@ -41,7 +41,7 @@ app.post('/clientes', (req, res) => {
               <th>Sexo</th>
             </tr>
     `;
-    
+   
     results.forEach((cliente) => {
       html += `
         <tr>
@@ -52,13 +52,13 @@ app.post('/clientes', (req, res) => {
         </tr>
       `;
     });
-    
+   
     html += `
           </table>
         </body>
       </html>
     `;
-    
+   
     res.send(html);
   });
 });
