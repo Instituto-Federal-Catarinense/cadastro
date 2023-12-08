@@ -8,8 +8,8 @@ app.use(bodyParser.urlencoded({ extended: true }));
 const connection = mysql.createConnection({
   host: "127.0.0.1",
   user: "root",
-  password: "aluno01",
-  database: "meuBanco"
+  password: "root123",
+  database: "meubanco"
 });
 
 app.get("/", (req, res) => {
@@ -21,7 +21,7 @@ app.get("/cadastro", (req, res) => {
 });
 
 app.post("/cadastro", (req, res) => {
-  const { nome, endereco,sexo,idade } = req.body;
+  const { nome, endereco, sexo, idade } = req.body;
   if (!nome || !endereco || !sexo || !idade) {
     res.status(400).send("Nome e endereço são campos obrigatórios.");
     return;
@@ -31,6 +31,25 @@ app.post("/cadastro", (req, res) => {
   connection.query("INSERT INTO clientes SET ?", cliente, (err, result) => {
     if (err) throw err;
     console.log(`Cliente ${nome} cadastrado com sucesso!`);
+    res.redirect("/");
+  });
+});
+
+app.get("/cadastro_produto", (req, res) => {
+  res.sendFile(__dirname + "/cadastro_produto.html");
+});
+
+app.post("/cadastro_produto", (req, res) => {
+  const { nome, preco } = req.body;
+  if (!nome || !preco) {
+    res.status(400).send("Nome e preço são campos obrigatórios.");
+    return;
+  }
+
+  const produto = { nome, preco };
+  connection.query("INSERT INTO produto SET ?", produto, (err, result) => {
+    if (err) throw err;
+    console.log(`Produto ${nome} cadastrado com sucesso!`);
     res.redirect("/");
   });
 });
@@ -54,9 +73,9 @@ app.get('/listagem', (req, res) => {
           <table>
             <tr>
               <th>Nome</th>
-              <th>endereco</th>
-              <th>idade</th>
-              <th>sexo</th>
+              <th>Endereço</th>
+              <th>Idade</th>
+              <th>Sexo</th>
             </tr>
     `;
     
@@ -74,6 +93,51 @@ app.get('/listagem', (req, res) => {
     html += `
           </table>
           <a href="/">Voltar</a>
+        </body>
+      </html>
+    `;
+    
+    res.send(html);
+  });
+});
+
+///////////////////////////////////////////////////////////////////////////////////////
+
+
+app.post('/produto', (req, res) => {
+  const { nome} = req.body;
+  
+  // Consulta no banco de dados
+  connection.query(`SELECT * FROM produto WHERE nome LIKE '%${nome}%'`, (error, results, fields) => {
+    if (error) throw error;
+    
+    // Exibição dos resultados
+    let html = `
+      <!DOCTYPE html>
+      <html>
+        <head>
+          <title>Produtos</title>
+        </head>
+        <body>
+          <h1>Produtos encontrados</h1>
+          <table>
+            <tr>
+              <th>Nome</th>
+              <th>Preço</th>
+            </tr>
+    `;
+    
+    results.forEach((produto) => {
+      html += `
+        <tr>
+          <td>${produto.nome}</td>
+          <td>${produto.preco}</td>
+        </tr>
+      `;
+    });
+    
+    html += `
+          </table>
         </body>
       </html>
     `;
@@ -88,12 +152,14 @@ app.get('/consulta', (req, res) => {
     <!DOCTYPE html>
     <html>
       <head>
-        <title>Consulta de clientes</title>
+        <title>Consulta de clientes e produtos</title>
       </head>
       <body>
-        <h1>Consulta de clientes</h1>
+        <h1>Consulta de clientes e produtos</h1>
         <form method="POST" action="/consulta">
           <label for="nome">Nome:</label>
+          <input type="text" id="nome" name="nome"><br><br>
+          <label for="nome">Nome produto:</label>
           <input type="text" id="nome" name="nome"><br><br>
           <button type="submit">Consultar</button>
         </form>
@@ -102,55 +168,7 @@ app.get('/consulta', (req, res) => {
   `);
 });
 
-// Rota para processar a consulta
-app.post('/consulta', (req, res) => {
-  //const nome = req.body.nome;
-  const { nome, endereco } = req.body;
-  //const endereco = req.body.endereco;
-  
-  // Consulta no banco de dados
-  connection.query(`SELECT * FROM clientes WHERE nome LIKE '%${nome}%'`, (error, results, fields) => {
-    if (error) throw error;
-    
-    // Exibição dos resultados
-    let html = `
-      <!DOCTYPE html>
-      <html>
-        <head>
-          <title>Clientes</title>
-        </head>
-        <body>
-          <h1>Clientes encontrados</h1>
-          <table>
-            <tr>
-              <th>Nome</th>
-              <th>endereco</th>
-              <th>idade</th>
-              <th>sexo</th>
-            </tr>
-    `;
-    
-    results.forEach((cliente) => {
-      html += `
-        <tr>
-          <td>${cliente.nome}</td>
-          <td>${cliente.endereco}</td>
-          <td>${cliente.idade}</td>
-          <td>${cliente.sexo}</td>
-        </tr>
-      `;
-    });
-    
-    html += `
-          </table>
-          <a href="/">Voltar</a>
-        </body>
-      </html>
-    `;
-    
-    res.send(html);
-  });
-});
+
 
 connection.connect((err) => {
   if (err) throw err;
@@ -160,3 +178,4 @@ connection.connect((err) => {
 app.listen(3000, () => {
   console.log("Servidor iniciado na porta 3000");
 });
+
