@@ -9,7 +9,7 @@ const connection = mysql.createConnection({
   host: "127.0.0.1",
   user: "root",
   password: "aluno01",
-  database: "meuBanco"
+  database: "meubanco"
 });
 
 app.get("/", (req, res) => {
@@ -22,8 +22,8 @@ app.get("/cadastro", (req, res) => {
   res.sendFile(__dirname + "/cadastro.html");
 });
 
-app.post("/cadastro", (req, res) => {
-  const { nome, endereco } = req.body;
+app.post("/cadCliente", (req, res) => {
+  const { nome, endereco,sexo, responsavel, nascimento } = req.body;
   if (!nome || !endereco) {
     res.status(400).send("Nome e endereço são campos obrigatórios.");
     return;
@@ -57,6 +57,9 @@ app.get('/listagem', (req, res) => {
             <tr>
               <th>Nome</th>
               <th>endereco</th>
+              <th>sexo</th>
+              <th>responsavel</th>
+              <th>nascimento</th>
             </tr>
     `;
     
@@ -65,6 +68,9 @@ app.get('/listagem', (req, res) => {
         <tr>
           <td>${cliente.nome}</td>
           <td>${cliente.endereco}</td>
+          <td>${cliente.sexo}</td>
+          <td>${cliente.responsavel}</td>
+          <td>${cliente.nascimento}</td>
         </tr>
       `;
     });
@@ -120,10 +126,13 @@ app.post('/consulta', (req, res) => {
         <body>
           <h1>Clientes encontrados</h1>
           <table>
-            <tr>
-              <th>Nome</th>
-              <th>endereco</th>
-            </tr>
+          <tr>
+          <th>Nome</th>
+          <th>endereco</th>
+          <th>sexo</th>
+          <th>responsavel</th>
+          <th>nascimento</th>
+        </tr>
     `;
     
     results.forEach((cliente) => {
@@ -131,6 +140,9 @@ app.post('/consulta', (req, res) => {
         <tr>
           <td>${cliente.nome}</td>
           <td>${cliente.endereco}</td>
+          <td>${cliente.sexo}</td>
+          <td>${cliente.responsavel}</td>
+          <td>${cliente.nascimento}</td>
         </tr>
       `;
     });
