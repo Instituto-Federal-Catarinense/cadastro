@@ -4,7 +4,6 @@ const bodyParser = require('body-parser');
 const app = express();
 
 app.use(bodyParser.urlencoded({ extended: true }));
-app.use(express.static('public')); // Crie uma pasta 'public' para armazenar seus arquivos estáticos (CSS, JavaScript, imagens, etc.).
 
 const connection = mysql.createConnection({
   host: "127.0.0.1",
@@ -13,23 +12,23 @@ const connection = mysql.createConnection({
   database: "meuBanco"
 });
 
-// Rota principal
 app.get("/", (req, res) => {
   res.sendFile(__dirname + "/index.html");
 });
 
-// Rota de cadastro
+
 app.get("/cadastro", (req, res) => {
   res.sendFile(__dirname + "/cadastro.html");
 });
 
 app.post("/cadastro", (req, res) => {
-  const { nome, endereco } = req.body;
-  if (!nome || !endereco) {
-    return res.status(400).send("Nome e endereço são campos obrigatórios.");
+  const { nome, endereco, sexo, idade  } = req.body;
+  if (!nome || !endereco || !sexo || !idade) {
+    res.status(400).send("Nome e endereço são campos obrigatórios.");
+    return;
   }
 
-  const cliente = { nome, endereco };
+  const cliente = { nome, endereco, sexo, idade };
   connection.query("INSERT INTO clientes SET ?", cliente, (err, result) => {
     if (err) throw err;
     console.log(`Cliente ${nome} cadastrado com sucesso!`);
@@ -37,24 +36,120 @@ app.post("/cadastro", (req, res) => {
   });
 });
 
-// Rota de listagem
+// Rota para processar a listagem
 app.get('/listagem', (req, res) => {
-  connection.query("SELECT * FROM clientes", (error, results, fields) => {
+
+  // Consulta no banco de dados
+  connection.query(`SELECT * FROM clientes`, (error, results, fields) => {
     if (error) throw error;
-    res.render('listagem', { clientes: results }); // Crie um arquivo 'listagem.ejs' para exibir os resultados.
+    
+    // Exibição dos resultados
+    let html = `
+      <!DOCTYPE html>
+      <html>
+        <head>
+          <title>Clientes</title>
+        </head>
+        <body>
+          <h1>Clientes encontrados</h1>
+          <table>
+            <tr>
+              <th>Nome</th>
+              <th>endereco</th>
+              <th>idade</th>
+              <th>sexo</th>
+            </tr>
+    `;
+    
+    results.forEach((cliente) => {
+      html += `
+        <tr>
+          <td>${cliente.nome}</td>
+          <td>${cliente.endereco}</td>
+          <td>${cliente.idade}</td>
+          <td>${cliente.sexo}</td>
+        </tr>
+      `;
+    });
+    
+    html += `
+          </table>
+          <a href="/">Voltar</a>
+        </body>
+      </html>
+    `;
+    
+    res.send(html);
   });
 });
 
-// Rota de consulta
+// Rota para exibir o formulário de consulta
 app.get('/consulta', (req, res) => {
-  res.sendFile(__dirname + "/consulta.html");
+  res.send(`
+    <!DOCTYPE html>
+    <html>
+      <head>
+        <title>Consulta de clientes</title>
+      </head>
+      <body>
+        <h1>Consulta de clientes</h1>
+        <form method="POST" action="/consulta">
+          <label for="nome">Nome:</label>
+          <input type="text" id="nome" name="nome"><br><br>
+          <button type="submit">Consultar</button>
+        </form>
+      </body>
+    </html>
+  `);
 });
 
+// Rota para processar a consulta
 app.post('/consulta', (req, res) => {
-  const { nome } = req.body;
-  connection.query("SELECT * FROM clientes WHERE nome LIKE ?", [`%${nome}%`], (error, results, fields) => {
+  //const nome = req.body.nome;
+  const { nome, endereco } = req.body;
+  //const endereco = req.body.endereco;
+  
+  // Consulta no banco de dados
+  connection.query(`SELECT * FROM clientes WHERE nome LIKE '%${nome}%'`, (error, results, fields) => {
     if (error) throw error;
-    res.render('consulta', { clientes: results, nome }); // Crie um arquivo 'consulta.ejs' para exibir os resultados.
+    
+    // Exibição dos resultados
+    let html = `
+      <!DOCTYPE html>
+      <html>
+        <head>
+          <title>Clientes</title>
+        </head>
+        <body>
+          <h1>Clientes encontrados</h1>
+          <table>
+            <tr>
+              <th>Nome</th>
+              <th>endereco</th>
+              <th>Idade</th>
+              <th>Sexo</th>
+            </tr>
+    `;
+    
+    results.forEach((cliente) => {
+      html += `
+        <tr>
+          <td>${cliente.nome}</td>
+          <td>${cliente.endereco}</td>
+          <td>${cliente.idade}</td>
+          <td>${cliente.sexo}</td>
+        </tr>
+      `;
+    });
+    
+    html += `
+          </table>
+          <a href="/">Voltar</a>
+        </body>
+      </html>
+    `;
+    
+    res.send(html);
   });
 });
 
